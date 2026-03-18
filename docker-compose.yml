@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  # ── MongoDB ──────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7.0
+    container_name: pms_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-pms_admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-secret}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-pms_db}
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - pms_network
+
+  # ── Laravel API (PHP-FPM + Nginx) ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pms_backend
+    restart: unless-stopped
+    environment:
+      APP_ENV: local
+      APP_KEY: ${APP_KEY:-base64:PLACEHOLDER_CHANGE_ME}
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mongodb
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_DATABASE: ${MONGO_DB:-pms_db}
+      DB_USERNAME: ${MONGO_ROOT_USER:-pms_admin}
+      DB_PASSWORD: ${MONGO_ROOT_PASS:-secret}
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - mongo
+    networks:
+      - pms_network
+
+  # Nginx sidecar for the Laravel API
+  nginx_backend:
+    image: nginx:1.25-alpine
+    container_name: pms_nginx_backend
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    networks:
+      - pms_network
+
+  # ── React Frontend (Node / Vite) ──────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pms_frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - nginx_backend
+    networks:
+      - pms_network
+
+volumes:
+  mongo_data:
+
+networks:
+  pms_network:
+    driver: bridge
