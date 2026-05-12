@@ -1,0 +1,55 @@
+﻿version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    container_name: pms_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: pms_mongo_ui
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+      ME_CONFIG_MONGODB_URL: mongodb://admin:secret@mongo:27017/
+    ports:
+      - "8081:8081"
+
+  backend:
+    build: ./pms-backend
+    container_name: pms_backend
+    depends_on:
+      - mongo
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./pms-backend:/var/www/html
+    environment:
+      MONGO_HOST: mongo
+      MONGO_DATABASE: pms_db
+      MONGO_USERNAME: admin
+      MONGO_PASSWORD: secret
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  frontend:
+    build: ./pms-frontend
+    container_name: pms_frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./pms-frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host
+
+volumes:
+  mongo_data:

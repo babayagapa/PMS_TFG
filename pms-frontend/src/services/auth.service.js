@@ -1,0 +1,5 @@
+﻿import api from './axios'
+
+export const loginApi  = (email, password) => api.post('/login', { email, password })
+export const logoutApi = ()                => api.post('/logout')
+export const getMeApi  = ()                => api.get('/me')
