@@ -40,5 +40,4 @@ hostname -I | awk '{print $1}'
 # Lanza el tunnel apuntando al frontend
 cloudflared tunnel --url http://<TU_IP>:5173
 ```
-Te genera un enlace público temporal. Útil para mostrarlo en el instituto
-sirviendo desde tu propio PC.
+Te genera un enlace público temporal.
