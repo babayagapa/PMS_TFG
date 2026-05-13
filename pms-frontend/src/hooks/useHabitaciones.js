@@ -1,14 +1,18 @@
 ﻿import { useState, useEffect } from 'react'
 import { getHabitaciones } from '../services/habitaciones.service'
+import toast from 'react-hot-toast'
 
-// Hook para obtener y filtrar habitaciones
 export function useHabitaciones(filtros = {}) {
   const [habitaciones, setHabitaciones] = useState([])
   const [loading, setLoading]           = useState(true)
-  const [error, setError]               = useState(null)
 
-  // TODO: fetch al montar y al cambiar filtros
-  // TODO: manejar error con toast
+  useEffect(() => {
+    setLoading(true)
+    getHabitaciones(filtros)
+      .then(({ data }) => setHabitaciones(data))
+      .catch(() => toast.error('Error al cargar habitaciones'))
+      .finally(() => setLoading(false))
+  }, [JSON.stringify(filtros)])
 
-  return { habitaciones, loading, error }
+  return { habitaciones, loading }
 }
