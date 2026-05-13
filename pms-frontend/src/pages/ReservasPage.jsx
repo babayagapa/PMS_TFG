@@ -4,7 +4,7 @@ import Badge from '../components/Badge'
 import { useReservas } from '../hooks/useReservas'
 import { formatDate, formatEuros } from '../utils/formatDate'
 
-// Tabla de reservas para el panel de recepciÃ³n
+// Tabla de reservas para el panel de recepción
 export default function ReservasPage() {
   const { reservas, loading } = useReservas()
 
@@ -17,8 +17,8 @@ export default function ReservasPage() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 text-left">HuÃ©sped</th>
-                <th className="p-2 text-left">HabitaciÃ³n</th>
+                <th className="p-2 text-left">Huésped</th>
+                <th className="p-2 text-left">Habitación</th>
                 <th className="p-2 text-left">Entrada</th>
                 <th className="p-2 text-left">Salida</th>
                 <th className="p-2 text-left">Total</th>

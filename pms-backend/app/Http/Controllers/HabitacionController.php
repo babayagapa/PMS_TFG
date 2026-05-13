@@ -13,21 +13,21 @@ class HabitacionController extends Controller
 
     public function show($id)
     {
-        // TODO: detalle de una habitaciÃ³n
+        // TODO: detalle de una habitación
     }
 
     public function store(Request $request)
     {
-        // TODO: crear habitaciÃ³n (solo admin)
+        // TODO: crear habitación (solo admin)
     }
 
     public function update(Request $request, $id)
     {
-        // TODO: editar habitaciÃ³n (solo admin)
+        // TODO: editar habitación (solo admin)
     }
 
     public function destroy($id)
     {
-        // TODO: eliminar habitaciÃ³n si no tiene reservas activas
+        // TODO: eliminar habitación si no tiene reservas activas
     }
 }

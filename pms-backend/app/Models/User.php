@@ -1,7 +1,7 @@
 ﻿<?php
 namespace App\Models;
 
-// Usuarios del sistema. ColecciÃ³n MongoDB: 'usuarios'
+// Usuarios del sistema. Colección MongoDB: 'usuarios'
 // Roles: admin o recepcionista
 class User
 {

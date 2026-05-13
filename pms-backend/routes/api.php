@@ -1,9 +1,9 @@
 ﻿<?php
 use Illuminate\Support\Facades\Route;
 
-// Rutas pÃºblicas
-// TODO: POST /login â†’ AuthController@login
-// TODO: GET  /habitaciones â†’ HabitacionController@index
+// Rutas públicas
+// TODO: POST /login → AuthController@login
+// TODO: GET  /habitaciones → HabitacionController@index
 
 // Rutas protegidas (jwt.auth)
 // TODO: POST /logout, GET /me

@@ -1,7 +1,7 @@
 ﻿<?php
 namespace App\Models;
 
-// Habitaciones del hotel. ColecciÃ³n MongoDB: 'habitaciones'
+// Habitaciones del hotel. Colección MongoDB: 'habitaciones'
 // Estados: disponible, ocupada, mantenimiento
 class Habitacion
 {

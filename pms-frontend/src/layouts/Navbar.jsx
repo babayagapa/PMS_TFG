@@ -1,7 +1,7 @@
 ﻿import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
-// Barra de navegaciÃ³n superior
+// Barra de navegación superior
 export default function Navbar() {
   const { usuario, logout } = useAuth() || {}
   return (

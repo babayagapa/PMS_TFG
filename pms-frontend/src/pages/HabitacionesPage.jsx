@@ -12,7 +12,7 @@ export default function HabitacionesPage() {
       <Navbar />
       <main className="p-6">
         <h2 className="text-2xl font-bold text-primary mb-4">Habitaciones</h2>
-        {/* TODO: aÃ±adir filtros por estado y tipo */}
+        {/* TODO: añadir filtros por estado y tipo */}
         {loading ? <Spinner /> : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {habitaciones.map(h => <HabitacionCard key={h._id} habitacion={h} />)}

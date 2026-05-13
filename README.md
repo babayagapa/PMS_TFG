@@ -25,9 +25,6 @@ React (5173) → Axios → Laravel API (8000) → MongoDB (27017)
 ## Ramas
 - `main` → estable
 - `develop` → desarrollo
-- `feature/auth` → login y JWT
-- `feature/habitaciones` → habitaciones
-- `feature/reservas` → reservas
 
 ## Backup de datos
 ```bash

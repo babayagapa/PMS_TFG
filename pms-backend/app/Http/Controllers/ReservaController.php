@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// GestiÃ³n de reservas. Regla: no reservar si habitaciÃ³n estÃ¡ ocupada.
+// Gestión de reservas. Regla: no reservar si habitación está ocupada.
 // Precio = precio_noche * noches * 1.10
 class ReservaController extends Controller
 {
@@ -24,12 +24,12 @@ class ReservaController extends Controller
 
     public function update(Request $request, $id)
     {
-        // TODO: actualizar datos del huÃ©sped
+        // TODO: actualizar datos del huésped
     }
 
     public function destroy($id)
     {
-        // TODO: cancelar reserva y liberar habitaciÃ³n
+        // TODO: cancelar reserva y liberar habitación
     }
 
     public function confirmar($id)

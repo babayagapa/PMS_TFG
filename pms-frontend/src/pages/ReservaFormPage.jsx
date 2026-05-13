@@ -1,9 +1,9 @@
 ﻿import Navbar from '../layouts/Navbar'
 import ReservaForm from '../components/ReservaForm'
 
-// PÃ¡gina que contiene el formulario de nueva reserva
+// Página que contiene el formulario de nueva reserva
 export default function ReservaFormPage() {
-  // TODO: leer ?habitacion_id de la URL para preseleccionar habitaciÃ³n
+  // TODO: leer ?habitacion_id de la URL para preseleccionar habitación
   return (
     <div>
       <Navbar />

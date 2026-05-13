@@ -7,7 +7,7 @@ import ReservasPage from './pages/ReservasPage'
 import ReservaFormPage from './pages/ReservaFormPage'
 import PanelPage from './pages/PanelPage'
 
-// TODO: aÃ±adir PrivateRoute para proteger /panel y /reservas
+// TODO: añadir PrivateRoute para proteger /panel y /reservas
 export default function App() {
   return (
     <AuthProvider>
