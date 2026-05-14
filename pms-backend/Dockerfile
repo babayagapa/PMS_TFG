@@ -4,7 +4,8 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     autoconf g++ make git curl \
     libzip-dev zip unzip \
-    openssl-dev
+    openssl-dev \
+    oniguruma-dev
 
 # Instalar la extension de MongoDB para PHP
 RUN pecl install mongodb \
