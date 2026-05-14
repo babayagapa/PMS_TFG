@@ -3,8 +3,10 @@
   theme: {
     extend: {
       colors: {
-        primary: '#1a3a5c',
-        secondary: '#c9a84c',
+        primary:   '#2ECC71',
+        'primary-dark': '#27AE60',
+        surface:   '#E8F5E9',
+        dark:      '#2C3E50',
       }
     }
   },
