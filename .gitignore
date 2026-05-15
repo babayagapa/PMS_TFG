@@ -1,10 +1,12 @@
-﻿node_modules/
+node_modules/
 vendor/
 .env
 dist/
 build/
 *.log
 .DS_Store
-storage/framework/
+storage/framework/sessions/
+storage/framework/views/
+storage/framework/cache/
 storage/logs/
-bootstrap/cache/
+bootstrap/cache/*.php

@@ -1,43 +1,142 @@
-﻿# PMS_TFG - Sistema de Gestión Hotelera
-TFG de Mario Gomez (@babayagapa) | 2º DAW
+# PMS_TFG — Sistema de Gestion Hotelera
 
-## Qué es
-Aplicación web para gestionar habitaciones y reservas de un hotel.
-React en el frontend, Laravel en el backend, MongoDB como base de datos.
+TFG de Mario Gomez (@babayagapa) | 2 DAW | IES Venancio Blanco, Salamanca
 
-## Cómo arrancar
-1. `cp .env.example .env`
-2. `docker-compose up -d`
-3. `docker exec pms_backend php artisan key:generate`
-4. `docker exec pms_backend php artisan jwt:secret`
-5. `docker exec pms_backend php artisan db:seed`
-6. Abrir http://localhost:5173
+Sistema web para gestionar habitaciones y reservas de un hotel.
+React + Laravel + MongoDB + Docker.
 
-## Usuarios de prueba
-- admin@hotel.com / admin123 (admin)
-- recepcion@hotel.com / recep123 (recepcionista)
+---
+
+## Requisitos
+
+- Docker Desktop instalado y en ejecucion
+- Git
+
+No hace falta tener PHP, Node ni MongoDB instalados en local.
+Docker lo gestiona todo.
+
+---
+
+## Arrancar el proyecto (primera vez)
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/babayagapa/PMS_TFG.git
+cd PMS_TFG
+
+# 2. Crear el archivo de variables de entorno
+cp .env.example .env
+
+# 3. Construir y levantar los contenedores
+docker-compose up -d --build
+```
+
+El contenedor del backend genera automaticamente las claves y puebla
+la base de datos en el primer arranque. Espera unos 30-60 segundos.
+
+```bash
+# 4. Comprobar que todo funciona
+docker-compose logs backend
+# Debe mostrar: "Iniciando Laravel en 0.0.0.0:8000..."
+
+# 5. Verificar la API
+curl http://localhost:8000/api/habitaciones
+# Debe devolver un array JSON con 12 habitaciones
+```
+
+Abrir en el navegador: **http://localhost:5173**
+
+---
+
+## Credenciales de prueba
+
+| Rol           | Email                  | Password |
+|---------------|------------------------|----------|
+| Admin         | admin@hotel.com        | admin123 |
+| Recepcionista | recepcion@hotel.com    | recep123 |
+
+---
+
+## Arranques posteriores
+
+```bash
+# Levantar (sin reconstruir)
+docker-compose up -d
+
+# Parar
+docker-compose down
+
+# Ver logs en tiempo real
+docker-compose logs -f backend
+```
+
+---
+
+## Si algo sale mal
+
+```bash
+# Reconstruir los contenedores desde cero
+docker-compose down -v
+docker-compose up -d --build
+
+# Ejecutar seeders manualmente
+docker exec pms_backend php artisan db:seed --force
+
+# Regenerar claves manualmente
+docker exec pms_backend php artisan key:generate --force
+docker exec pms_backend php artisan jwt:secret --force
+```
+
+---
+
+## Servicios
+
+| URL                        | Servicio              |
+|----------------------------|-----------------------|
+| http://localhost:5173      | Frontend React        |
+| http://localhost:8000/api  | API Laravel           |
+| http://localhost:8081      | Panel MongoDB         |
+| localhost:27017            | MongoDB               |
+
+---
 
 ## Arquitectura
-```text
-React (5173) → Axios → Laravel API (8000) → MongoDB (27017)
+
+```
+Navegador → React (5173) → Axios → Laravel API (8000) → MongoDB (27017)
 ```
 
-## Ramas
-- `main` → estable
-- `develop` → desarrollo
+---
 
 ## Backup de datos
+
 ```bash
-docker exec pms_mongo mongoexport --db pms_db --collection reservas --out /tmp/bk.json
-docker cp pms_mongo:/tmp/bk.json ./backup_$(date +%Y%m%d).json
+docker exec pms_mongo mongoexport \
+  --db pms_db --collection reservas \
+  --out /tmp/backup.json
+docker cp pms_mongo:/tmp/backup.json ./backup_$(date +%Y%m%d).json
 ```
 
-## Acceso remoto con Cloudflare Tunnel
-Para abrir el proyecto desde otro sitio sin desplegar nada:
+---
+
+## Acceso remoto (Cloudflare Tunnel)
+
+Para mostrar el proyecto desde otro equipo sin desplegarlo:
+
 ```bash
-# Detecta tu IP local
+# Ver tu IP local
 hostname -I | awk '{print $1}'
-# Lanza el tunnel apuntando al frontend
-cloudflared tunnel --url http://<TU_IP>:5173
+
+# Crear tunnel publico temporal
+cloudflared tunnel --url http://localhost:5173
 ```
-Te genera un enlace público temporal.
+
+Genera un enlace publico que apunta a tu equipo.
+Util para mostrarlo en el instituto teniendo el servidor en casa.
+
+---
+
+## Ramas
+
+- `main` — codigo estable
+- `develop` — desarrollo activo

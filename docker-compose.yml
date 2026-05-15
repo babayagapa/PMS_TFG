@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
 
-  # Base de datos MongoDB
   mongo:
     image: mongo:6
     container_name: pms_mongo
@@ -18,7 +17,6 @@ services:
     networks:
       - pms_net
 
-  # Panel visual para ver MongoDB en el navegador (solo desarrollo)
   mongo-express:
     image: mongo-express
     container_name: pms_mongo_ui
@@ -35,7 +33,6 @@ services:
     networks:
       - pms_net
 
-  # Backend Laravel
   backend:
     build:
       context: ./pms-backend
@@ -49,20 +46,22 @@ services:
     volumes:
       - ./pms-backend:/var/www/html
     environment:
+      APP_NAME: PMS_TFG
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: http://localhost:8000
+      APP_KEY: ${APP_KEY:-}
       DB_CONNECTION: mongodb
       MONGO_HOST: mongo
       MONGO_PORT: 27017
       MONGO_DATABASE: pms_db
       MONGO_USERNAME: admin
       MONGO_PASSWORD: secret
+      JWT_SECRET: ${JWT_SECRET:-}
+      JWT_TTL: 60
     networks:
       - pms_net
-    command: php artisan serve --host=0.0.0.0 --port=8000
 
-  # Frontend React
   frontend:
     build:
       context: ./pms-frontend
@@ -75,12 +74,10 @@ services:
       - "5173:5173"
     volumes:
       - ./pms-frontend:/app
-      - /app/node_modules
     environment:
       VITE_API_URL: http://localhost:8000/api
     networks:
       - pms_net
-    command: npm run dev -- --host
 
 networks:
   pms_net:
