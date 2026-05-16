@@ -2,6 +2,7 @@
 import { AuthProvider, useAuth } from './context/AuthContext'
 import LandingPage      from './pages/LandingPage'
 import LoginPage        from './pages/LoginPage'
+import RegisterPage     from './pages/RegisterPage'
 import HabitacionesPage from './pages/HabitacionesPage'
 import ReservasPage     from './pages/ReservasPage'
 import ReservaFormPage  from './pages/ReservaFormPage'
@@ -10,7 +11,7 @@ import Spinner          from './components/Spinner'
 
 function PrivateRoute({ children }) {
   const { token, cargando } = useAuth()
-  if (cargando) return <Spinner />
+  if (cargando) return <div style={{ display:'flex', justifyContent:'center', padding:'80px' }}><Spinner /></div>
   return token ? children : <Navigate to="/login" replace />
 }
 
@@ -20,10 +21,12 @@ export default function App() {
       <Routes>
         <Route path="/"               element={<LandingPage />} />
         <Route path="/login"          element={<LoginPage />} />
+        <Route path="/registro"       element={<RegisterPage />} />
         <Route path="/habitaciones"   element={<HabitacionesPage />} />
         <Route path="/reservas"       element={<PrivateRoute><ReservasPage /></PrivateRoute>} />
         <Route path="/reservas/nueva" element={<PrivateRoute><ReservaFormPage /></PrivateRoute>} />
         <Route path="/panel"          element={<PrivateRoute><PanelPage /></PrivateRoute>} />
+        <Route path="*"               element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
   )

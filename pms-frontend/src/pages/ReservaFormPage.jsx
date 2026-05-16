@@ -3,14 +3,14 @@ import ReservaForm from '../components/ReservaForm'
 
 export default function ReservaFormPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="page">
       <Navbar />
-      <main className="p-6 max-w-lg mx-auto">
-        <h2 className="text-2xl font-bold text-primary mb-6">Nueva reserva</h2>
-        <div className="bg-white rounded shadow p-6">
+      <div style={{ maxWidth: '560px', margin: '0 auto' }}>
+        <h2 style={{ margin: '0 0 24px', fontSize: '1.8rem', fontWeight: 700 }}>Nueva reserva</h2>
+        <div className="glass" style={{ padding: '40px' }}>
           <ReservaForm />
         </div>
-      </main>
+      </div>
     </div>
   )
 }

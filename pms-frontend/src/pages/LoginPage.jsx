@@ -1,5 +1,5 @@
 ﻿import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
 
@@ -27,52 +27,47 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface flex flex-col">
+    <div className="page" style={{ display: 'flex', flexDirection: 'column' }}>
 
-      {/* Navbar simple */}
-      <nav className="bg-white shadow-sm px-8 py-4">
-        <Link to="/" className="font-bold text-xl text-dark">Hotel PMS</Link>
+      <nav className="glass" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 40px', marginBottom: '40px', position: 'sticky', top: '20px', zIndex: 100 }}>
+        <Link to="/" style={{ fontWeight: 700, fontSize: '24px', color: '#2C3E50', textDecoration: 'none' }}>Hotel PMS</Link>
+        <Link to="/registro" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none' }}>
+          Crear cuenta
+        </Link>
       </nav>
 
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="glass rounded-2xl shadow-xl w-full max-w-sm p-8">
-          <h2 className="text-2xl font-bold text-dark mb-2">Bienvenido</h2>
-          <p className="text-gray-500 text-sm mb-6">Accede al panel de gestion</p>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="glass" style={{ padding: '48px', maxWidth: '420px', width: '100%' }}>
+
+          <h2 style={{ margin: '0 0 6px', fontSize: '1.8rem', fontWeight: 700 }}>Bienvenido</h2>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '28px' }}>Accede al panel de gestion</p>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+            <div style={{ background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.3)', color: '#e74c3c', fontSize: '14px', padding: '12px 16px', borderRadius: '10px', marginBottom: '16px' }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-dark mb-1">Email</label>
-              <input
-                type="email"
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
-                placeholder="admin@hotel.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '16px' }}>
+              <label className="input-label">Email</label>
+              <input type="email" className="input-field" placeholder="admin@hotel.com"
+                value={email} onChange={e => setEmail(e.target.value)} />
             </div>
-            <div>
-              <label className="block text-sm font-semibold text-dark mb-1">Contrasena</label>
-              <input
-                type="password"
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
-                placeholder="••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
+            <div style={{ marginBottom: '24px' }}>
+              <label className="input-label">Contrasena</label>
+              <input type="password" className="input-field" placeholder="••••••••"
+                value={password} onChange={e => setPassword(e.target.value)} />
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors disabled:opacity-50 shadow-md mt-2"
-            >
+            <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%' }}>
               {loading ? <Spinner /> : 'Entrar'}
             </button>
+            <p style={{ textAlign: 'center', fontSize: '13px', color: '#666', marginTop: '16px' }}>
+              No tienes cuenta?{' '}
+              <Link to="/registro" style={{ color: '#2ECC71', fontWeight: 600, textDecoration: 'none' }}>
+                Registrate
+              </Link>
+            </p>
           </form>
         </div>
       </div>

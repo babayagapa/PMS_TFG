@@ -26,13 +26,8 @@ export default function HabitacionesPage() {
   const guardar = async (datos) => {
     setSaving(true)
     try {
-      if (modal === 'nueva') {
-        await createHabitacion(datos)
-        toast.success('Habitacion creada')
-      } else {
-        await updateHabitacion(modal._id, datos)
-        toast.success('Habitacion actualizada')
-      }
+      if (modal === 'nueva') { await createHabitacion(datos); toast.success('Habitacion creada') }
+      else                   { await updateHabitacion(modal._id, datos); toast.success('Habitacion actualizada') }
       setModal(null)
       window.location.reload()
     } catch (_) {
@@ -44,109 +39,68 @@ export default function HabitacionesPage() {
 
   const borrar = async (id) => {
     if (!window.confirm('Eliminar esta habitacion?')) return
-    try {
-      await deleteHabitacion(id)
-      toast.success('Habitacion eliminada')
-      window.location.reload()
-    } catch (_) {
-      toast.error('No se puede eliminar')
-    }
+    try { await deleteHabitacion(id); toast.success('Eliminada'); window.location.reload() }
+    catch (_) { toast.error('No se puede eliminar') }
   }
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="page">
       <Navbar />
-      <main className="px-8 py-8 max-w-5xl mx-auto">
 
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-dark">Habitaciones</h2>
-          {esAdmin && (
-            <button
-              onClick={() => setModal('nueva')}
-              className="bg-primary text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-primary-dark transition-colors"
-            >
-              + Nueva habitacion
-            </button>
-          )}
-        </div>
-
-        {/* Filtros */}
-        <div className="glass rounded-xl p-4 flex gap-3 mb-6">
-          <select
-            className="flex-1 border border-gray-200 rounded-lg p-2 text-sm bg-white text-dark"
-            value={tipo}
-            onChange={e => setTipo(e.target.value)}
-          >
-            <option value="">Todos los tipos</option>
-            <option value="Individual">Individual</option>
-            <option value="Doble">Doble</option>
-            <option value="Suite">Suite</option>
-            <option value="Familiar">Familiar</option>
-          </select>
-          <select
-            className="flex-1 border border-gray-200 rounded-lg p-2 text-sm bg-white text-dark"
-            value={ocupada}
-            onChange={e => setOcupada(e.target.value)}
-          >
-            <option value="">Todas</option>
-            <option value="false">Solo disponibles</option>
-            <option value="true">Solo ocupadas</option>
-          </select>
-        </div>
-
-        {loading ? (
-          <Spinner />
-        ) : habitaciones.length === 0 ? (
-          <div className="text-center py-12 text-gray-400">
-            No hay habitaciones con esos filtros.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {habitaciones.map(h => (
-              <div key={h._id}>
-                <HabitacionCard habitacion={h} />
-                {esAdmin && (
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      onClick={() => setModal(h)}
-                      className="flex-1 text-xs border border-primary text-primary py-1.5 rounded-lg hover:bg-primary hover:text-white transition-colors"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => borrar(h._id)}
-                      className="flex-1 text-xs border border-red-400 text-red-400 py-1.5 rounded-lg hover:bg-red-400 hover:text-white transition-colors"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <h2 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 700 }}>Habitaciones</h2>
+        {esAdmin && (
+          <button className="btn-primary" onClick={() => setModal('nueva')} style={{ padding: '12px 24px', fontSize: '14px' }}>
+            + Nueva habitacion
+          </button>
         )}
-      </main>
+      </div>
 
-      {/* Modal crear/editar */}
-      {modal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass rounded-2xl shadow-2xl w-full max-w-lg max-h-screen overflow-y-auto p-6">
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="text-lg font-bold text-dark">
-                {modal === 'nueva' ? 'Nueva habitacion' : `Editar habitacion ${modal.numero}`}
-              </h3>
-              <button
-                onClick={() => setModal(null)}
-                className="text-gray-400 hover:text-dark text-2xl leading-none"
-              >
-                &times;
-              </button>
+      {/* Filtros glass */}
+      <div className="glass" style={{ display: 'flex', gap: '16px', padding: '20px 24px', marginBottom: '32px' }}>
+        <select className="input-field" style={{ maxWidth: '200px' }} value={tipo} onChange={e => setTipo(e.target.value)}>
+          <option value="">Todos los tipos</option>
+          <option value="Individual">Individual</option>
+          <option value="Doble">Doble</option>
+          <option value="Suite">Suite</option>
+          <option value="Familiar">Familiar</option>
+        </select>
+        <select className="input-field" style={{ maxWidth: '200px' }} value={ocupada} onChange={e => setOcupada(e.target.value)}>
+          <option value="">Todas</option>
+          <option value="false">Solo disponibles</option>
+          <option value="true">Solo ocupadas</option>
+        </select>
+      </div>
+
+      {loading ? (
+        <Spinner />
+      ) : habitaciones.length === 0 ? (
+        <p style={{ color: '#999', textAlign: 'center', padding: '60px 0' }}>No hay habitaciones con esos filtros.</p>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+          {habitaciones.map(h => (
+            <div key={h._id}>
+              <HabitacionCard habitacion={h} />
+              {esAdmin && (
+                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                  <button onClick={() => setModal(h)} className="btn-secondary" style={{ flex: 1, padding: '8px', fontSize: '13px' }}>Editar</button>
+                  <button onClick={() => borrar(h._id)} style={{ flex: 1, padding: '8px', fontSize: '13px', background: 'transparent', border: '2px solid #e74c3c', color: '#e74c3c', borderRadius: '10px', cursor: 'pointer', fontWeight: 600 }}>Eliminar</button>
+                </div>
+              )}
             </div>
-            <HabitacionForm
-              inicial={modal === 'nueva' ? {} : modal}
-              onSubmit={guardar}
-              cargando={saving}
-            />
+          ))}
+        </div>
+      )}
+
+      {/* Modal */}
+      {modal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
+          <div className="glass" style={{ width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto', padding: '32px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h3 style={{ margin: 0, fontWeight: 700 }}>{modal === 'nueva' ? 'Nueva habitacion' : `Editar hab. ${modal.numero}`}</h3>
+              <button onClick={() => setModal(null)} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#999' }}>&times;</button>
+            </div>
+            <HabitacionForm inicial={modal === 'nueva' ? {} : modal} onSubmit={guardar} cargando={saving} />
           </div>
         </div>
       )}

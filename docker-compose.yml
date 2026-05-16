@@ -74,6 +74,7 @@ services:
       - "5173:5173"
     volumes:
       - ./pms-frontend:/app
+      - /app/node_modules
     environment:
       VITE_API_URL: http://localhost:8000/api
     networks:

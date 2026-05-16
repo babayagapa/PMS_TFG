@@ -10,81 +10,58 @@ export default function ReservasPage() {
   const { reservas, loading } = useReservas()
 
   const handleConfirmar = async (id) => {
-    try {
-      await confirmarReserva(id)
-      toast.success('Reserva confirmada')
-      window.location.reload()
-    } catch (_) {
-      toast.error('No se pudo confirmar')
-    }
+    try { await confirmarReserva(id); toast.success('Reserva confirmada'); window.location.reload() }
+    catch (_) { toast.error('No se pudo confirmar') }
   }
 
   const handleCancelar = async (id) => {
     if (!window.confirm('Cancelar esta reserva?')) return
-    try {
-      await cancelarReserva(id)
-      toast.success('Reserva cancelada')
-      window.location.reload()
-    } catch (_) {
-      toast.error('No se pudo cancelar')
-    }
+    try { await cancelarReserva(id); toast.success('Reserva cancelada'); window.location.reload() }
+    catch (_) { toast.error('No se pudo cancelar') }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="page">
       <Navbar />
-      <main className="p-6">
-        <h2 className="text-2xl font-bold text-primary mb-4">Reservas</h2>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm bg-white rounded shadow">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-3 text-left">Huesped</th>
-                  <th className="p-3 text-left">Habitacion</th>
-                  <th className="p-3 text-left">Entrada</th>
-                  <th className="p-3 text-left">Salida</th>
-                  <th className="p-3 text-left">Total</th>
-                  <th className="p-3 text-left">Estado</th>
-                  <th className="p-3 text-left">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservas.map((r) => (
-                  <tr key={r._id} className="border-t">
-                    <td className="p-3">{r.nombre_huesped}</td>
-                    <td className="p-3">{r.id_habitacion}</td>
-                    <td className="p-3">{formatDate(r.fecha_entrada)}</td>
-                    <td className="p-3">{formatDate(r.fecha_salida)}</td>
-                    <td className="p-3">{formatEuros(r.precio_total)}</td>
-                    <td className="p-3"><Badge estado={r.estado} /></td>
-                    <td className="p-3 flex gap-2">
+      <h2 style={{ margin: '0 0 24px', fontSize: '1.8rem', fontWeight: 700 }}>Reservas</h2>
+
+      {loading ? <Spinner /> : (
+        <div className="glass" style={{ padding: '8px', overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                {['Huesped', 'Habitacion', 'Entrada', 'Salida', 'Total', 'Estado', 'Acciones'].map(h => (
+                  <th key={h} style={{ padding: '14px 16px', textAlign: 'left', fontWeight: 600, color: '#2C3E50', opacity: 0.7 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {reservas.length === 0 ? (
+                <tr><td colSpan="7" style={{ padding: '40px', textAlign: 'center', color: '#999' }}>No hay reservas todavia.</td></tr>
+              ) : reservas.map(r => (
+                <tr key={r._id} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
+                  <td style={{ padding: '14px 16px' }}>{r.nombre_huesped}</td>
+                  <td style={{ padding: '14px 16px' }}>{r.id_habitacion}</td>
+                  <td style={{ padding: '14px 16px' }}>{formatDate(r.fecha_entrada)}</td>
+                  <td style={{ padding: '14px 16px' }}>{formatDate(r.fecha_salida)}</td>
+                  <td style={{ padding: '14px 16px', fontWeight: 600 }}>{formatEuros(r.precio_total)}</td>
+                  <td style={{ padding: '14px 16px' }}><Badge estado={r.estado} /></td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                       {r.estado === 'Pendiente' && (
-                        <button
-                          onClick={() => handleConfirmar(r._id)}
-                          className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
-                        >
-                          Confirmar
-                        </button>
+                        <button onClick={() => handleConfirmar(r._id)} className="btn-primary" style={{ padding: '6px 14px', fontSize: '12px' }}>Confirmar</button>
                       )}
                       {r.estado !== 'Cancelada' && (
-                        <button
-                          onClick={() => handleCancelar(r._id)}
-                          className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                        >
-                          Cancelar
-                        </button>
+                        <button onClick={() => handleCancelar(r._id)} style={{ padding: '6px 14px', fontSize: '12px', background: 'transparent', border: '1px solid #e74c3c', color: '#e74c3c', borderRadius: '8px', cursor: 'pointer' }}>Cancelar</button>
                       )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </main>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

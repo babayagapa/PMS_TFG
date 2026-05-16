@@ -11,44 +11,45 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
-      <Link to="/" className="font-bold text-xl text-dark">
+    <nav
+      className="glass"
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '20px 40px',
+        marginBottom: '40px',
+        position: 'sticky',
+        top: '20px',
+        zIndex: 100,
+      }}
+    >
+      <Link to="/" style={{ fontWeight: 700, fontSize: '24px', color: '#2C3E50', textDecoration: 'none' }}>
         Hotel PMS
       </Link>
 
-      <div className="flex gap-6 text-sm items-center text-dark">
-        <Link to="/" className="hover:text-primary transition-colors font-medium">
-          Inicio
-        </Link>
-        <Link to="/habitaciones" className="hover:text-primary transition-colors font-medium">
-          Habitaciones
-        </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+        <Link to="/"            style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none', opacity: 0.9 }}>Inicio</Link>
+        <Link to="/habitaciones" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none', opacity: 0.9 }}>Habitaciones</Link>
 
         {usuario ? (
           <>
-            <Link to="/reservas" className="hover:text-primary transition-colors font-medium">
-              Reservas
-            </Link>
-            <Link to="/panel" className="hover:text-primary transition-colors font-medium">
-              Panel
-            </Link>
-            <span className="text-gray-400 text-xs border-l pl-4">{usuario.nombre}</span>
-            <button
-              onClick={handleLogout}
-              className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
-            >
+            <Link to="/reservas" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none', opacity: 0.9 }}>Reservas</Link>
+            <Link to="/panel"    style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none', opacity: 0.9 }}>Panel</Link>
+            <span style={{ color: '#999', fontSize: '13px', borderLeft: '1px solid #ddd', paddingLeft: '20px' }}>
+              {usuario.nombre}
+            </span>
+            <button onClick={handleLogout} className="btn-primary" style={{ padding: '10px 24px', fontSize: '14px' }}>
               Salir
             </button>
           </>
         ) : (
           <>
-            <Link to="/contacto" className="hover:text-primary transition-colors font-medium">
-              Contacto
+            <Link to="/contacto" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none', opacity: 0.9 }}>Contacto</Link>
+            <Link to="/registro" className="btn-secondary" style={{ padding: '10px 24px', fontSize: '14px' }}>
+              Registro
             </Link>
-            <Link
-              to="/login"
-              className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors"
-            >
+            <Link to="/login" className="btn-primary" style={{ padding: '10px 24px', fontSize: '14px' }}>
               Entrar
             </Link>
           </>
