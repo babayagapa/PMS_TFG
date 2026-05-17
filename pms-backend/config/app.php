@@ -33,6 +33,7 @@ return [
         MongoDB\Laravel\MongoDBServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         App\Providers\AppServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
     ],
 
     'aliases' => [

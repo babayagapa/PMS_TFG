@@ -6,6 +6,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -16,21 +18,40 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($request->is('api/*')) {
+        // Todas las peticiones a /api/* devuelven siempre JSON
+        if ($request->is('api/*') || $request->expectsJson()) {
+
             if ($e instanceof ValidationException) {
                 return response()->json([
                     'error'   => 'Datos invalidos',
                     'errores' => $e->errors(),
                 ], 422);
             }
-            if ($e instanceof ModelNotFoundException) {
-                return response()->json(['error' => 'No encontrado'], 404);
+
+            if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
+                return response()->json([
+                    'error' => 'Recurso no encontrado',
+                ], 404);
             }
+
             if ($e instanceof AuthenticationException) {
-                return response()->json(['error' => 'No autenticado'], 401);
+                return response()->json([
+                    'error' => 'No autenticado',
+                ], 401);
             }
-            return response()->json(['error' => 'Error del servidor'], 500);
+
+            if ($e instanceof MethodNotAllowedHttpException) {
+                return response()->json([
+                    'error' => 'Metodo no permitido',
+                ], 405);
+            }
+
+            return response()->json([
+                'error'   => 'Error del servidor',
+                'detalle' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
         }
+
         return parent::render($request, $e);
     }
 }
