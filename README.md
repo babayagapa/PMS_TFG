@@ -140,3 +140,7 @@ Util para mostrarlo en el instituto teniendo el servidor en casa.
 
 - `main` — codigo estable
 - `develop` — desarrollo activo
+
+## Acceso remoto con Cloudflare Tunnel
+- mariogomez.pms
+Es el nombre de mi dominio ya que lo tengo desplegado ahi, al ser mi pc puede ser que lo tenga abierto en el momento o no por lo que no es consistente para poder verlo, para eso es mejor seguir los pasos de docker

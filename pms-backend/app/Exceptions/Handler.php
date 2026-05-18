@@ -14,13 +14,10 @@ class Handler extends ExceptionHandler
 {
     protected $dontFlash = ['password', 'password_confirmation'];
 
-    public function register(): void {}
-
+    // Todas las rutas /api/* devuelven siempre JSON, nunca HTML
     public function render($request, Throwable $e)
     {
-        // Todas las peticiones a /api/* devuelven siempre JSON
         if ($request->is('api/*') || $request->expectsJson()) {
-
             if ($e instanceof ValidationException) {
                 return response()->json([
                     'error'   => 'Datos invalidos',
@@ -29,21 +26,15 @@ class Handler extends ExceptionHandler
             }
 
             if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
-                return response()->json([
-                    'error' => 'Recurso no encontrado',
-                ], 404);
+                return response()->json(['error' => 'No encontrado'], 404);
             }
 
             if ($e instanceof AuthenticationException) {
-                return response()->json([
-                    'error' => 'No autenticado',
-                ], 401);
+                return response()->json(['error' => 'No autenticado'], 401);
             }
 
             if ($e instanceof MethodNotAllowedHttpException) {
-                return response()->json([
-                    'error' => 'Metodo no permitido',
-                ], 405);
+                return response()->json(['error' => 'Metodo no permitido'], 405);
             }
 
             return response()->json([

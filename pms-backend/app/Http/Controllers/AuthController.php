@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -16,8 +15,9 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
-        $token = Auth::guard('api')->attempt($credentials);
+        $token = Auth::guard('api')->attempt(
+            $request->only('email', 'password')
+        );
 
         if (!$token) {
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
