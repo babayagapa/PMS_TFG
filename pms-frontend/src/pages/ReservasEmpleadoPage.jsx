@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 const MS_PER_DAY = 1000 * 60 * 60 * 24
 const ROOM_COL_W = 120
 
-export default function ReservasStaffPage() {
+export default function ReservasEmpleadoPage() {
   const { reservas, loading: loadingR } = useReservas()
   const { habitaciones, loading: loadingH } = useHabitaciones()
   const loading = loadingR || loadingH

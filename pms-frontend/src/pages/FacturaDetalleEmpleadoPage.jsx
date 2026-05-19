@@ -6,7 +6,7 @@ import { getFactura } from '../services/facturas.service'
 import { formatDate, formatEuros } from '../utils/formatDate'
 import toast from 'react-hot-toast'
 
-export default function FacturaDetalleStaffPage() {
+export default function FacturaDetalleEmpleadoPage() {
   const { id } = useParams()
   const [factura, setFactura] = useState(null)
   const [loading, setLoading] = useState(true)

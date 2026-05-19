@@ -2,17 +2,17 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import LandingPage              from './pages/LandingPage'
 import LoginPage                from './pages/LoginPage'
-import RegisterPage             from './pages/RegisterPage'
+import RegistroPage             from './pages/RegistroPage'
 import HabitacionesClientePage  from './pages/HabitacionesClientePage'
-import HabitacionesStaffPage    from './pages/HabitacionesStaffPage'
+import HabitacionesEmpleadoPage    from './pages/HabitacionesEmpleadoPage'
 import ReservasPage             from './pages/ReservasPage'
-import ReservasStaffPage        from './pages/ReservasStaffPage'
+import ReservasEmpleadoPage        from './pages/ReservasEmpleadoPage'
 import ReservaFormPage          from './pages/ReservaFormPage'
 import PanelPage                from './pages/PanelPage'
-import FacturasPage             from './pages/FacturasPage'
-import FacturasStaffPage        from './pages/FacturasStaffPage'
-import FacturaDetallePage       from './pages/FacturaDetallePage'
-import FacturaDetalleStaffPage  from './pages/FacturaDetalleStaffPage'
+import FacturasClientePage      from './pages/FacturasClientePage'
+import FacturasEmpleadoPage        from './pages/FacturasEmpleadoPage'
+import FacturaDetalleClientePage from './pages/FacturaDetalleClientePage'
+import FacturaDetalleEmpleadoPage  from './pages/FacturaDetalleEmpleadoPage'
 import RegistroPersonalPage     from './pages/RegistroPersonalPage'
 import Spinner                  from './components/Spinner'
 
@@ -30,7 +30,7 @@ function AdminRoute({ children }) {
   return children
 }
 
-function StaffRoute({ children }) {
+function EmpleadoRoute({ children }) {
   const { usuario, token, cargando } = useAuth()
   if (cargando) return <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><Spinner /></div>
   if (!token) return <Navigate to="/login" replace />
@@ -41,32 +41,32 @@ function StaffRoute({ children }) {
 // Muestra la vista de habitaciones segun el rol
 function HabitacionesRouter() {
   const { usuario } = useAuth()
-  const esStaff = usuario && usuario.rol !== 'cliente'
-  return esStaff ? <HabitacionesStaffPage /> : <HabitacionesClientePage />
+  const esEmpleado = usuario && usuario.rol !== 'cliente'
+  return esEmpleado ? <HabitacionesEmpleadoPage /> : <HabitacionesClientePage />
 }
 
 // Muestra reservas segun el rol
 function ReservasRouter() {
   const { usuario } = useAuth()
   if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
-  const esStaff = usuario && usuario.rol !== 'cliente'
-  return esStaff ? <ReservasStaffPage /> : <ReservasPage />
+  const esEmpleado = usuario && usuario.rol !== 'cliente'
+  return esEmpleado ? <ReservasEmpleadoPage /> : <ReservasPage />
 }
 
 // Muestra facturas segun el rol
 function FacturasRouter() {
   const { usuario } = useAuth()
   if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
-  const esStaff = usuario && usuario.rol !== 'cliente'
-  return esStaff ? <FacturasStaffPage /> : <FacturasPage />
+  const esEmpleado = usuario && usuario.rol !== 'cliente'
+  return esEmpleado ? <FacturasEmpleadoPage /> : <FacturasClientePage />
 }
 
 // Muestra detalle de factura segun el rol
 function FacturaDetalleRouter() {
   const { usuario } = useAuth()
   if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
-  const esStaff = usuario && usuario.rol !== 'cliente'
-  return esStaff ? <FacturaDetalleStaffPage /> : <FacturaDetallePage />
+  const esEmpleado = usuario && usuario.rol !== 'cliente'
+  return esEmpleado ? <FacturaDetalleEmpleadoPage /> : <FacturaDetalleClientePage />
 }
 
 export default function App() {
@@ -75,13 +75,13 @@ export default function App() {
       <Routes>
         <Route path="/"               element={<LandingPage />} />
         <Route path="/login"          element={<LoginPage />} />
-        <Route path="/registro"       element={<RegisterPage />} />
+        <Route path="/registro"       element={<RegistroPage />} />
         <Route path="/habitaciones"   element={<HabitacionesRouter />} />
         <Route path="/reservas"       element={<PrivateRoute><ReservasRouter /></PrivateRoute>} />
         <Route path="/reservas/nueva" element={<PrivateRoute><ReservaFormPage /></PrivateRoute>} />
         <Route path="/facturas"       element={<PrivateRoute><FacturasRouter /></PrivateRoute>} />
         <Route path="/facturas/:id"   element={<PrivateRoute><FacturaDetalleRouter /></PrivateRoute>} />
-        <Route path="/panel"          element={<StaffRoute><PanelPage /></StaffRoute>} />
+        <Route path="/panel"          element={<EmpleadoRoute><PanelPage /></EmpleadoRoute>} />
         <Route path="/personal"       element={<AdminRoute><RegistroPersonalPage /></AdminRoute>} />
         <Route path="*"               element={<Navigate to="/" replace />} />
       </Routes>

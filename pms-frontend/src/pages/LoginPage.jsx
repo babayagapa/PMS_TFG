@@ -30,7 +30,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page" style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className="Page" style={{ display: 'flex', flexDirection: 'column' }}>
 
       <nav className="glass" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 40px', marginBottom: '40px', position: 'sticky', top: '20px', zIndex: 100 }}>
         <Link to="/" style={{ fontWeight: 700, fontSize: '24px', color: '#2C3E50', textDecoration: 'none' }}>Hotel PMS</Link>

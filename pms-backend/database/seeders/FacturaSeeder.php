@@ -20,10 +20,10 @@ class FacturaSeeder extends Seeder
         // Buscar las reservas pagadas para crear facturas
         $reservasPagadas = Reserva::where('estado_pago', 'pagado')->get();
 
-        // Crear facturas para las primeras 5 reservas pagadas
+        // Crear facturas para las primeras 10 reservas pagadas
         $count = 0;
         foreach ($reservasPagadas as $reserva) {
-            if ($count >= 5) break;
+            if ($count >= 10) break;
 
             $habitacion = Habitacion::find($reserva->id_habitacion);
             if (!$habitacion) continue;

@@ -8,7 +8,7 @@ export default function FacturasClientePage() {
   const { facturas, loading } = useFacturas()
 
   return (
-    <div className="page">
+    <div className="Page">
       <Navbar />
       <h2 style={{ margin:'0 0 24px',fontSize:'1.8rem',fontWeight:700 }}>Facturas</h2>
       {loading ? <Spinner /> : facturas.length===0 ? (

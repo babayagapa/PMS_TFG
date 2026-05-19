@@ -10,8 +10,6 @@ class CheckRole
 {
     /**
      * Verifica que el usuario autenticado tenga uno de los roles permitidos.
-     *
-     * Uso en rutas: ->middleware('role:admin,recepcionista')
      */
     public function handle(Request $request, Closure $next, string ...$roles)
     {

@@ -35,7 +35,7 @@ export default function HabitacionesClientePage() {
 
   const [entrada, setEntrada]     = useState(searchParams.get('entrada') || '')
   const [salida, setSalida]       = useState(searchParams.get('salida') || '')
-  const [huespedes, setHuespedes] = useState(searchParams.get('huespedes') || '2')
+  const [huespedes, setHuespedes] = useState(searchParams.get('huespedes') || '1')
 
   // Agrupar habitaciones por tipo y calcular la mas barata de cada tipo
   const tiposDisponibles = useMemo(() => {
@@ -91,7 +91,7 @@ export default function HabitacionesClientePage() {
   )
 
   return (
-    <div className="page">
+    <div className="Page">
       <Navbar />
 
       {/* Buscador */}

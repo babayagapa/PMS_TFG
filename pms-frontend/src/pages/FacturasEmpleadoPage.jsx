@@ -4,7 +4,7 @@ import Spinner from '../components/Spinner'
 import { useFacturas } from '../hooks/useFacturas'
 import { formatDate, formatEuros } from '../utils/formatDate'
 
-export default function FacturasStaffPage() {
+export default function FacturasEmpleadoPage() {
   const { facturas, loading } = useFacturas()
 
   return (

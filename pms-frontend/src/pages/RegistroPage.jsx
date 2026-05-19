@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
 
-export default function RegisterPage() {
+export default function RegistroPage() {
   const nav = useNavigate()
-  const { register } = useAuth()
+  const { Registro } = useAuth()
   const [form, setForm] = useState({ nombre: '', apellidos: '', email: '', password: '', confirmar: '', nif: '', telefono: '', terminos: false })
   const [errores, setErrores] = useState({})
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ export default function RegisterPage() {
     if (Object.keys(err).length) { setErrores(err); return }
     setLoading(true)
     try {
-      await register({ nombre: form.nombre, apellidos: form.apellidos, email: form.email, password: form.password, password_confirmation: form.confirmar, nif: form.nif, telefono: form.telefono })
+      await Registro({ nombre: form.nombre, apellidos: form.apellidos, email: form.email, password: form.password, password_confirmation: form.confirmar, nif: form.nif, telefono: form.telefono })
       nav('/')
     } catch (err) {
       setError(err.response?.data?.message || err.response?.data?.error || 'Error al registrar')
@@ -41,7 +41,7 @@ export default function RegisterPage() {
   const inputStyle = { marginBottom: '16px' }
 
   return (
-    <div className="page" style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className="Page" style={{ display: 'flex', flexDirection: 'column' }}>
       <nav className="glass" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 40px', marginBottom: '40px', position: 'sticky', top: '20px', zIndex: 100 }}>
         <Link to="/" style={{ fontWeight: 700, fontSize: '24px', color: '#2C3E50', textDecoration: 'none' }}>Hotel PMS</Link>
         <Link to="/login" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none' }}>Ya tengo cuenta</Link>

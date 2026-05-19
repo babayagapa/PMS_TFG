@@ -54,7 +54,7 @@ export default function ReservasPage() {
   })
 
   return (
-    <div className="page">
+    <div className="Page">
       <Navbar />
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
         <h2 style={{ margin: '0 0 24px', fontSize: '1.8rem', fontWeight: 700 }}>Mis Reservas</h2>

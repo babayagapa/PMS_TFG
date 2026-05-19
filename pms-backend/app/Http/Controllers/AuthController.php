@@ -103,7 +103,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // POST /api/personal/register — solo admin puede registrar personal
+    // POST /api/personal/register — solo el admin puede registrar el personal
     public function registerPersonal(Request $request)
     {
         $request->validate([

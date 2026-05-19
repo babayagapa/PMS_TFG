@@ -57,7 +57,7 @@ export default function LandingPage() {
   const tiposOrdenados = [...tipos].sort((a, b) => orden.indexOf(a.tipo) - orden.indexOf(b.tipo))
 
   return (
-    <div className="page">
+    <div className="Page">
       <Navbar />
 
       {/* HERO */}

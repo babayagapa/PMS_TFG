@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Sidebar from '../layouts/Sidebar'
 import Spinner from '../components/Spinner'
-import { registerPersonalApi } from '../services/auth.service'
+import { RegistroPersonalApi } from '../services/auth.service'
 import toast from 'react-hot-toast'
 
 export default function RegistroPersonalPage() {
@@ -31,7 +31,7 @@ export default function RegistroPersonalPage() {
     setErrores({})
     setLoading(true)
     try {
-      const { data } = await registerPersonalApi({
+      const { data } = await RegistroPersonalApi({
         nombre: form.nombre,
         apellidos: form.apellidos,
         email: form.email,

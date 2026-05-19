@@ -4,14 +4,13 @@ import toast from 'react-hot-toast'
 
 export function useReservas(filtros = {}) {
   const [reservas, setReservas] = useState([])
-  const [loading, setLoading]   = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
     getReservas(filtros)
       .then(({ data }) => setReservas(data))
       .catch(() => {
-        // Si no esta autenticado, no mostrar error (las reservas requieren auth)
         setReservas([])
       })
       .finally(() => setLoading(false))

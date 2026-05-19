@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext'
 import { createHabitacion, updateHabitacion, deleteHabitacion, cambiarLimpieza } from '../services/habitaciones.service'
 import toast from 'react-hot-toast'
 
-export default function HabitacionesStaffPage() {
+export default function HabitacionesEmpleadoPage() {
   const { usuario } = useAuth() || {}
   const esAdmin    = usuario?.rol === 'admin'
   const esLimpieza = usuario?.rol === 'limpieza'

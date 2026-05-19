@@ -20,16 +20,13 @@ class Reserva extends Model
         'fecha_salida',
         'num_huespedes',
         'notas',
-        // Servicios pedidos
         'servicios_pedidos',
-        // Desglose de precios
         'precio_habitacion',
         'precio_servicios',
         'base_imponible',
         'porcentaje_iva',
         'importe_iva',
         'precio_total',
-        // Estado de la reserva y pago
         'estado',
         'metodo_pago',
         'estado_pago',

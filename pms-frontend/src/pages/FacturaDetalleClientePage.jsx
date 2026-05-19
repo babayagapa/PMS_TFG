@@ -18,11 +18,11 @@ export default function FacturaDetalleClientePage() {
       .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <div className="page"><Navbar /><Spinner /></div>
-  if (!factura) return <div className="page"><Navbar /><p style={{textAlign:'center',color:'#999',padding:'60px'}}>Factura no encontrada.</p></div>
+  if (loading) return <div className="Page"><Navbar /><Spinner /></div>
+  if (!factura) return <div className="Page"><Navbar /><p style={{textAlign:'center',color:'#999',padding:'60px'}}>Factura no encontrada.</p></div>
 
   return (
-    <div className="page">
+    <div className="Page">
       <Navbar />
       <div style={{maxWidth:'680px',margin:'0 auto'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'24px'}}>
