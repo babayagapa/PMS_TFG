@@ -20,7 +20,7 @@ export default function Navbar() {
           <>
             <Link to="/reservas" style={{color:'#2C3E50',fontWeight:600,textDecoration:'none',opacity:0.9}}>Reservas</Link>
             <Link to="/facturas" style={{color:'#2C3E50',fontWeight:600,textDecoration:'none',opacity:0.9}}>Facturas</Link>
-            {(usuario.rol==='admin'||usuario.rol==='recepcionista')&&(
+            {(usuario.rol==='admin'||usuario.rol==='recepcionista'||usuario.rol==='limpieza')&&(
               <Link to="/panel" style={{color:'#2C3E50',fontWeight:600,textDecoration:'none',opacity:0.9}}>Panel</Link>
             )}
             <span style={{color:'#999',fontSize:'13px',borderLeft:'1px solid #ddd',paddingLeft:'20px'}}>{usuario.nombre}</span>

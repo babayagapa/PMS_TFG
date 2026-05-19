@@ -37,6 +37,11 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::post('/personal/register', [AuthController::class, 'registerPersonal']);
     });
 
+    // --- Cambiar estado de limpieza (admin + limpieza) ---
+    Route::middleware('role:admin,limpieza')->group(function () {
+        Route::patch('/habitaciones/{id}/limpieza', [HabitacionController::class, 'cambiarLimpieza']);
+    });
+
     // --- Servicios (detalle: autenticado | CRUD: solo admin) ---
     Route::get('/servicios/{id}', [ServicioController::class, 'show']);
 

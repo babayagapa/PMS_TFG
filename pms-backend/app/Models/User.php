@@ -13,6 +13,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'nombre',
+        'apellidos',
         'email',
         'password',
         'rol',
@@ -32,8 +33,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [
-            'rol'    => $this->rol,
-            'nombre' => $this->nombre,
+            'rol'       => $this->rol,
+            'nombre'    => $this->nombre,
+            'apellidos' => $this->apellidos,
         ];
     }
 
@@ -57,6 +59,11 @@ class User extends Authenticatable implements JWTSubject
     public function esCliente(): bool
     {
         return $this->rol === 'cliente';
+    }
+
+    public function esLimpieza(): bool
+    {
+        return $this->rol === 'limpieza';
     }
 
     // --- Relaciones ---

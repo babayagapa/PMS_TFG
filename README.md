@@ -54,6 +54,7 @@ Abrir en el navegador: **http://localhost:5173**
 |---------------|------------------------|----------|
 | Admin         | admin@hotel.com        | admin123 |
 | Recepcionista | recepcion@hotel.com    | recep123 |
+| Limpieza      | limpieza@hotel.com     | limp123  |
 
 ---
 
@@ -96,7 +97,6 @@ docker exec pms_backend php artisan jwt:secret --force
 | http://localhost:5173      | Frontend React        |
 | http://localhost:8000/api  | API Laravel           |
 | http://localhost:8081      | Panel MongoDB         |
-| localhost:27017            | MongoDB               |
 
 ---
 

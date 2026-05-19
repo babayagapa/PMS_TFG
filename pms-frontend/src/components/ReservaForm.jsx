@@ -21,8 +21,8 @@ export default function ReservaForm() {
     nombre_huesped:   usuario?.nombre   || '',
     email_huesped:    usuario?.email    || '',
     telefono_huesped: usuario?.telefono || '',
-    fecha_entrada:    '',
-    fecha_salida:     '',
+    fecha_entrada:    params.get('fecha_entrada') || '',
+    fecha_salida:     params.get('fecha_salida')  || '',
     num_huespedes:    1,
     notas:            '',
   })

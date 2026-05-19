@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { getReservas } from '../services/reservas.service'
 import toast from 'react-hot-toast'
 
@@ -10,7 +10,10 @@ export function useReservas(filtros = {}) {
     setLoading(true)
     getReservas(filtros)
       .then(({ data }) => setReservas(data))
-      .catch(() => toast.error('Error al cargar reservas'))
+      .catch(() => {
+        // Si no esta autenticado, no mostrar error (las reservas requieren auth)
+        setReservas([])
+      })
       .finally(() => setLoading(false))
   }, [JSON.stringify(filtros)])
 

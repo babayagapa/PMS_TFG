@@ -65,4 +65,17 @@ class HabitacionController extends Controller
 
         return response()->json(['message' => 'Habitacion eliminada']);
     }
+
+    // PATCH /api/habitaciones/{id}/limpieza (admin + limpieza)
+    public function cambiarLimpieza(Request $request, string $id)
+    {
+        $request->validate([
+            'estado_limpieza' => 'required|string|in:Limpia,Sucia',
+        ]);
+
+        $habitacion = Habitacion::findOrFail($id);
+        $habitacion->update(['estado_limpieza' => $request->estado_limpieza]);
+
+        return response()->json($habitacion);
+    }
 }

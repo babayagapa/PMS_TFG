@@ -12,20 +12,22 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'email'    => 'required|email|unique:usuarios,email',
-            'password' => 'required|string|min:6|confirmed',
-            'nif'      => 'required|string|max:20',
-            'telefono' => 'required|string|max:20',
+            'nombre'    => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'email'     => 'required|email|unique:usuarios,email',
+            'password'  => 'required|string|min:6|confirmed',
+            'nif'       => 'required|string|max:20',
+            'telefono'  => 'required|string|max:20',
         ]);
 
         $user = User::create([
-            'nombre'   => $request->nombre,
-            'email'    => $request->email,
-            'password' => $request->password,
-            'rol'      => 'cliente',
-            'nif'      => $request->nif,
-            'telefono' => $request->telefono,
+            'nombre'    => $request->nombre,
+            'apellidos' => $request->apellidos,
+            'email'     => $request->email,
+            'password'  => $request->password,
+            'rol'       => 'cliente',
+            'nif'       => $request->nif,
+            'telefono'  => $request->telefono,
         ]);
 
         $token = Auth::guard('api')->login($user);
@@ -34,12 +36,13 @@ class AuthController extends Controller
             'message' => 'Registro exitoso',
             'token'   => $token,
             'user'    => [
-                'id'       => $user->_id,
-                'nombre'   => $user->nombre,
-                'email'    => $user->email,
-                'rol'      => $user->rol,
-                'nif'      => $user->nif,
-                'telefono' => $user->telefono,
+                'id'        => $user->_id,
+                'nombre'    => $user->nombre,
+                'apellidos' => $user->apellidos,
+                'email'     => $user->email,
+                'rol'       => $user->rol,
+                'nif'       => $user->nif,
+                'telefono'  => $user->telefono,
             ],
         ], 201);
     }
@@ -65,12 +68,13 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'user'  => [
-                'id'       => $user->_id,
-                'nombre'   => $user->nombre,
-                'email'    => $user->email,
-                'rol'      => $user->rol,
-                'nif'      => $user->nif ?? null,
-                'telefono' => $user->telefono ?? null,
+                'id'        => $user->_id,
+                'nombre'    => $user->nombre,
+                'apellidos' => $user->apellidos ?? '',
+                'email'     => $user->email,
+                'rol'       => $user->rol,
+                'nif'       => $user->nif ?? null,
+                'telefono'  => $user->telefono ?? null,
             ],
         ]);
     }
@@ -89,44 +93,49 @@ class AuthController extends Controller
         $user = Auth::guard('api')->user();
 
         return response()->json([
-            'id'       => $user->_id,
-            'nombre'   => $user->nombre,
-            'email'    => $user->email,
-            'rol'      => $user->rol,
-            'nif'      => $user->nif ?? null,
-            'telefono' => $user->telefono ?? null,
+            'id'        => $user->_id,
+            'nombre'    => $user->nombre,
+            'apellidos' => $user->apellidos ?? '',
+            'email'     => $user->email,
+            'rol'       => $user->rol,
+            'nif'       => $user->nif ?? null,
+            'telefono'  => $user->telefono ?? null,
         ]);
     }
 
-    // POST /api/personal/register — solo admin puede registrar recepcionistas
+    // POST /api/personal/register — solo admin puede registrar personal
     public function registerPersonal(Request $request)
     {
         $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'email'    => 'required|email|unique:usuarios,email',
-            'password' => 'required|string|min:6|confirmed',
-            'nif'      => 'required|string|max:20',
-            'telefono' => 'required|string|max:20',
+            'nombre'    => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'email'     => 'required|email|unique:usuarios,email',
+            'password'  => 'required|string|min:6|confirmed',
+            'nif'       => 'required|string|max:20',
+            'telefono'  => 'required|string|max:20',
+            'rol'       => 'required|string|in:recepcionista,limpieza',
         ]);
 
         $user = User::create([
-            'nombre'   => $request->nombre,
-            'email'    => $request->email,
-            'password' => $request->password,
-            'rol'      => 'recepcionista',
-            'nif'      => $request->nif,
-            'telefono' => $request->telefono,
+            'nombre'    => $request->nombre,
+            'apellidos' => $request->apellidos,
+            'email'     => $request->email,
+            'password'  => $request->password,
+            'rol'       => $request->rol,
+            'nif'       => $request->nif,
+            'telefono'  => $request->telefono,
         ]);
 
         return response()->json([
-            'message' => 'Recepcionista registrado correctamente',
+            'message' => 'Empleado registrado correctamente',
             'user'    => [
-                'id'       => $user->_id,
-                'nombre'   => $user->nombre,
-                'email'    => $user->email,
-                'rol'      => $user->rol,
-                'nif'      => $user->nif,
-                'telefono' => $user->telefono,
+                'id'        => $user->_id,
+                'nombre'    => $user->nombre,
+                'apellidos' => $user->apellidos,
+                'email'     => $user->email,
+                'rol'       => $user->rol,
+                'nif'       => $user->nif,
+                'telefono'  => $user->telefono,
             ],
         ], 201);
     }
