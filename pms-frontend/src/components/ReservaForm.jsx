@@ -147,7 +147,7 @@ export default function ReservaForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Telefono</label>
+        <label className="block text-sm font-medium mb-1">Teléfono</label>
         <input className="w-full border rounded p-2 text-sm" type="tel"
           value={form.telefono_huesped} onChange={(e) => set('telefono_huesped', e.target.value)} />
         {errores.telefono_huesped && <p className="text-red-500 text-xs mt-1">{errores.telefono_huesped}</p>}
@@ -171,7 +171,7 @@ export default function ReservaForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Numero de huespedes</label>
+        <label className="block text-sm font-medium mb-1">Número de huéspedes</label>
         <input className="w-full border rounded p-2 text-sm" type="number" min="1" max="10"
           value={form.num_huespedes} onChange={(e) => set('num_huespedes', parseInt(e.target.value))} />
       </div>

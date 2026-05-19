@@ -7,37 +7,37 @@ import { formatEuros, hoy } from '../utils/formatDate'
 
 const IMG_MAP = {
   Individual: '/img/individual.png',
-  Doble:      '/img/doble.png',
-  Suite:      '/img/suite.png',
-  Familiar:   '/img/familiar.png',
+  Doble: '/img/doble.png',
+  Suite: '/img/suite.png',
+  Familiar: '/img/familiar.png',
 }
 
 const DESCRIPCIONES = {
-  Individual: 'Habitacion acogedora con cama individual, ideal para viajeros de negocios.',
-  Doble:      'Espaciosa habitacion con cama de matrimonio, perfecta para parejas.',
-  Suite:      'Experiencia de lujo con salon privado y terraza panoramica.',
-  Familiar:   'Ideal para familias, con amplio espacio y zona infantil.',
+  Individual: 'Habitación acogedora con cama individual, ideal para viajeros de negocios.',
+  Doble: 'Espaciosa habitación con cama de matrimonio, perfecta para parejas.',
+  Suite: 'Experiencia de lujo con salón privado y terraza panorámica.',
+  Familiar: 'Ideal para familias, con amplio espacio y zona infantil.',
 }
 
 const TAGS = {
   Individual: ['WiFi', 'Escritorio', '1 Persona'],
-  Doble:      ['WiFi', 'Cama Queen', '2 Personas'],
-  Suite:      ['WiFi', 'Jacuzzi', 'Terraza', '2 Personas'],
-  Familiar:   ['WiFi', 'Smart TV', 'Nevera', '4 Personas'],
+  Doble: ['WiFi', 'Cama Queen', '2 Personas'],
+  Suite: ['WiFi', 'Jacuzzi', 'Terraza', '2 Personas'],
+  Familiar: ['WiFi', 'Smart TV', 'Nevera', '4 Personas'],
 }
 
 export default function LandingPage() {
   const nav = useNavigate()
   const { habitaciones, loading } = useHabitaciones()
 
-  const [entrada, setEntrada]     = useState('')
-  const [salida, setSalida]       = useState('')
-  const [huespedes, setHuespedes] = useState('2')
+  const [entrada, setEntrada] = useState('')
+  const [salida, setSalida] = useState('')
+  const [huespedes, setHuespedes] = useState('1')
 
   const handleBuscar = () => {
     const params = new URLSearchParams()
-    if (entrada)   params.set('entrada', entrada)
-    if (salida)    params.set('salida', salida)
+    if (entrada) params.set('entrada', entrada)
+    if (salida) params.set('salida', salida)
     if (huespedes) params.set('huespedes', huespedes)
     nav(`/habitaciones?${params.toString()}`)
   }
@@ -64,14 +64,14 @@ export default function LandingPage() {
       <header className="glass" style={{ display: 'flex', gap: '50px', padding: '60px 40px', marginBottom: '40px', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
           <h1 style={{ fontSize: '3.5rem', marginTop: 0, marginBottom: '20px', lineHeight: 1.1, letterSpacing: '-1px' }}>
-            Gestion inteligente,<br />estancias perfectas.
+            Gestión inteligente,<br />estancias perfectas.
           </h1>
           <p style={{ fontSize: '1.1rem', opacity: 0.8, marginBottom: '40px', lineHeight: 1.5, maxWidth: '420px' }}>
-            El Property Management System disenado para simplificar tus reservas,
-            automatizar tareas y mejorar la experiencia de tus huespedes desde el primer clic.
+            El Property Management System diseñado para simplificar tus reservas,
+            automatizar tareas y mejorar la experiencia de tus huéspedes desde el primer clic.
           </p>
           <button className="btn-primary" onClick={() => nav('/habitaciones')}>
-            Reservar Habitacion
+            Reservar Habitación
           </button>
         </div>
         <div style={{ flex: 1, height: '350px', borderRadius: '16px', overflow: 'hidden' }}>
@@ -90,13 +90,13 @@ export default function LandingPage() {
           <input type="date" className="input-field" min={entrada || hoy()} value={salida} onChange={e => setSalida(e.target.value)} />
         </div>
         <div className="input-group">
-          <label className="input-label">Numero de Huespedes</label>
+          <label className="input-label">Número de Huéspedes</label>
           <select className="input-field" value={huespedes} onChange={e => setHuespedes(e.target.value)}>
-            <option value="1">1 Huesped</option>
-            <option value="2">2 Huespedes</option>
-            <option value="3">3 Huespedes</option>
-            <option value="4">4 Huespedes</option>
-            <option value="5">5+ Huespedes</option>
+            <option value="1">1 Huésped</option>
+            <option value="2">2 Huéspedes</option>
+            <option value="3">3 Huéspedes</option>
+            <option value="4">4 Huéspedes</option>
+            <option value="5">5+ Huéspedes</option>
           </select>
         </div>
         <button className="btn-primary" onClick={handleBuscar} style={{ height: '47px', padding: '0 40px', whiteSpace: 'nowrap' }}>
@@ -123,7 +123,7 @@ export default function LandingPage() {
                 <div style={{ flex: 1, padding: '28px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                      <h3 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#2C3E50' }}>Habitacion {t.tipo}</h3>
+                      <h3 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#2C3E50' }}>Habitación {t.tipo}</h3>
                       {t.tipo === 'Suite' && <span style={{ fontSize: '10px', background: '#f0fdf4', color: '#27AE60', padding: '3px 10px', borderRadius: '20px', border: '1px solid rgba(46,204,113,0.3)', fontWeight: 700, textTransform: 'uppercase' }}>Premium</span>}
                     </div>
                     <p style={{ margin: '0 0 12px', fontSize: '13px', color: '#666', lineHeight: 1.5 }}>{DESCRIPCIONES[t.tipo]}</p>
@@ -146,7 +146,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div style={{ width: '280px', minHeight: '200px', flexShrink: 0 }}>
-                  <img src={IMG_MAP[t.tipo] || '/img/individual.png'} alt={`Habitacion ${t.tipo}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={IMG_MAP[t.tipo] || '/img/individual.png'} alt={`Habitación ${t.tipo}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               </div>
             ))}

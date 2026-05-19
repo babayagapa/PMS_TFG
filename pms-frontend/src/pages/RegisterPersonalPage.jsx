@@ -15,11 +15,11 @@ export default function RegisterPersonalPage() {
     const e = {}
     if (!form.nombre.trim()) e.nombre = 'El nombre es obligatorio'
     if (!form.apellidos.trim()) e.apellidos = 'Los apellidos son obligatorios'
-    if (!form.email.includes('@')) e.email = 'Introduce un email valido'
-    if (form.password.length < 6) e.password = 'Minimo 6 caracteres'
-    if (form.password !== form.confirmar) e.confirmar = 'Las contrasenas no coinciden'
+    if (!form.email.includes('@')) e.email = 'Introduce un email válido'
+    if (form.password.length < 6) e.password = 'Mínimo 6 caracteres'
+    if (form.password !== form.confirmar) e.confirmar = 'Las contraseñas no coinciden'
     if (!form.nif.trim()) e.nif = 'El NIF/DNI es obligatorio'
-    if (!form.telefono.trim()) e.telefono = 'El telefono es obligatorio'
+    if (!form.telefono.trim()) e.telefono = 'El teléfono es obligatorio'
     return e
   }
 
@@ -97,18 +97,18 @@ export default function RegisterPersonalPage() {
                   {errores.nif && <p style={errStyle}>{errores.nif}</p>}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label className="input-label">Telefono</label>
+                  <label className="input-label">Teléfono</label>
                   <input type="tel" className="input-field" style={{ borderColor: errores.telefono ? '#e74c3c' : '' }} value={form.telefono} onChange={e => set('telefono', e.target.value)} />
                   {errores.telefono && <p style={errStyle}>{errores.telefono}</p>}
                 </div>
               </div>
               <div style={iStyle}>
-                <label className="input-label">Contrasena</label>
+                <label className="input-label">Contraseña</label>
                 <input type="password" className="input-field" style={{ borderColor: errores.password ? '#e74c3c' : '' }} value={form.password} onChange={e => set('password', e.target.value)} />
                 {errores.password && <p style={errStyle}>{errores.password}</p>}
               </div>
               <div style={{ marginBottom: '24px' }}>
-                <label className="input-label">Confirmar contrasena</label>
+                <label className="input-label">Confirmar contraseña</label>
                 <input type="password" className="input-field" style={{ borderColor: errores.confirmar ? '#e74c3c' : '' }} value={form.confirmar} onChange={e => set('confirmar', e.target.value)} />
                 {errores.confirmar && <p style={errStyle}>{errores.confirmar}</p>}
               </div>
@@ -123,7 +123,7 @@ export default function RegisterPersonalPage() {
             </form>
           </div>
 
-          {/* Confirmacion */}
+          {/* Confirmación */}
           {exito && (
             <div className="glass" style={{ padding: '32px', maxWidth: '320px', width: '100%' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>✅</div>
@@ -132,7 +132,7 @@ export default function RegisterPersonalPage() {
                 <p style={{ margin: '0 0 4px' }}><strong>Nombre:</strong> {exito.nombre} {exito.apellidos}</p>
                 <p style={{ margin: '0 0 4px' }}><strong>Email:</strong> {exito.email}</p>
                 <p style={{ margin: '0 0 4px' }}><strong>NIF:</strong> {exito.nif}</p>
-                <p style={{ margin: '0 0 4px' }}><strong>Telefono:</strong> {exito.telefono}</p>
+                <p style={{ margin: '0 0 4px' }}><strong>Teléfono:</strong> {exito.telefono}</p>
                 <p style={{ margin: '0 0 4px' }}><strong>Rol:</strong> {rolLabels[exito.rol] || exito.rol}</p>
               </div>
             </div>

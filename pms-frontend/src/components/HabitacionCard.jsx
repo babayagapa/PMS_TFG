@@ -1,4 +1,4 @@
-﻿import Badge from './Badge'
+import Badge from './Badge'
 import { useNavigate } from 'react-router-dom'
 import { formatEuros } from '../utils/formatDate'
 
@@ -18,7 +18,7 @@ export default function HabitacionCard({ habitacion }) {
       <div style={{ padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
           <div>
-            <p style={{ margin: 0, fontWeight: 700, color: '#2C3E50' }}>Habitacion {habitacion.numero}</p>
+            <p style={{ margin: 0, fontWeight: 700, color: '#2C3E50' }}>Habitación {habitacion.numero}</p>
             <p style={{ margin: '2px 0 0', fontSize: '13px', color: '#999' }}>{habitacion.tipo}</p>
           </div>
           <Badge estado={disponible ? 'disponible' : 'ocupada'} />

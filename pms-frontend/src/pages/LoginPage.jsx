@@ -23,7 +23,7 @@ export default function LoginPage() {
       else if (user.rol === 'limpieza') nav('/habitaciones')
       else nav('/panel')
     } catch (_) {
-      setError('Email o contrasena incorrectos')
+      setError('Email o contraseña incorrectos')
     } finally {
       setLoading(false)
     }
@@ -43,7 +43,7 @@ export default function LoginPage() {
         <div className="glass" style={{ padding: '48px', maxWidth: '420px', width: '100%' }}>
 
           <h2 style={{ margin: '0 0 6px', fontSize: '1.8rem', fontWeight: 700 }}>Bienvenido</h2>
-          <p style={{ color: '#666', fontSize: '14px', marginBottom: '28px' }}>Accede al panel de gestion</p>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '28px' }}>Accede al panel de gestión</p>
 
           {error && (
             <div style={{ background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.3)', color: '#e74c3c', fontSize: '14px', padding: '12px 16px', borderRadius: '10px', marginBottom: '16px' }}>
@@ -59,7 +59,7 @@ export default function LoginPage() {
                 value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div style={{ marginBottom: '24px' }}>
-              <label className="input-label">Contrasena</label>
+              <label className="input-label">Contraseña</label>
               <input type="password" className="input-field" placeholder="••••••••"
                 style={{ borderColor: error ? '#e74c3c' : '' }}
                 value={password} onChange={e => setPassword(e.target.value)} />
@@ -68,9 +68,9 @@ export default function LoginPage() {
               {loading ? <Spinner /> : 'Entrar'}
             </button>
             <p style={{ textAlign: 'center', fontSize: '13px', color: '#666', marginTop: '16px' }}>
-              No tienes cuenta?{' '}
+              ¿No tienes cuenta?{' '}
               <Link to="/register" style={{ color: '#2ECC71', fontWeight: 600, textDecoration: 'none' }}>
-                Registrate
+                Regístrate
               </Link>
             </p>
           </form>

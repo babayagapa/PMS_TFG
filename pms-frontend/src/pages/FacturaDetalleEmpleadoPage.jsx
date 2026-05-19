@@ -38,7 +38,7 @@ export default function FacturaDetalleEmpleadoPage() {
                 <div>
                   <p style={{margin:'0 0 4px',fontWeight:700,color:'#2C3E50'}}>{factura.datos_hotel?.nombre}</p>
                   <p style={{margin:'0 0 2px',fontSize:'13px',color:'#666'}}>CIF: {factura.datos_hotel?.cif}</p>
-                  <p style={{margin:'0 0 2px',fontSize:'13px',color:'#666'}}>{factura.datos_hotel?.direccion}</p>
+                  <p style={{margin:'0 0 2px',fontSize:'13px',color:'#666'}}>{factura.datos_hotel?.dirección}</p>
                   <p style={{margin:'0 0 2px',fontSize:'13px',color:'#666'}}>{factura.datos_hotel?.telefono}</p>
                   <p style={{margin:0,fontSize:'13px',color:'#666'}}>{factura.datos_hotel?.email}</p>
                 </div>
@@ -52,7 +52,7 @@ export default function FacturaDetalleEmpleadoPage() {
               </div>
               <div style={{display:'flex',gap:'24px',marginBottom:'28px',padding:'16px',background:'rgba(46,204,113,0.05)',borderRadius:'10px'}}>
                 <div><p style={{margin:'0 0 2px',fontSize:'12px',color:'#999',fontWeight:600}}>FECHA</p><p style={{margin:0,fontSize:'14px',fontWeight:600}}>{formatDate(factura.fecha)}</p></div>
-                <div><p style={{margin:'0 0 2px',fontSize:'12px',color:'#999',fontWeight:600}}>METODO DE PAGO</p><p style={{margin:0,fontSize:'14px',fontWeight:600,textTransform:'capitalize'}}>{factura.metodo_pago}</p></div>
+                <div><p style={{margin:'0 0 2px',fontSize:'12px',color:'#999',fontWeight:600}}>MÉTODO DE PAGO</p><p style={{margin:0,fontSize:'14px',fontWeight:600,textTransform:'capitalize'}}>{factura.metodo_pago}</p></div>
                 <div><p style={{margin:'0 0 2px',fontSize:'12px',color:'#999',fontWeight:600}}>Nº FACTURA</p><p style={{margin:0,fontSize:'14px',fontWeight:600}}>{factura.numero_factura}</p></div>
               </div>
               <table style={{width:'100%',borderCollapse:'collapse',marginBottom:'24px',fontSize:'14px'}}>

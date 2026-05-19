@@ -23,7 +23,7 @@ export default function ReservasPage() {
   const [pagando, setPagando] = useState(false)
 
   const handleCancelar = async (id) => {
-    if (!window.confirm('¿Cancelar esta reserva?')) return
+    if (!window.confirm('¿¿Cancelar esta reserva?')) return
     try { await cancelarReserva(id); toast.success('Reserva cancelada'); window.location.reload() }
     catch (_) { toast.error('No se pudo cancelar') }
   }

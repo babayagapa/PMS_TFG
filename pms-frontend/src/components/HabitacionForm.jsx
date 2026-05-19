@@ -28,11 +28,11 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
 
   const validar = () => {
     const e = {}
-    if (!form.numero)       e.numero       = 'El numero es obligatorio'
+    if (!form.numero)       e.numero       = 'El número es obligatorio'
     if (!form.precio_noche || Number(form.precio_noche) <= 0)
-                            e.precio_noche = 'Introduce un precio valido'
+                            e.precio_noche = 'Introduce un precio válido'
     if (Number(form.capacidad) < 1)
-                            e.capacidad    = 'Minimo 1 persona'
+                            e.capacidad    = 'Mínimo 1 persona'
     return e
   }
 
@@ -48,7 +48,7 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-dark mb-1">Numero</label>
+          <label className="block text-sm font-medium text-dark mb-1">Número</label>
           <input
             type="text" placeholder="101"
             className="w-full border rounded p-2 text-sm"
@@ -106,7 +106,7 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-dark mb-1">Descripcion</label>
+        <label className="block text-sm font-medium text-dark mb-1">Descripción</label>
         <textarea
           rows="2"
           className="w-full border rounded p-2 text-sm"
@@ -139,7 +139,7 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
         disabled={cargando}
         className="w-full bg-primary text-white py-2 rounded text-sm font-medium hover:bg-primary-dark disabled:opacity-50 transition-colors"
       >
-        {cargando ? 'Guardando...' : (inicial._id ? 'Guardar cambios' : 'Crear habitacion')}
+        {cargando ? 'Guardando...' : (inicial._id ? 'Guardar cambios' : 'Crear habitación')}
       </button>
 
     </form>

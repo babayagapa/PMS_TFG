@@ -62,7 +62,7 @@ export default function ReservasEmpleadoPage() {
     catch (_) { toast.error('No se pudo confirmar') }
   }
   const handleCancelar = async (id) => {
-    if (!window.confirm('Cancelar esta reserva?')) return
+    if (!window.confirm('¿Cancelar esta reserva?')) return
     try { await cancelarReserva(id); toast.success('Reserva cancelada'); window.location.reload() }
     catch (_) { toast.error('No se pudo cancelar') }
   }
@@ -70,7 +70,7 @@ export default function ReservasEmpleadoPage() {
     setPagando(true)
     try {
       await pagarReserva(modalPago._id, { metodo_pago: metodoPago })
-      toast.success('Pago realizado con exito')
+      toast.success('Pago realizado con éxito')
       setModalPago(null)
       window.location.reload()
     } catch (err) {
@@ -250,14 +250,14 @@ export default function ReservasEmpleadoPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                  {['Huesped', 'Habitacion', 'Entrada', 'Salida', 'Total', 'Estado', 'Pago', 'Acciones'].map(h => (
+                  {['Huésped', 'Habitación', 'Entrada', 'Salida', 'Total', 'Estado', 'Pago', 'Acciones'].map(h => (
                     <th key={h} style={{ padding: '14px 16px', textAlign: 'left', fontWeight: 600, color: '#2C3E50', opacity: 0.7 }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {reservas.length === 0 ? (
-                  <tr><td colSpan="8" style={{ padding: '40px', textAlign: 'center', color: '#999' }}>No hay reservas todavia.</td></tr>
+                  <tr><td colSpan="8" style={{ padding: '40px', textAlign: 'center', color: '#999' }}>No hay reservas todavía.</td></tr>
                 ) : reservas.map(r => (
                   <tr key={r._id} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                     <td style={{ padding: '14px 16px' }}>{r.nombre_huesped}</td>
@@ -292,14 +292,14 @@ export default function ReservasEmpleadoPage() {
                 <button onClick={() => setModalPago(null)} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#999' }}>&times;</button>
               </div>
               <div style={{ background: 'rgba(46,204,113,0.06)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-                <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#666' }}>Huesped: <strong>{modalPago.nombre_huesped}</strong></p>
+                <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#666' }}>Huésped: <strong>{modalPago.nombre_huesped}</strong></p>
                 <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#666' }}>{formatDate(modalPago.fecha_entrada)} → {formatDate(modalPago.fecha_salida)}</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.1rem', fontWeight: 700, color: '#2ECC71', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
                   <span>Total</span><span>{formatEuros(modalPago.precio_total)}</span>
                 </div>
               </div>
               <div style={{ marginBottom: '24px' }}>
-                <label className="input-label">Metodo de pago</label>
+                <label className="input-label">Método de pago</label>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   {[{ value: 'tarjeta', label: '💳 Tarjeta' }, { value: 'efectivo', label: '💵 Efectivo' }, { value: 'transferencia', label: '🏦 Transferencia' }].map(m => (
                     <button key={m.value} type="button" onClick={() => setMetodoPago(m.value)} style={{ flex: 1, padding: '12px', fontSize: '13px', fontWeight: 600, border: metodoPago === m.value ? '2px solid #2ECC71' : '1px solid rgba(0,0,0,0.1)', background: metodoPago === m.value ? 'rgba(46,204,113,0.08)' : 'rgba(255,255,255,0.6)', color: metodoPago === m.value ? '#27AE60' : '#666', borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' }}>{m.label}</button>

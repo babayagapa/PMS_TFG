@@ -15,19 +15,36 @@ export default function PanelPage() {
       .then(([habRes, resRes]) => {
         const habs = habRes.data
         const reservas = resRes.data
+        const hoy = new Date().toISOString().slice(0, 10)
+
+        // Habitaciones
+        const totalHabs = habs.length
         const ocupadas = habs.filter(h => h.ocupada).length
-        const disponibles = habs.filter(h => !h.ocupada).length
-        const limpias = habs.filter(h => !h.ocupada && h.estado_limpieza === 'Limpia').length
-        const sucias = habs.filter(h => !h.ocupada && h.estado_limpieza !== 'Limpia').length
+        const disponibles = totalHabs - ocupadas
+        const aLimpiar = habs.filter(h => h.estado_limpieza !== 'Limpia').length
+
+        // Reservas de hoy
+        const reservasHoy = reservas.filter(r =>
+          r.estado !== 'Cancelada' &&
+          r.fecha_entrada <= hoy &&
+          r.fecha_salida >= hoy
+        )
+        const llegadasHoy = reservas.filter(r =>
+          r.estado !== 'Cancelada' && r.fecha_entrada === hoy
+        ).length
+        const salidasHoy = reservas.filter(r =>
+          r.estado !== 'Cancelada' && r.fecha_salida === hoy
+        ).length
+
         setStats({
-          total: habs.length,
+          totalHabs,
           ocupadas,
           disponibles,
-          limpias,
-          sucias,
-          pendientes: reservas.filter(r => r.estado === 'Pendiente').length,
-          confirmadas: reservas.filter(r => r.estado === 'Confirmada').length,
-          totalReservas: reservas.length,
+          aLimpiar,
+          reservasHoy: reservasHoy.length,
+          llegadasHoy,
+          salidasHoy,
+          ocupacionPct: totalHabs > 0 ? Math.round((ocupadas / totalHabs) * 100) : 0,
         })
       })
       .finally(() => setLoading(false))
@@ -36,22 +53,22 @@ export default function PanelPage() {
   const ProgressBar = ({ value, max, color }) => {
     const pct = max > 0 ? Math.round((value / max) * 100) : 0
     return (
-      <div style={{width:'100%',height:'8px',background:'rgba(0,0,0,0.06)',borderRadius:'10px',marginTop:'12px',overflow:'hidden'}}>
-        <div style={{height:'100%',width:`${pct}%`,background:color,borderRadius:'10px',transition:'width 0.6s ease'}}></div>
+      <div style={{ width: '100%', height: '8px', background: 'rgba(0,0,0,0.06)', borderRadius: '10px', marginTop: '12px', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${pct}%`, background: color, borderRadius: '10px', transition: 'width 0.6s ease' }}></div>
       </div>
     )
   }
 
   const StatCard = ({ icon, label, value, sub, color, progress }) => (
-    <div className="glass" style={{padding:'28px',display:'flex',flexDirection:'column',justifyContent:'space-between',minHeight:'160px'}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-        <p style={{margin:0,fontSize:'13px',color:'#666',fontWeight:600}}>{label}</p>
-        <span style={{fontSize:'1.5rem'}}>{icon}</span>
+    <div className="glass" style={{ padding: '28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '160px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <p style={{ margin: 0, fontSize: '13px', color: '#666', fontWeight: 600 }}>{label}</p>
+        <span style={{ fontSize: '1.5rem' }}>{icon}</span>
       </div>
       <div>
-        <p style={{margin:'8px 0 0',fontSize:'2.8rem',fontWeight:800,color:color,lineHeight:1}}>
+        <p style={{ margin: '8px 0 0', fontSize: '2.8rem', fontWeight: 800, color: color, lineHeight: 1 }}>
           {value}
-          {sub && <span style={{fontSize:'14px',fontWeight:400,color:'#aaa',marginLeft:'4px'}}>{sub}</span>}
+          {sub && <span style={{ fontSize: '14px', fontWeight: 400, color: '#aaa', marginLeft: '4px' }}>{sub}</span>}
         </p>
         {progress && <ProgressBar value={progress.value} max={progress.max} color={color} />}
       </div>
@@ -66,37 +83,29 @@ export default function PanelPage() {
           Hola, {usuario?.nombre || 'Usuario'}
         </h2>
         <p style={{ color: '#666', fontSize: '14px', marginBottom: '32px' }}>
-          Aqui tienes un resumen de la actividad del hotel hoy.
+          Aquí tienes el resumen del día de hoy.
         </p>
 
         {loading ? <Spinner /> : stats && (
           <>
             {/* Fila 1: Habitaciones */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:'20px',marginBottom:'20px'}}>
-              <StatCard icon="🏨" label="Total Habitaciones" value={stats.total} color="#2C3E50" />
-              <StatCard icon="🚫" label="Ocupadas" value={stats.ocupadas} sub={`/ ${stats.total}`} color="#e74c3c"
-                progress={{value:stats.ocupadas,max:stats.total}} />
-              <StatCard icon="✅" label="Disponibles" value={stats.disponibles} color="#2ECC71"
-                progress={{value:stats.disponibles,max:stats.total}} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '20px' }}>
+              <StatCard icon="🏨" label="Total habitaciones" value={stats.totalHabs} color="#2C3E50" />
+              <StatCard icon="🚫" label="Ocupadas" value={stats.ocupadas} sub={`/ ${stats.totalHabs}`} color="#e74c3c"
+                progress={{ value: stats.ocupadas, max: stats.totalHabs }} />
+              <StatCard icon="✅" label="Disponibles" value={stats.disponibles} sub={`/ ${stats.totalHabs}`} color="#2ECC71"
+                progress={{ value: stats.disponibles, max: stats.totalHabs }} />
+              <StatCard icon="🧹" label="Habitaciones sucias" value={stats.aLimpiar} sub={`/ ${stats.totalHabs}`} color="#f39c12"
+                progress={{ value: stats.aLimpiar, max: stats.totalHabs }} />
             </div>
 
-            {/* Fila 2: Limpieza */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:'20px',marginBottom:'20px'}}>
-              <StatCard icon="🧹" label="Habitaciones vacias limpias" value={stats.limpias} sub={`/ ${stats.disponibles}`} color="#27AE60"
-                progress={{value:stats.limpias,max:stats.disponibles}} />
-              <StatCard icon="⚠️" label="Habitaciones vacias sucias" value={stats.sucias} sub={`/ ${stats.disponibles}`} color="#f39c12"
-                progress={{value:stats.sucias,max:stats.disponibles}} />
-              <StatCard icon="📊" label="Ocupacion del hotel" value={`${stats.total > 0 ? Math.round((stats.ocupadas / stats.total) * 100) : 0}%`} color="#8E44AD"
-                progress={{value:stats.ocupadas,max:stats.total}} />
-            </div>
-
-            {/* Fila 3: Reservas */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:'20px'}}>
-              <StatCard icon="📋" label="Total Reservas" value={stats.totalReservas} color="#2C3E50" />
-              <StatCard icon="⏳" label="Pendientes" value={stats.pendientes} color="#f39c12"
-                progress={{value:stats.pendientes,max:stats.totalReservas}} />
-              <StatCard icon="✅" label="Confirmadas" value={stats.confirmadas} color="#2ECC71"
-                progress={{value:stats.confirmadas,max:stats.totalReservas}} />
+            {/* Fila 2: Actividad de hoy */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+              <StatCard icon="📋" label="Reservas hoy" value={stats.reservasHoy} color="#2C3E50" />
+              <StatCard icon="🛬" label="Llegadas" value={stats.llegadasHoy} color="#3498db" />
+              <StatCard icon="🛫" label="Salidas" value={stats.salidasHoy} color="#9b59b6" />
+              <StatCard icon="📊" label="Ocupación del hotel" value={`${stats.ocupacionPct}%`} color="#8E44AD"
+                progress={{ value: stats.ocupadas, max: stats.totalHabs }} />
             </div>
           </>
         )}
