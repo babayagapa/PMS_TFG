@@ -31,7 +31,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await register({nombre:form.nombre,email:form.email,password:form.password,password_confirmation:form.confirmar,nif:form.nif,telefono:form.telefono})
-      nav('/habitaciones')
+      nav('/')
     } catch(err) {
       setError(err.response?.data?.message||err.response?.data?.error||'Error al registrar')
     } finally { setLoading(false) }

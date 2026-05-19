@@ -32,6 +32,9 @@ Route::middleware(['jwt.auth'])->group(function () {
         Route::post('/habitaciones', [HabitacionController::class, 'store']);
         Route::put('/habitaciones/{id}', [HabitacionController::class, 'update']);
         Route::delete('/habitaciones/{id}', [HabitacionController::class, 'destroy']);
+
+        // --- Registro de personal (solo admin) ---
+        Route::post('/personal/register', [AuthController::class, 'registerPersonal']);
     });
 
     // --- Servicios (detalle: autenticado | CRUD: solo admin) ---

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
@@ -17,8 +17,9 @@ export default function LoginPage() {
     if (!email || !password) { setError('Completa todos los campos'); return }
     setLoading(true)
     try {
-      await login(email, password)
-      nav('/panel')
+      const user = await login(email, password)
+      // Clientes van a inicio, personal va al panel
+      nav(user.rol === 'cliente' ? '/' : '/panel')
     } catch (_) {
       setError('Email o contrasena incorrectos')
     } finally {

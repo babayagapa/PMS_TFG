@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 
 export default function Sidebar() {
   const { usuario } = useAuth() || {}
+  const esAdmin = usuario?.rol === 'admin'
 
   const base    = 'block px-3 py-2 rounded text-sm transition-colors'
   const activo  = `${base} bg-primary text-white font-medium`
@@ -17,6 +18,12 @@ export default function Sidebar() {
         <NavLink to="/habitaciones" className={({ isActive }) => isActive ? activo : inactivo}>Habitaciones</NavLink>
         <NavLink to="/reservas"     className={({ isActive }) => isActive ? activo : inactivo}>Reservas</NavLink>
         <NavLink to="/facturas"     className={({ isActive }) => isActive ? activo : inactivo}>Facturas</NavLink>
+        {esAdmin && (
+          <>
+            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',margin:'8px 0'}}></div>
+            <NavLink to="/personal" className={({ isActive }) => isActive ? activo : inactivo}>Registro personal</NavLink>
+          </>
+        )}
       </nav>
     </aside>
   )

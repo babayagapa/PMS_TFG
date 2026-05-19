@@ -6,10 +6,13 @@ import { useReservas } from '../hooks/useReservas'
 import { confirmarReserva, cancelarReserva, pagarReserva } from '../services/reservas.service'
 import { formatDate, formatEuros } from '../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 
 export default function ReservasPage() {
   const { reservas, loading } = useReservas()
+  const { usuario } = useAuth()
+  const esCliente = usuario?.rol === 'cliente'
   const nav = useNavigate()
   const [modalPago, setModalPago] = useState(null)
   const [metodoPago, setMetodoPago] = useState('tarjeta')
@@ -65,7 +68,7 @@ export default function ReservasPage() {
                   <td style={{padding:'14px 16px'}}><Badge estado={r.estado_pago||'pendiente'}/></td>
                   <td style={{padding:'14px 16px'}}>
                     <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
-                      {r.estado==='Pendiente'&&<button onClick={()=>handleConfirmar(r._id)} className="btn-primary" style={{padding:'6px 14px',fontSize:'12px'}}>Confirmar</button>}
+                      {r.estado==='Pendiente'&&!esCliente&&<button onClick={()=>handleConfirmar(r._id)} className="btn-primary" style={{padding:'6px 14px',fontSize:'12px'}}>Confirmar</button>}
                       {r.estado_pago!=='pagado'&&r.estado!=='Cancelada'&&(
                         <button onClick={()=>{setModalPago(r);setMetodoPago('tarjeta')}} style={{padding:'6px 14px',fontSize:'12px',background:'#2ECC71',color:'white',border:'none',borderRadius:'8px',cursor:'pointer',fontWeight:600}}>Pagar</button>
                       )}

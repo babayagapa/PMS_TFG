@@ -97,4 +97,37 @@ class AuthController extends Controller
             'telefono' => $user->telefono ?? null,
         ]);
     }
+
+    // POST /api/personal/register — solo admin puede registrar recepcionistas
+    public function registerPersonal(Request $request)
+    {
+        $request->validate([
+            'nombre'   => 'required|string|max:255',
+            'email'    => 'required|email|unique:usuarios,email',
+            'password' => 'required|string|min:6|confirmed',
+            'nif'      => 'required|string|max:20',
+            'telefono' => 'required|string|max:20',
+        ]);
+
+        $user = User::create([
+            'nombre'   => $request->nombre,
+            'email'    => $request->email,
+            'password' => $request->password,
+            'rol'      => 'recepcionista',
+            'nif'      => $request->nif,
+            'telefono' => $request->telefono,
+        ]);
+
+        return response()->json([
+            'message' => 'Recepcionista registrado correctamente',
+            'user'    => [
+                'id'       => $user->_id,
+                'nombre'   => $user->nombre,
+                'email'    => $user->email,
+                'rol'      => $user->rol,
+                'nif'      => $user->nif,
+                'telefono' => $user->telefono,
+            ],
+        ], 201);
+    }
 }

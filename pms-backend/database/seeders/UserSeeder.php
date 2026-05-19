@@ -18,6 +18,8 @@ class UserSeeder extends Seeder
             'email'    => 'admin@hotel.com',
             'password' => 'admin123',
             'rol'      => 'admin',
+            'nif'      => '00000000A',
+            'telefono' => '+34 600 000 000',
         ]);
 
         User::create([
@@ -25,6 +27,8 @@ class UserSeeder extends Seeder
             'email'    => 'recepcion@hotel.com',
             'password' => 'recep123',
             'rol'      => 'recepcionista',
+            'nif'      => '12345678A',
+            'telefono' => '+34 611 111 111',
         ]);
 
         User::create([
@@ -32,6 +36,8 @@ class UserSeeder extends Seeder
             'email'    => 'recepcion2@hotel.com',
             'password' => 'recep456',
             'rol'      => 'recepcionista',
+            'nif'      => '87654321B',
+            'telefono' => '+34 622 222 222',
         ]);
     }
 }

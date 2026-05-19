@@ -5,20 +5,22 @@ import { calcularPrecio } from '../utils/calcularPrecio'
 import { formatEuros, hoy } from '../utils/formatDate'
 import { useHabitaciones } from '../hooks/useHabitaciones'
 import { useServicios } from '../hooks/useServicios'
+import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 
 export default function ReservaForm() {
   const nav = useNavigate()
   const [params] = useSearchParams()
+  const { usuario } = useAuth()
 
   const { habitaciones } = useHabitaciones({ ocupada: false })
   const { servicios }    = useServicios()
 
   const [form, setForm] = useState({
     id_habitacion:    params.get('id_habitacion') || '',
-    nombre_huesped:   '',
-    email_huesped:    '',
-    telefono_huesped: '',
+    nombre_huesped:   usuario?.nombre   || '',
+    email_huesped:    usuario?.email    || '',
+    telefono_huesped: usuario?.telefono || '',
     fecha_entrada:    '',
     fecha_salida:     '',
     num_huespedes:    1,
