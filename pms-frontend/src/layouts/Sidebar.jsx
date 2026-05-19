@@ -13,15 +13,10 @@ export default function Sidebar() {
       <p className="font-bold text-primary text-lg mb-1">Panel</p>
       {usuario && <p className="text-xs text-gray-400 mb-6">{usuario.nombre}</p>}
       <nav className="flex flex-col gap-1">
-        <NavLink to="/panel"        className={({ isActive }) => isActive ? activo : inactivo}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/habitaciones" className={({ isActive }) => isActive ? activo : inactivo}>
-          Habitaciones
-        </NavLink>
-        <NavLink to="/reservas"     className={({ isActive }) => isActive ? activo : inactivo}>
-          Reservas
-        </NavLink>
+        <NavLink to="/panel"        className={({ isActive }) => isActive ? activo : inactivo}>Dashboard</NavLink>
+        <NavLink to="/habitaciones" className={({ isActive }) => isActive ? activo : inactivo}>Habitaciones</NavLink>
+        <NavLink to="/reservas"     className={({ isActive }) => isActive ? activo : inactivo}>Reservas</NavLink>
+        <NavLink to="/facturas"     className={({ isActive }) => isActive ? activo : inactivo}>Facturas</NavLink>
       </nav>
     </aside>
   )

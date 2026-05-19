@@ -25,5 +25,6 @@ class Kernel extends HttpKernel
     protected $middlewareAliases = [
         'auth'     => \Illuminate\Auth\Middleware\Authenticate::class,
         'jwt.auth' => \App\Http\Middleware\JwtMiddleware::class,
+        'role'     => \App\Http\Middleware\CheckRole::class,
     ];
 }

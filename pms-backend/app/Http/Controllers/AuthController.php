@@ -2,11 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // POST /api/register — solo registra clientes
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nombre'   => 'required|string|max:255',
+            'email'    => 'required|email|unique:usuarios,email',
+            'password' => 'required|string|min:6|confirmed',
+            'nif'      => 'required|string|max:20',
+            'telefono' => 'required|string|max:20',
+        ]);
+
+        $user = User::create([
+            'nombre'   => $request->nombre,
+            'email'    => $request->email,
+            'password' => $request->password,
+            'rol'      => 'cliente',
+            'nif'      => $request->nif,
+            'telefono' => $request->telefono,
+        ]);
+
+        $token = Auth::guard('api')->login($user);
+
+        return response()->json([
+            'message' => 'Registro exitoso',
+            'token'   => $token,
+            'user'    => [
+                'id'       => $user->_id,
+                'nombre'   => $user->nombre,
+                'email'    => $user->email,
+                'rol'      => $user->rol,
+                'nif'      => $user->nif,
+                'telefono' => $user->telefono,
+            ],
+        ], 201);
+    }
+
     // POST /api/login
     public function login(Request $request)
     {
@@ -28,10 +65,12 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'user'  => [
-                'id'     => $user->id,
-                'nombre' => $user->nombre,
-                'email'  => $user->email,
-                'rol'    => $user->rol,
+                'id'       => $user->_id,
+                'nombre'   => $user->nombre,
+                'email'    => $user->email,
+                'rol'      => $user->rol,
+                'nif'      => $user->nif ?? null,
+                'telefono' => $user->telefono ?? null,
             ],
         ]);
     }
@@ -50,10 +89,12 @@ class AuthController extends Controller
         $user = Auth::guard('api')->user();
 
         return response()->json([
-            'id'     => $user->id,
-            'nombre' => $user->nombre,
-            'email'  => $user->email,
-            'rol'    => $user->rol,
+            'id'       => $user->_id,
+            'nombre'   => $user->nombre,
+            'email'    => $user->email,
+            'rol'      => $user->rol,
+            'nif'      => $user->nif ?? null,
+            'telefono' => $user->telefono ?? null,
         ]);
     }
 }

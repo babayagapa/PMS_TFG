@@ -1,13 +1,15 @@
-﻿import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
-import LandingPage      from './pages/LandingPage'
-import LoginPage        from './pages/LoginPage'
-import RegisterPage     from './pages/RegisterPage'
-import HabitacionesPage from './pages/HabitacionesPage'
-import ReservasPage     from './pages/ReservasPage'
-import ReservaFormPage  from './pages/ReservaFormPage'
-import PanelPage        from './pages/PanelPage'
-import Spinner          from './components/Spinner'
+import LandingPage         from './pages/LandingPage'
+import LoginPage           from './pages/LoginPage'
+import RegisterPage        from './pages/RegisterPage'
+import HabitacionesPage    from './pages/HabitacionesPage'
+import ReservasPage        from './pages/ReservasPage'
+import ReservaFormPage     from './pages/ReservaFormPage'
+import PanelPage           from './pages/PanelPage'
+import FacturasPage        from './pages/FacturasPage'
+import FacturaDetallePage  from './pages/FacturaDetallePage'
+import Spinner             from './components/Spinner'
 
 function PrivateRoute({ children }) {
   const { token, cargando } = useAuth()
@@ -26,6 +28,8 @@ export default function App() {
         <Route path="/reservas"       element={<PrivateRoute><ReservasPage /></PrivateRoute>} />
         <Route path="/reservas/nueva" element={<PrivateRoute><ReservaFormPage /></PrivateRoute>} />
         <Route path="/panel"          element={<PrivateRoute><PanelPage /></PrivateRoute>} />
+        <Route path="/facturas"       element={<PrivateRoute><FacturasPage /></PrivateRoute>} />
+        <Route path="/facturas/:id"   element={<PrivateRoute><FacturaDetallePage /></PrivateRoute>} />
         <Route path="*"               element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>

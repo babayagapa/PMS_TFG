@@ -1,5 +1,5 @@
-﻿import { createContext, useContext, useState, useEffect } from 'react'
-import { loginApi, logoutApi, getMeApi } from '../services/auth.service'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { loginApi, registerApi, logoutApi, getMeApi } from '../services/auth.service'
 
 const AuthContext = createContext(null)
 
@@ -30,6 +30,14 @@ export function AuthProvider({ children }) {
     return data.user
   }
 
+  const register = async (formData) => {
+    const { data } = await registerApi(formData)
+    localStorage.setItem('pms_token', data.token)
+    setToken(data.token)
+    setUsuario(data.user)
+    return data.user
+  }
+
   const logout = async () => {
     try { await logoutApi() } catch (_) {}
     localStorage.removeItem('pms_token')
@@ -38,7 +46,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, token, cargando, login, logout }}>
+    <AuthContext.Provider value={{ usuario, token, cargando, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

@@ -19,22 +19,70 @@ class Reserva extends Model
         'fecha_entrada',
         'fecha_salida',
         'num_huespedes',
-        'precio_total',
-        'estado',
         'notas',
+        // Servicios pedidos
+        'servicios_pedidos',
+        // Desglose de precios
+        'precio_habitacion',
+        'precio_servicios',
+        'base_imponible',
+        'porcentaje_iva',
+        'importe_iva',
+        'precio_total',
+        // Estado de la reserva y pago
+        'estado',
+        'metodo_pago',
+        'estado_pago',
+        'pagado_en',
     ];
 
     protected $casts = [
-        'precio_total'  => 'float',
-        'num_huespedes' => 'integer',
+        'precio_habitacion' => 'float',
+        'precio_servicios'  => 'float',
+        'base_imponible'    => 'float',
+        'porcentaje_iva'    => 'float',
+        'importe_iva'       => 'float',
+        'precio_total'      => 'float',
+        'num_huespedes'     => 'integer',
+        'servicios_pedidos' => 'array',
     ];
 
-    public static function calcularPrecio(float $precioNoche, string $entrada, string $salida): float
-    {
+    /**
+     * Calcula el desglose completo de precios (habitacion + servicios + IVA).
+     */
+    public static function calcularDesglose(
+        float $precioNoche,
+        string $entrada,
+        string $salida,
+        array $servicios = []
+    ): array {
         $noches = Carbon::parse($entrada)->diffInDays(Carbon::parse($salida));
-        if ($noches <= 0) return 0.0;
-        return round($precioNoche * $noches * 1.10, 2);
+        if ($noches <= 0) $noches = 1;
+
+        $precioHabitacion = round($precioNoche * $noches, 2);
+
+        $precioServicios = 0;
+        foreach ($servicios as $s) {
+            $precioServicios += round(($s['precio'] ?? 0) * ($s['cantidad'] ?? 1), 2);
+        }
+        $precioServicios = round($precioServicios, 2);
+
+        $baseImponible = round($precioHabitacion + $precioServicios, 2);
+        $porcentajeIva = 10;
+        $importeIva    = round($baseImponible * ($porcentajeIva / 100), 2);
+        $precioTotal   = round($baseImponible + $importeIva, 2);
+
+        return [
+            'precio_habitacion' => $precioHabitacion,
+            'precio_servicios'  => $precioServicios,
+            'base_imponible'    => $baseImponible,
+            'porcentaje_iva'    => $porcentajeIva,
+            'importe_iva'       => $importeIva,
+            'precio_total'      => $precioTotal,
+        ];
     }
+
+    // --- Relaciones ---
 
     public function habitacion()
     {
@@ -44,5 +92,10 @@ class Reserva extends Model
     public function cliente()
     {
         return $this->belongsTo(User::class, 'id_cliente');
+    }
+
+    public function factura()
+    {
+        return $this->hasOne(Factura::class, 'id_reserva');
     }
 }

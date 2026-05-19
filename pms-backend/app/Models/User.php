@@ -16,6 +16,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'rol',
+        'nif',
+        'telefono',
     ];
 
     protected $hidden = [
@@ -40,8 +42,32 @@ class User extends Authenticatable implements JWTSubject
         $this->attributes['password'] = Hash::make($value);
     }
 
+    // --- Helpers de rol ---
+
     public function esAdmin(): bool
     {
         return $this->rol === 'admin';
+    }
+
+    public function esRecepcionista(): bool
+    {
+        return $this->rol === 'recepcionista';
+    }
+
+    public function esCliente(): bool
+    {
+        return $this->rol === 'cliente';
+    }
+
+    // --- Relaciones ---
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'id_cliente');
+    }
+
+    public function facturas()
+    {
+        return $this->hasMany(Factura::class, 'id_cliente');
     }
 }
