@@ -53,12 +53,11 @@ class UserSeeder extends Seeder
             'telefono'  => '633333333',
         ]);
 
-        // Cliente registrado con reserva y factura
         User::create([
             'nombre'    => 'Laura',
             'apellidos' => 'Martinez Perez',
-            'email'     => 'laura@email.com',
-            'password'  => 'cliente1',
+            'email'     => 'laura@mail.com',
+            'password'  => 'lau123',
             'rol'       => 'cliente',
             'nif'       => '44556677D',
             'telefono'  => '644444444',

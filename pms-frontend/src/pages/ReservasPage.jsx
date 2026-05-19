@@ -41,19 +41,31 @@ export default function ReservasPage() {
     } finally { setPagando(false) }
   }
 
+  const reservasActivas = reservas.filter(r => {
+    const fechaSalida = new Date(r.fecha_salida)
+    const hoy = new Date()
+    hoy.setHours(0,0,0,0)
+    
+    // Ocultar si ya paso la fecha de salida y esta pagada
+    if (fechaSalida < hoy && r.estado_pago === 'pagado') {
+      return false
+    }
+    return true
+  })
+
   return (
     <div className="page">
       <Navbar />
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
         <h2 style={{ margin: '0 0 24px', fontSize: '1.8rem', fontWeight: 700 }}>Mis Reservas</h2>
         
-        {loading ? <Spinner /> : reservas.length === 0 ? (
+        {loading ? <Spinner /> : reservasActivas.length === 0 ? (
           <div className="glass" style={{ padding: '60px', textAlign: 'center' }}>
             <p style={{ color: '#999', fontSize: '15px' }}>No tienes reservas todavía.</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {reservas.map(r => {
+            {reservasActivas.map(r => {
               // Obtener info de la habitacion si viene poblada, o defaults
               const tipoHab = r.habitacion?.tipo || 'Habitación'
               const numHab = r.habitacion?.numero || 'N/A'

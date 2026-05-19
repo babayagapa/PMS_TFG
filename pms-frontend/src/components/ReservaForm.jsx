@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { createReserva } from '../services/reservas.service'
 import { calcularPrecio } from '../utils/calcularPrecio'
 import { formatEuros, hoy } from '../utils/formatDate'
 import { useHabitaciones } from '../hooks/useHabitaciones'
+import { useReservas } from '../hooks/useReservas'
 import { useServicios } from '../hooks/useServicios'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
@@ -13,7 +14,8 @@ export default function ReservaForm() {
   const [params] = useSearchParams()
   const { usuario } = useAuth()
 
-  const { habitaciones } = useHabitaciones({ ocupada: false })
+  const { habitaciones } = useHabitaciones()
+  const { reservas }     = useReservas()
   const { servicios }    = useServicios()
 
   const [form, setForm] = useState({
@@ -30,7 +32,22 @@ export default function ReservaForm() {
   const [loading, setLoading] = useState(false)
   const [errores, setErrores] = useState({})
 
-  const habitacionSel = habitaciones.find((h) => h._id === form.id_habitacion)
+  // Filtrar habitaciones disponibles para las fechas seleccionadas
+  const habitacionesDisponibles = useMemo(() => {
+    if (!form.fecha_entrada || !form.fecha_salida) return habitaciones
+
+    const activas = reservas.filter(r => r.estado !== 'Cancelada')
+    return habitaciones.filter(h => {
+      const conflicto = activas.some(r =>
+        r.id_habitacion === h._id &&
+        r.fecha_entrada < form.fecha_salida &&
+        r.fecha_salida > form.fecha_entrada
+      )
+      return !conflicto
+    })
+  }, [habitaciones, reservas, form.fecha_entrada, form.fecha_salida])
+
+  const habitacionSel = habitacionesDisponibles.find((h) => h._id === form.id_habitacion)
 
   // Calcular precio con servicios incluidos
   const precio = habitacionSel && form.fecha_entrada && form.fecha_salida
@@ -106,7 +123,7 @@ export default function ReservaForm() {
           onChange={(e) => set('id_habitacion', e.target.value)}
         >
           <option value="">Selecciona una habitacion</option>
-          {habitaciones.map((h) => (
+          {habitacionesDisponibles.map((h) => (
             <option key={h._id} value={h._id}>
               {h.numero} — {h.tipo} — {formatEuros(h.precio_noche)}/noche
             </option>

@@ -17,7 +17,6 @@ class ReservaSeeder extends Seeder
         $habitaciones = Habitacion::all();
         $cliente      = User::where('rol', 'cliente')->first();
 
-        // Nombres ficticios para reservas sin usuario registrado
         $huespedes = [
             ['nombre' => 'Laura Martinez',    'email' => 'laura@email.com',    'telefono' => '644444444'],
             ['nombre' => 'Pedro Sanchez',     'email' => 'pedro@email.com',    'telefono' => '622002002'],
@@ -39,93 +38,101 @@ class ReservaSeeder extends Seeder
         $metodosPago = ['tarjeta', 'efectivo', 'transferencia'];
         $hoy = Carbon::today();
 
-        // Definir 40 reservas distribuidas en el tiempo
-        // Mezcla de pasadas, presentes y futuras para que se vea bien en el calendario
-        $reservasDef = [];
+        // Tracker de ocupacion por habitacion: guarda la fecha de salida mas reciente
+        // para evitar solapamientos (la siguiente entrada = salida anterior)
+        $habOcupada = [];
 
-        // --- 8 reservas ya pasadas (hace 1-3 semanas), todas pagadas ---
-        for ($i = 0; $i < 8; $i++) {
-            $entrada = $hoy->copy()->subDays(rand(7, 21));
-            $noches  = rand(2, 4);
-            $reservasDef[] = [
-                'hab_idx'   => $i % $habitaciones->count(),
-                'huesped'   => $huespedes[$i % count($huespedes)],
-                'entrada'   => $entrada,
-                'noches'    => $noches,
-                'estado'    => 'Confirmada',
-                'pago'      => 'pagado',
-                'esCliente' => ($i === 0), // La primera reserva pasada es de Laura (cliente)
-            ];
-        }
+        // Definir reservas secuenciales por habitacion
+        // Estructura: [hab_idx, huesped_idx, noches, estado, pago, esCliente, offsetDias]
+        // offsetDias es relativo a "hoy" para la primera reserva de esa habitacion,
+        // las siguientes se encadenan automaticamente
+        $plantillas = [
+            // --- HAB 101 (Individual) --- 3 reservas encadenadas
+            ['hab' => 0, 'huesped' => 0,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => true,  'inicio' => -10],
+            ['hab' => 0, 'huesped' => 1,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
+            ['hab' => 0, 'huesped' => 2,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 0, 'huesped' => 3,  'noches' => 3, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
 
-        // --- 10 reservas actuales (check-in entre -2 y +3 dias), variedad de estados ---
-        for ($i = 0; $i < 10; $i++) {
-            $entrada = $hoy->copy()->addDays(rand(-2, 3));
-            $noches  = rand(2, 5);
-            $estados = ['Confirmada', 'Confirmada', 'Pendiente', 'Confirmada', 'Confirmada'];
-            $pagos   = ['pagado', 'pendiente', 'pendiente', 'pagado', 'pendiente'];
-            $reservasDef[] = [
-                'hab_idx'   => ($i + 8) % $habitaciones->count(),
-                'huesped'   => $huespedes[($i + 8) % count($huespedes)],
-                'entrada'   => $entrada,
-                'noches'    => $noches,
-                'estado'    => $estados[$i % count($estados)],
-                'pago'      => $pagos[$i % count($pagos)],
-                'esCliente' => ($i === 0), // Una reserva actual de Laura
-            ];
-        }
+            // --- HAB 102 (Individual) --- 3 reservas
+            ['hab' => 1, 'huesped' => 4,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -5],
+            ['hab' => 1, 'huesped' => 5,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 1, 'huesped' => 6,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
 
-        // --- 12 reservas futuras (1-4 semanas), variedad ---
-        for ($i = 0; $i < 12; $i++) {
-            $entrada = $hoy->copy()->addDays(rand(4, 28));
-            $noches  = rand(1, 5);
-            $estados = ['Confirmada', 'Pendiente', 'Confirmada', 'Pendiente'];
-            $pagos   = ['pendiente', 'pendiente', 'pagado', 'pendiente'];
-            $reservasDef[] = [
-                'hab_idx'   => ($i + 4) % $habitaciones->count(),
-                'huesped'   => $huespedes[($i + 3) % count($huespedes)],
-                'entrada'   => $entrada,
-                'noches'    => $noches,
-                'estado'    => $estados[$i % count($estados)],
-                'pago'      => $pagos[$i % count($pagos)],
-                'esCliente' => false,
-            ];
-        }
+            // --- HAB 103 (Individual) --- 3 reservas
+            ['hab' => 2, 'huesped' => 7,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -8],
+            ['hab' => 2, 'huesped' => 8,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 2, 'huesped' => 9,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
 
-        // --- 10 reservas más repartidas para dar densidad ---
-        for ($i = 0; $i < 10; $i++) {
-            $entrada = $hoy->copy()->addDays(rand(-5, 20));
-            $noches  = rand(1, 4);
-            $estadoRand = rand(0, 2);
-            $estado = $estadoRand === 0 ? 'Pendiente' : 'Confirmada';
-            $pago   = $estadoRand === 2 ? 'pagado' : 'pendiente';
-            $reservasDef[] = [
-                'hab_idx'   => ($i + 2) % $habitaciones->count(),
-                'huesped'   => $huespedes[($i + 5) % count($huespedes)],
-                'entrada'   => $entrada,
-                'noches'    => $noches,
-                'estado'    => $estado,
-                'pago'      => $pago,
-                'esCliente' => false,
-            ];
-        }
+            // --- HAB 104 (Individual) --- 2 reservas
+            ['hab' => 3, 'huesped' => 10, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => 0],
+            ['hab' => 3, 'huesped' => 11, 'noches' => 4, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
 
-        // Crear las reservas
-        foreach ($reservasDef as $def) {
-            $hab     = $habitaciones[$def['hab_idx']];
-            $huesped = $def['huesped'];
-            $entrada = $def['entrada'];
-            $salida  = $entrada->copy()->addDays($def['noches']);
-            $noches  = $def['noches'];
+            // --- HAB 201 (Doble) --- 4 reservas
+            ['hab' => 4, 'huesped' => 0,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => true,  'inicio' => -6],
+            ['hab' => 4, 'huesped' => 12, 'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
+            ['hab' => 4, 'huesped' => 13, 'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 4, 'huesped' => 14, 'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
 
-            $precioHab  = round($hab->precio_noche * $noches, 2);
+            // --- HAB 202 (Doble) --- 3 reservas
+            ['hab' => 5, 'huesped' => 1,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -4],
+            ['hab' => 5, 'huesped' => 3,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 5, 'huesped' => 5,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 203 (Doble) --- 3 reservas
+            ['hab' => 6, 'huesped' => 7,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -3],
+            ['hab' => 6, 'huesped' => 9,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+            ['hab' => 6, 'huesped' => 11, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 204 (Doble) --- 2 reservas
+            ['hab' => 7, 'huesped' => 2,  'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => 1],
+            ['hab' => 7, 'huesped' => 4,  'noches' => 3, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 301 (Suite) --- 3 reservas
+            ['hab' => 8, 'huesped' => 6,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -7],
+            ['hab' => 8, 'huesped' => 8,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
+            ['hab' => 8, 'huesped' => 10, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 302 (Suite) --- 2 reservas
+            ['hab' => 9, 'huesped' => 12, 'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => -2],
+            ['hab' => 9, 'huesped' => 14, 'noches' => 4, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 401 (Familiar) --- 3 reservas
+            ['hab' => 10, 'huesped' => 1,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => -9],
+            ['hab' => 10, 'huesped' => 3,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
+            ['hab' => 10, 'huesped' => 5,  'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => null],
+
+            // --- HAB 402 (Familiar) --- 3 reservas
+            ['hab' => 11, 'huesped' => 13, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => -4],
+            ['hab' => 11, 'huesped' => 7,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
+            ['hab' => 11, 'huesped' => 9,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
+        ];
+
+        foreach ($plantillas as $p) {
+            $hab     = $habitaciones[$p['hab']];
+            $huesped = $huespedes[$p['huesped']];
+            $habKey  = $p['hab'];
+
+            // Calcular fecha de entrada
+            if ($p['inicio'] !== null) {
+                // Primera reserva de la habitacion o reserva con offset explícito
+                $entrada = $hoy->copy()->addDays($p['inicio']);
+                $habOcupada[$habKey] = $entrada->copy(); // reset tracker
+            } else {
+                // Encadenar: entrada = salida anterior
+                $entrada = $habOcupada[$habKey]->copy();
+            }
+
+            $salida = $entrada->copy()->addDays($p['noches']);
+            $habOcupada[$habKey] = $salida->copy();
+
+            $precioHab  = round($hab->precio_noche * $p['noches'], 2);
             $baseImp    = $precioHab;
             $pctIva     = 10;
             $importeIva = round($baseImp * ($pctIva / 100), 2);
             $total      = round($baseImp + $importeIva, 2);
 
             Reserva::create([
-                'id_cliente'        => ($def['esCliente'] && $cliente) ? $cliente->_id : null,
+                'id_cliente'        => ($p['esCliente'] && $cliente) ? $cliente->_id : null,
                 'id_habitacion'     => $hab->_id,
                 'nombre_huesped'    => $huesped['nombre'],
                 'email_huesped'     => $huesped['email'],
@@ -141,10 +148,10 @@ class ReservaSeeder extends Seeder
                 'porcentaje_iva'    => $pctIva,
                 'importe_iva'       => $importeIva,
                 'precio_total'      => $total,
-                'estado'            => $def['estado'],
-                'metodo_pago'       => $def['pago'] === 'pagado' ? $metodosPago[array_rand($metodosPago)] : null,
-                'estado_pago'       => $def['pago'],
-                'pagado_en'         => $def['pago'] === 'pagado' ? now() : null,
+                'estado'            => $p['estado'],
+                'metodo_pago'       => $p['pago'] === 'pagado' ? $metodosPago[array_rand($metodosPago)] : null,
+                'estado_pago'       => $p['pago'],
+                'pagado_en'         => $p['pago'] === 'pagado' ? now() : null,
             ]);
         }
     }

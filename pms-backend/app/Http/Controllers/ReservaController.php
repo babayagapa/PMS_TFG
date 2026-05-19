@@ -62,8 +62,15 @@ class ReservaController extends Controller
 
         $habitacion = Habitacion::findOrFail($request->id_habitacion);
 
-        if (!$habitacion->estaDisponible()) {
-            return response()->json(['error' => 'La habitacion no esta disponible'], 422);
+        // Validar que no haya solapamiento de fechas en la misma habitacion
+        $overlap = Reserva::where('id_habitacion', $request->id_habitacion)
+            ->where('estado', '!=', 'Cancelada')
+            ->where('fecha_entrada', '<', $request->fecha_salida)
+            ->where('fecha_salida', '>', $request->fecha_entrada)
+            ->exists();
+
+        if ($overlap) {
+            return response()->json(['error' => 'La habitacion ya tiene una reserva en esas fechas'], 422);
         }
 
         // Resolver servicios pedidos desde la BBDD
