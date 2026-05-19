@@ -29,7 +29,7 @@ export default function Navbar() {
         ) : (
           <>
             <Link to="/contacto" style={{color:'#2C3E50',fontWeight:600,textDecoration:'none',opacity:0.9}}>Contacto</Link>
-            <Link to="/registro" className="btn-secondary" style={{padding:'10px 24px',fontSize:'14px'}}>Registro</Link>
+            <Link to="/register" className="btn-secondary" style={{padding:'10px 24px',fontSize:'14px'}}>Registro</Link>
             <Link to="/login" className="btn-primary" style={{padding:'10px 24px',fontSize:'14px'}}>Entrar</Link>
           </>
         )}

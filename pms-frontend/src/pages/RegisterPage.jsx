@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
 
-export default function RegistroPage() {
+export default function RegisterPage() {
   const nav = useNavigate()
-  const { Registro } = useAuth()
+  const { register } = useAuth()
   const [form, setForm] = useState({ nombre: '', apellidos: '', email: '', password: '', confirmar: '', nif: '', telefono: '', terminos: false })
   const [errores, setErrores] = useState({})
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ export default function RegistroPage() {
     if (Object.keys(err).length) { setErrores(err); return }
     setLoading(true)
     try {
-      await Registro({ nombre: form.nombre, apellidos: form.apellidos, email: form.email, password: form.password, password_confirmation: form.confirmar, nif: form.nif, telefono: form.telefono })
+      await register({ nombre: form.nombre, apellidos: form.apellidos, email: form.email, password: form.password, password_confirmation: form.confirmar, nif: form.nif, telefono: form.telefono })
       nav('/')
     } catch (err) {
       setError(err.response?.data?.message || err.response?.data?.error || 'Error al registrar')

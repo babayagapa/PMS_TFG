@@ -34,7 +34,7 @@ export default function LoginPage() {
 
       <nav className="glass" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 40px', marginBottom: '40px', position: 'sticky', top: '20px', zIndex: 100 }}>
         <Link to="/" style={{ fontWeight: 700, fontSize: '24px', color: '#2C3E50', textDecoration: 'none' }}>Hotel PMS</Link>
-        <Link to="/registro" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none' }}>
+        <Link to="/register" style={{ color: '#2C3E50', fontWeight: 600, textDecoration: 'none' }}>
           Crear cuenta
         </Link>
       </nav>
@@ -69,7 +69,7 @@ export default function LoginPage() {
             </button>
             <p style={{ textAlign: 'center', fontSize: '13px', color: '#666', marginTop: '16px' }}>
               No tienes cuenta?{' '}
-              <Link to="/registro" style={{ color: '#2ECC71', fontWeight: 600, textDecoration: 'none' }}>
+              <Link to="/register" style={{ color: '#2ECC71', fontWeight: 600, textDecoration: 'none' }}>
                 Registrate
               </Link>
             </p>

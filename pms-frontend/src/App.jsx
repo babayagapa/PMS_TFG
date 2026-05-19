@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import LandingPage              from './pages/LandingPage'
 import LoginPage                from './pages/LoginPage'
-import RegistroPage             from './pages/RegistroPage'
+import RegisterPage             from './pages/RegisterPage'
 import HabitacionesClientePage  from './pages/HabitacionesClientePage'
 import HabitacionesEmpleadoPage    from './pages/HabitacionesEmpleadoPage'
 import ReservasPage             from './pages/ReservasPage'
@@ -13,7 +13,7 @@ import FacturasClientePage      from './pages/FacturasClientePage'
 import FacturasEmpleadoPage        from './pages/FacturasEmpleadoPage'
 import FacturaDetalleClientePage from './pages/FacturaDetalleClientePage'
 import FacturaDetalleEmpleadoPage  from './pages/FacturaDetalleEmpleadoPage'
-import RegistroPersonalPage     from './pages/RegistroPersonalPage'
+import RegisterPersonalPage     from './pages/RegisterPersonalPage'
 import Spinner                  from './components/Spinner'
 
 function PrivateRoute({ children }) {
@@ -75,14 +75,14 @@ export default function App() {
       <Routes>
         <Route path="/"               element={<LandingPage />} />
         <Route path="/login"          element={<LoginPage />} />
-        <Route path="/registro"       element={<RegistroPage />} />
+        <Route path="/register"       element={<RegisterPage />} />
         <Route path="/habitaciones"   element={<HabitacionesRouter />} />
         <Route path="/reservas"       element={<PrivateRoute><ReservasRouter /></PrivateRoute>} />
         <Route path="/reservas/nueva" element={<PrivateRoute><ReservaFormPage /></PrivateRoute>} />
         <Route path="/facturas"       element={<PrivateRoute><FacturasRouter /></PrivateRoute>} />
         <Route path="/facturas/:id"   element={<PrivateRoute><FacturaDetalleRouter /></PrivateRoute>} />
         <Route path="/panel"          element={<EmpleadoRoute><PanelPage /></EmpleadoRoute>} />
-        <Route path="/personal"       element={<AdminRoute><RegistroPersonalPage /></AdminRoute>} />
+        <Route path="/personal"       element={<AdminRoute><RegisterPersonalPage /></AdminRoute>} />
         <Route path="*"               element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
