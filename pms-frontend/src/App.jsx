@@ -10,7 +10,9 @@ import ReservasStaffPage        from './pages/ReservasStaffPage'
 import ReservaFormPage          from './pages/ReservaFormPage'
 import PanelPage                from './pages/PanelPage'
 import FacturasPage             from './pages/FacturasPage'
+import FacturasStaffPage        from './pages/FacturasStaffPage'
 import FacturaDetallePage       from './pages/FacturaDetallePage'
+import FacturaDetalleStaffPage  from './pages/FacturaDetalleStaffPage'
 import RegistroPersonalPage     from './pages/RegistroPersonalPage'
 import Spinner                  from './components/Spinner'
 
@@ -32,7 +34,7 @@ function StaffRoute({ children }) {
   const { usuario, token, cargando } = useAuth()
   if (cargando) return <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><Spinner /></div>
   if (!token) return <Navigate to="/login" replace />
-  if (usuario?.rol === 'cliente') return <Navigate to="/" replace />
+  if (usuario?.rol === 'cliente' || usuario?.rol === 'limpieza') return <Navigate to={usuario?.rol === 'limpieza' ? '/habitaciones' : '/'} replace />
   return children
 }
 
@@ -46,8 +48,25 @@ function HabitacionesRouter() {
 // Muestra reservas segun el rol
 function ReservasRouter() {
   const { usuario } = useAuth()
+  if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
   const esStaff = usuario && usuario.rol !== 'cliente'
   return esStaff ? <ReservasStaffPage /> : <ReservasPage />
+}
+
+// Muestra facturas segun el rol
+function FacturasRouter() {
+  const { usuario } = useAuth()
+  if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
+  const esStaff = usuario && usuario.rol !== 'cliente'
+  return esStaff ? <FacturasStaffPage /> : <FacturasPage />
+}
+
+// Muestra detalle de factura segun el rol
+function FacturaDetalleRouter() {
+  const { usuario } = useAuth()
+  if (usuario?.rol === 'limpieza') return <Navigate to="/habitaciones" replace />
+  const esStaff = usuario && usuario.rol !== 'cliente'
+  return esStaff ? <FacturaDetalleStaffPage /> : <FacturaDetallePage />
 }
 
 export default function App() {
@@ -60,8 +79,8 @@ export default function App() {
         <Route path="/habitaciones"   element={<HabitacionesRouter />} />
         <Route path="/reservas"       element={<PrivateRoute><ReservasRouter /></PrivateRoute>} />
         <Route path="/reservas/nueva" element={<PrivateRoute><ReservaFormPage /></PrivateRoute>} />
-        <Route path="/facturas"       element={<PrivateRoute><FacturasPage /></PrivateRoute>} />
-        <Route path="/facturas/:id"   element={<PrivateRoute><FacturaDetallePage /></PrivateRoute>} />
+        <Route path="/facturas"       element={<PrivateRoute><FacturasRouter /></PrivateRoute>} />
+        <Route path="/facturas/:id"   element={<PrivateRoute><FacturaDetalleRouter /></PrivateRoute>} />
         <Route path="/panel"          element={<StaffRoute><PanelPage /></StaffRoute>} />
         <Route path="/personal"       element={<AdminRoute><RegistroPersonalPage /></AdminRoute>} />
         <Route path="*"               element={<Navigate to="/" replace />} />

@@ -16,8 +16,8 @@ class AuthController extends Controller
             'apellidos' => 'required|string|max:255',
             'email'     => 'required|email|unique:usuarios,email',
             'password'  => 'required|string|min:6|confirmed',
-            'nif'       => 'required|string|max:20',
-            'telefono'  => 'required|string|max:20',
+            'nif'       => 'required|string|regex:/^[0-9]{8}[A-Za-z]$/',
+            'telefono'  => 'required|string|regex:/^[0-9]{9}$/',
         ]);
 
         $user = User::create([
@@ -111,8 +111,8 @@ class AuthController extends Controller
             'apellidos' => 'required|string|max:255',
             'email'     => 'required|email|unique:usuarios,email',
             'password'  => 'required|string|min:6|confirmed',
-            'nif'       => 'required|string|max:20',
-            'telefono'  => 'required|string|max:20',
+            'nif'       => 'required|string|regex:/^[0-9]{8}[A-Za-z]$/',
+            'telefono'  => 'required|string|regex:/^[0-9]{9}$/',
             'rol'       => 'required|string|in:recepcionista,limpieza',
         ]);
 

@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             HabitacionSeeder::class,
             ServicioSeeder::class,
             ReservaSeeder::class,
+            FacturaSeeder::class,
         ]);
     }
 }

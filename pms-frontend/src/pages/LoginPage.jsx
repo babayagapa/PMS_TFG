@@ -18,8 +18,10 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const user = await login(email, password)
-      // Clientes van a inicio, personal va al panel
-      nav(user.rol === 'cliente' ? '/' : '/panel')
+      // Clientes van a inicio, limpieza a habitaciones, admin/recepcionista a panel
+      if (user.rol === 'cliente') nav('/')
+      else if (user.rol === 'limpieza') nav('/habitaciones')
+      else nav('/panel')
     } catch (_) {
       setError('Email o contrasena incorrectos')
     } finally {
@@ -53,11 +55,13 @@ export default function LoginPage() {
             <div style={{ marginBottom: '16px' }}>
               <label className="input-label">Email</label>
               <input type="email" className="input-field" placeholder="admin@hotel.com"
+                style={{ borderColor: error ? '#e74c3c' : '' }}
                 value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div style={{ marginBottom: '24px' }}>
               <label className="input-label">Contrasena</label>
               <input type="password" className="input-field" placeholder="••••••••"
+                style={{ borderColor: error ? '#e74c3c' : '' }}
                 value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%' }}>

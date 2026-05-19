@@ -76,40 +76,40 @@ export default function RegistroPersonalPage() {
               <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                 <div style={{ flex: 1 }}>
                   <label className="input-label">Nombre</label>
-                  <input type="text" className="input-field" placeholder="Mario" value={form.nombre} onChange={e => set('nombre', e.target.value)} />
+                  <input type="text" className="input-field" style={{ borderColor: errores.nombre ? '#e74c3c' : '' }} value={form.nombre} onChange={e => set('nombre', e.target.value)} />
                   {errores.nombre && <p style={errStyle}>{errores.nombre}</p>}
                 </div>
                 <div style={{ flex: 1 }}>
                   <label className="input-label">Apellidos</label>
-                  <input type="text" className="input-field" placeholder="Gómez Sánchez" value={form.apellidos} onChange={e => set('apellidos', e.target.value)} />
+                  <input type="text" className="input-field" style={{ borderColor: errores.apellidos ? '#e74c3c' : '' }} value={form.apellidos} onChange={e => set('apellidos', e.target.value)} />
                   {errores.apellidos && <p style={errStyle}>{errores.apellidos}</p>}
                 </div>
               </div>
               <div style={iStyle}>
                 <label className="input-label">Email corporativo</label>
-                <input type="email" className="input-field" placeholder="empleado@hotel.com" value={form.email} onChange={e => set('email', e.target.value)} />
+                <input type="email" className="input-field" style={{ borderColor: errores.email ? '#e74c3c' : '' }} value={form.email} onChange={e => set('email', e.target.value)} />
                 {errores.email && <p style={errStyle}>{errores.email}</p>}
               </div>
               <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                 <div style={{ flex: 1 }}>
                   <label className="input-label">NIF / DNI</label>
-                  <input type="text" className="input-field" placeholder="12345678A" value={form.nif} onChange={e => set('nif', e.target.value)} />
+                  <input type="text" className="input-field" style={{ borderColor: errores.nif ? '#e74c3c' : '' }} value={form.nif} onChange={e => set('nif', e.target.value)} />
                   {errores.nif && <p style={errStyle}>{errores.nif}</p>}
                 </div>
                 <div style={{ flex: 1 }}>
                   <label className="input-label">Telefono</label>
-                  <input type="tel" className="input-field" placeholder="+34 600 000 000" value={form.telefono} onChange={e => set('telefono', e.target.value)} />
+                  <input type="tel" className="input-field" style={{ borderColor: errores.telefono ? '#e74c3c' : '' }} value={form.telefono} onChange={e => set('telefono', e.target.value)} />
                   {errores.telefono && <p style={errStyle}>{errores.telefono}</p>}
                 </div>
               </div>
               <div style={iStyle}>
                 <label className="input-label">Contrasena</label>
-                <input type="password" className="input-field" placeholder="Minimo 6 caracteres" value={form.password} onChange={e => set('password', e.target.value)} />
+                <input type="password" className="input-field" style={{ borderColor: errores.password ? '#e74c3c' : '' }} value={form.password} onChange={e => set('password', e.target.value)} />
                 {errores.password && <p style={errStyle}>{errores.password}</p>}
               </div>
               <div style={{ marginBottom: '24px' }}>
                 <label className="input-label">Confirmar contrasena</label>
-                <input type="password" className="input-field" placeholder="Repite la contrasena" value={form.confirmar} onChange={e => set('confirmar', e.target.value)} />
+                <input type="password" className="input-field" style={{ borderColor: errores.confirmar ? '#e74c3c' : '' }} value={form.confirmar} onChange={e => set('confirmar', e.target.value)} />
                 {errores.confirmar && <p style={errStyle}>{errores.confirmar}</p>}
               </div>
 

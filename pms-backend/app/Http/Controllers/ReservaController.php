@@ -16,7 +16,7 @@ class ReservaController extends Controller
     public function index(Request $request)
     {
         $user  = Auth::guard('api')->user();
-        $query = Reserva::query();
+        $query = Reserva::with('habitacion');
 
         if ($user->rol === 'cliente') {
             $query->where('id_cliente', (string) $user->_id);
@@ -110,7 +110,7 @@ class ReservaController extends Controller
             'porcentaje_iva'    => $desglose['porcentaje_iva'],
             'importe_iva'       => $desglose['importe_iva'],
             'precio_total'      => $desglose['precio_total'],
-            'estado'            => 'Pendiente',
+            'estado'            => 'Confirmada',
             'estado_pago'       => 'pendiente',
             'metodo_pago'       => null,
             'pagado_en'         => null,

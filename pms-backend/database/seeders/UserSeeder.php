@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'password'  => 'admin123',
             'rol'       => 'admin',
             'nif'       => '00000000A',
-            'telefono'  => '+34 600 000 000',
+            'telefono'  => '600000000',
         ]);
 
         User::create([
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'password'  => 'recep123',
             'rol'       => 'recepcionista',
             'nif'       => '12345678A',
-            'telefono'  => '+34 611 111 111',
+            'telefono'  => '611111111',
         ]);
 
         User::create([
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
             'password'  => 'recep456',
             'rol'       => 'recepcionista',
             'nif'       => '87654321B',
-            'telefono'  => '+34 622 222 222',
+            'telefono'  => '622222222',
         ]);
 
         User::create([
@@ -50,7 +50,18 @@ class UserSeeder extends Seeder
             'password'  => 'limp123',
             'rol'       => 'limpieza',
             'nif'       => '11223344C',
-            'telefono'  => '+34 633 333 333',
+            'telefono'  => '633333333',
+        ]);
+
+        // Cliente registrado con reserva y factura
+        User::create([
+            'nombre'    => 'Laura',
+            'apellidos' => 'Martinez Perez',
+            'email'     => 'laura@email.com',
+            'password'  => 'cliente1',
+            'rol'       => 'cliente',
+            'nif'       => '44556677D',
+            'telefono'  => '644444444',
         ]);
     }
 }
