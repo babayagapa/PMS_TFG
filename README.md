@@ -1,4 +1,4 @@
-# 🏨 PMS_TFG — Sistema de Gestión Hotelera
+# PMS_TFG — Sistema de Gestión Hotelera
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
