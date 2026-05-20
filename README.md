@@ -1,114 +1,99 @@
-# PMS_TFG — Sistema de Gestion Hotelera
+# 🏨 PMS_TFG — Sistema de Gestión Hotelera
 
-TFG de Mario Gomez (@babayagapa) | 2 DAW | IES Venancio Blanco, Salamanca
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)
 
-Sistema web para gestionar habitaciones y reservas de un hotel.
-React + Laravel + MongoDB + Docker.
+**TFG de Mario Gómez (@babayagapa) | 2 DAW | IES Venancio Blanco, Salamanca**
 
----
-
-## Requisitos
-
-- Docker Desktop instalado y en ejecucion
-- Git
-
-No hace falta tener PHP, Node ni MongoDB instalados en local.
-Docker lo gestiona todo.
+Sistema web Full-Stack para gestionar habitaciones y reservas de hotel.  
+Desarrollado con React, Laravel, MongoDB y creado con Docker.
 
 ---
 
-## Arrancar el proyecto (primera vez)
+## 📸 Capturas del Proyecto
+
+### Landing Page
+Interfaz moderna basada en *Glassmorphism* para que los clientes busquen disponibilidad.
+> ![Landing Page](./pms-frontend/public/img/landing.png)
+
+### Dashboard
+Panel de control para la gestión de estados de habitaciones (limpias, ocupadas, en mantenimiento) y reservas.
+> ![Panel de Recepción](./pms-frontend/public/img/dashboard.png)
+
+---
+
+## ⚙️ Requisitos
+
+- **Docker Desktop** instalado y en ejecución.
+- **Git**
+
+No hace falta tener PHP, Node ni MongoDB instalados en local. Docker lo gestiona absolutamente todo.
+
+---
+
+## 🚀 Arrancar el proyecto (Primera vez)
 
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/babayagapa/PMS_TFG.git
 cd PMS_TFG
 
-# 2. Crear el archivo de variables de entorno
+# 2. Crear el archivo de variables de entorno(asegurarse de tener todos copiados porque son 3 en total 1back 2front y 3raiz)
 cp .env.example .env
 
 # 3. Construir y levantar los contenedores
 docker-compose up -d --build
 ```
-
-El contenedor del backend genera automaticamente las claves y puebla
-la base de datos en el primer arranque. Espera unos 30-60 segundos.
+El contenedor del backend genera automáticamente las claves y genera la base de datos en el primer arranque. Tarda unos 30-60 segundos.
 
 ```bash
 # 4. Comprobar que todo funciona
 docker-compose logs backend
-# Debe mostrar: "Iniciando Laravel en 0.0.0.0:8000..."
-
-# 5. Verificar la API
-curl http://localhost:8000/api/habitaciones
-# Debe devolver un array JSON con 12 habitaciones
+# Y deberia de mostrar: "Iniciando Laravel en 0.0.0.0:8000..."
 ```
 
 Abrir en el navegador: **http://localhost:5173**
 
----
+### 🔑 Credenciales de prueba
 
-## Credenciales de prueba
+| Rol | Email | Password |
+|---|---|---|
+| Admin | admin@hotel.com | admin123 |
+| Recepcionista | recepcion@hotel.com | recep123 |
+| Limpieza | limpieza@hotel.com | limp123 |
 
-| Rol           | Email                  | Password |
-|---------------|------------------------|----------|
-| Admin         | admin@hotel.com        | admin123 |
-| Recepcionista | recepcion@hotel.com    | recep123 |
-| Limpieza      | limpieza@hotel.com     | limp123  |
+### 🌍 Acceso remoto (Cloudflare Tunnel)
+El proyecto está preparado para ser expuesto mediante túneles Zero Trust.
 
----
-
-## Arranques posteriores
-
-```bash
-# Levantar (sin reconstruir)
-docker-compose up -d
-
-# Parar
-docker-compose down
-
-# Ver logs en tiempo real
-docker-compose logs -f backend
-```
-
----
-
-## Si algo sale mal
+Para crear un túnel público temporal manualmente:
 
 ```bash
-# Reconstruir los contenedores desde cero
-docker-compose down -v
-docker-compose up -d --build
-
-# Ejecutar seeders manualmente
-docker exec pms_backend php artisan db:seed --force
-
-# Regenerar claves manualmente
-docker exec pms_backend php artisan key:generate --force
-docker exec pms_backend php artisan jwt:secret --force
+# Ejecutar el demonio de Cloudflare desde el contenedor frontend
+docker exec -it pms_frontend npx cloudflared tunnel --url http://localhost:5173
 ```
+Genera un enlace público que apunta a tu equipo local.
 
 ---
 
-## Servicios
+## 🛠️ Servicios y Arquitectura
 
-| URL                        | Servicio              |
-|----------------------------|-----------------------|
-| http://localhost:5173      | Frontend React        |
-| http://localhost:8000/api  | API Laravel           |
-| http://localhost:8081      | Panel MongoDB         |
+### Flujo de la arquitectura:
+`Navegador` → `React (5173)` → `Axios` → `Laravel API (8000)` → `MongoDB (27017)`
 
----
-
-## Arquitectura
-
-```
-Navegador → React (5173) → Axios → Laravel API (8000) → MongoDB (27017)
-```
+| URL | Servicio |
+|---|---|
+| http://localhost:5173 | Frontend React |
+| http://localhost:8000/api | API Laravel |
+| http://localhost:8081 | Panel MongoDB (Mongo Express) |
 
 ---
 
-## Backup de datos
+## 💾 Backup de datos
+
+Para extraer una copia de las reservas actuales desde MongoDB:
 
 ```bash
 docker exec pms_mongo mongoexport \
@@ -119,28 +104,7 @@ docker cp pms_mongo:/tmp/backup.json ./backup_$(date +%Y%m%d).json
 
 ---
 
-## Acceso remoto (Cloudflare Tunnel)
+## 🌿 Ramas
 
-Para mostrar el proyecto desde otro equipo sin desplegarlo:
-
-```bash
-# Ver tu IP local
-hostname -I | awk '{print $1}'
-
-# Crear tunnel publico temporal
-cloudflared tunnel --url http://localhost:5173
-```
-
-Genera un enlace publico que apunta a tu equipo.
-Util para mostrarlo en el instituto teniendo el servidor en casa.
-
----
-
-## Ramas
-
-- `main` — codigo estable
-- `develop` — desarrollo activo
-
-## Acceso remoto con Cloudflare Tunnel
-- mariogomez.pms
-Es el nombre de mi dominio ya que lo tengo desplegado ahi, al ser mi pc puede ser que lo tenga abierto en el momento o no por lo que no es consistente para poder verlo, para eso es mejor seguir los pasos de docker
+- `main` — Código estable y testeado.
+- `develop` — Desarrollo activo.
