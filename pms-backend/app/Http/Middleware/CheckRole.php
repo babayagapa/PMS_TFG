@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    /**
-     * Verifica que el usuario autenticado tenga uno de los roles permitidos.
-     */
     public function handle(Request $request, Closure $next, string ...$roles)
     {
         $user = Auth::guard('api')->user();

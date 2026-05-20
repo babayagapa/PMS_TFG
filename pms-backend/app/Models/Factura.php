@@ -9,7 +9,6 @@ class Factura extends Model
     protected $connection = 'mongodb';
     protected $collection = 'facturas';
 
-    // Datos fiscales del hotel (constantes editables)
     const HOTEL_NOMBRE    = 'Hotel PMS Resort & Spa';
     const HOTEL_CIF       = 'B12345678';
     const HOTEL_DIRECCION = 'Calle Principal 1, 28001 Madrid, Espana';
@@ -41,25 +40,18 @@ class Factura extends Model
         'total'          => 'float',
     ];
 
-    /**
-     * Genera un numero de factura auto-incremental: FAC-2026-00001
-     */
+    // Genera numero de factura auto-incremental: FAC-2026-00001
     public static function generarNumero(): string
     {
         $anio  = date('Y');
         $count = self::where('numero_factura', 'like', "FAC-{$anio}-%")->count();
-
         return sprintf('FAC-%s-%05d', $anio, $count + 1);
     }
 
-    /**
-     * Crea una factura a partir de una reserva pagada.
-     */
+    // Crea una factura a partir de una reserva pagada
     public static function crearDesdeReserva(Reserva $reserva, User $cliente, string $metodoPago): self
     {
-        $lineas = [];
-
-        // Linea de habitacion
+        $lineas     = [];
         $habitacion = Habitacion::find($reserva->id_habitacion);
         $noches     = \Carbon\Carbon::parse($reserva->fecha_entrada)
                         ->diffInDays(\Carbon\Carbon::parse($reserva->fecha_salida));
@@ -73,13 +65,11 @@ class Factura extends Model
             'subtotal'        => $subtotalHab,
         ];
 
-        // Lineas de servicios pedidos
         $subtotalServicios = 0;
         if (!empty($reserva->servicios_pedidos)) {
             foreach ($reserva->servicios_pedidos as $sp) {
                 $sub = round($sp['precio'] * $sp['cantidad'], 2);
                 $subtotalServicios += $sub;
-
                 $lineas[] = [
                     'concepto'        => $sp['nombre'],
                     'cantidad'        => $sp['cantidad'],

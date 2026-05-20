@@ -5,12 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
-// Crea los usuarios iniciales del sistema
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Limpiar la coleccion antes de insertar
         User::truncate();
 
         User::create([

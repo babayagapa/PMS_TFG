@@ -44,9 +44,6 @@ class Reserva extends Model
         'servicios_pedidos' => 'array',
     ];
 
-    /**
-     * Calcula el desglose completo de precios (habitacion + servicios + IVA).
-     */
     public static function calcularDesglose(
         float $precioNoche,
         string $entrada,
@@ -78,8 +75,6 @@ class Reserva extends Model
             'precio_total'      => $precioTotal,
         ];
     }
-
-    // --- Relaciones ---
 
     public function habitacion()
     {

@@ -20,20 +20,16 @@ class HabitacionController extends Controller
             $query->where('ocupada', $request->boolean('ocupada'));
         }
 
-        $habitaciones = $query->orderBy('numero')->get();
-
-        return response()->json($habitaciones);
+        return response()->json($query->orderBy('numero')->get());
     }
 
     // GET /api/habitaciones/{id}
     public function show(string $id)
     {
-        $habitacion = Habitacion::findOrFail($id);
-
-        return response()->json($habitacion);
+        return response()->json(Habitacion::findOrFail($id));
     }
 
-    // POST /api/habitaciones
+    // POST /api/habitaciones (solo admin)
     public function store(Request $request)
     {
         $request->validate([
@@ -43,25 +39,30 @@ class HabitacionController extends Controller
             'capacidad'    => 'required|integer|min:1',
         ]);
 
-        $habitacion = Habitacion::create($request->all());
+        $habitacion = Habitacion::create($request->only([
+            'numero', 'tipo', 'precio_noche', 'capacidad',
+            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades',
+        ]));
 
         return response()->json($habitacion, 201);
     }
 
-    // PUT /api/habitaciones/{id}
+    // PUT /api/habitaciones/{id} (solo admin)
     public function update(Request $request, string $id)
     {
         $habitacion = Habitacion::findOrFail($id);
-        $habitacion->update($request->all());
+        $habitacion->update($request->only([
+            'numero', 'tipo', 'precio_noche', 'capacidad',
+            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades',
+        ]));
 
         return response()->json($habitacion);
     }
 
-    // DELETE /api/habitaciones/{id}
+    // DELETE /api/habitaciones/{id} (solo admin)
     public function destroy(string $id)
     {
-        $habitacion = Habitacion::findOrFail($id);
-        $habitacion->delete();
+        Habitacion::findOrFail($id)->delete();
 
         return response()->json(['message' => 'Habitacion eliminada']);
     }
