@@ -38,70 +38,41 @@ class ReservaSeeder extends Seeder
         $metodosPago = ['tarjeta', 'efectivo', 'transferencia'];
         $hoy = Carbon::today();
 
-        // Tracker de ocupacion por habitacion: guarda la fecha de salida mas reciente
-        // para evitar solapamientos (la siguiente entrada = salida anterior)
         $habOcupada = [];
 
-        // Definir reservas secuenciales por habitacion
-        // Estructura: [hab_idx, huesped_idx, noches, estado, pago, esCliente, offsetDias]
-        // offsetDias es relativo a "hoy" para la primera reserva de esa habitacion,
-        // las siguientes se encadenan automaticamente
         $plantillas = [
-            // --- HAB 101 (Individual) --- 3 reservas encadenadas
             ['hab' => 0, 'huesped' => 0,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => true,  'inicio' => -10],
             ['hab' => 0, 'huesped' => 1,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
             ['hab' => 0, 'huesped' => 2,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 0, 'huesped' => 3,  'noches' => 3, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 102 (Individual) --- 3 reservas
             ['hab' => 1, 'huesped' => 4,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -5],
             ['hab' => 1, 'huesped' => 5,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 1, 'huesped' => 6,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 103 (Individual) --- 3 reservas
             ['hab' => 2, 'huesped' => 7,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -8],
             ['hab' => 2, 'huesped' => 8,  'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 2, 'huesped' => 9,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 104 (Individual) --- 2 reservas
             ['hab' => 3, 'huesped' => 10, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => 0],
             ['hab' => 3, 'huesped' => 11, 'noches' => 4, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 201 (Doble) --- 4 reservas
             ['hab' => 4, 'huesped' => 0,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => true,  'inicio' => -6],
             ['hab' => 4, 'huesped' => 12, 'noches' => 2, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
             ['hab' => 4, 'huesped' => 13, 'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 4, 'huesped' => 14, 'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 202 (Doble) --- 3 reservas
             ['hab' => 5, 'huesped' => 1,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -4],
             ['hab' => 5, 'huesped' => 3,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 5, 'huesped' => 5,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 203 (Doble) --- 3 reservas
             ['hab' => 6, 'huesped' => 7,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -3],
             ['hab' => 6, 'huesped' => 9,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
             ['hab' => 6, 'huesped' => 11, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 204 (Doble) --- 2 reservas
             ['hab' => 7, 'huesped' => 2,  'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => 1],
             ['hab' => 7, 'huesped' => 4,  'noches' => 3, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 301 (Suite) --- 3 reservas
             ['hab' => 8, 'huesped' => 6,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => -7],
             ['hab' => 8, 'huesped' => 8,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',    'esCliente' => false, 'inicio' => null],
             ['hab' => 8, 'huesped' => 10, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 302 (Suite) --- 2 reservas
             ['hab' => 9, 'huesped' => 12, 'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pendiente', 'esCliente' => false, 'inicio' => -2],
             ['hab' => 9, 'huesped' => 14, 'noches' => 4, 'estado' => 'Pendiente',  'pago' => 'pendiente', 'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 401 (Familiar) --- 3 reservas
             ['hab' => 10, 'huesped' => 1,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => -9],
             ['hab' => 10, 'huesped' => 3,  'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
             ['hab' => 10, 'huesped' => 5,  'noches' => 5, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => null],
-
-            // --- HAB 402 (Familiar) --- 3 reservas
             ['hab' => 11, 'huesped' => 13, 'noches' => 3, 'estado' => 'Confirmada', 'pago' => 'pagado',   'esCliente' => false, 'inicio' => -4],
             ['hab' => 11, 'huesped' => 7,  'noches' => 4, 'estado' => 'Confirmada', 'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
             ['hab' => 11, 'huesped' => 9,  'noches' => 2, 'estado' => 'Pendiente',  'pago' => 'pendiente','esCliente' => false, 'inicio' => null],
@@ -112,13 +83,10 @@ class ReservaSeeder extends Seeder
             $huesped = $huespedes[$p['huesped']];
             $habKey  = $p['hab'];
 
-            // Calcular fecha de entrada
             if ($p['inicio'] !== null) {
-                // Primera reserva de la habitacion o reserva con offset explícito
                 $entrada = $hoy->copy()->addDays($p['inicio']);
-                $habOcupada[$habKey] = $entrada->copy(); // reset tracker
+                $habOcupada[$habKey] = $entrada->copy(); 
             } else {
-                // Encadenar: entrada = salida anterior
                 $entrada = $habOcupada[$habKey]->copy();
             }
 

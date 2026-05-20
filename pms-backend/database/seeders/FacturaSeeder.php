@@ -17,10 +17,8 @@ class FacturaSeeder extends Seeder
 
         $cliente = User::where('rol', 'cliente')->first();
 
-        // Buscar las reservas pagadas para crear facturas
         $reservasPagadas = Reserva::where('estado_pago', 'pagado')->get();
 
-        // Crear facturas para las primeras 10 reservas pagadas
         $count = 0;
         foreach ($reservasPagadas as $reserva) {
             if ($count >= 10) break;
@@ -47,7 +45,6 @@ class FacturaSeeder extends Seeder
             $importeIva    = round($baseImponible * ($porcentajeIva / 100), 2);
             $total         = round($baseImponible + $importeIva, 2);
 
-            // Si la reserva pertenece al cliente registrado, usar sus datos
             $esDelCliente = $cliente && $reserva->id_cliente === (string) $cliente->_id;
 
             $datosCliente = [

@@ -14,7 +14,6 @@ class Handler extends ExceptionHandler
 {
     protected $dontFlash = ['password', 'password_confirmation'];
 
-    // Todas las rutas /api/* devuelven siempre JSON, nunca HTML
     public function render($request, Throwable $e)
     {
         if ($request->is('api/*') || $request->expectsJson()) {

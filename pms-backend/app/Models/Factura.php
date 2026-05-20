@@ -40,7 +40,6 @@ class Factura extends Model
         'total'          => 'float',
     ];
 
-    // Genera numero de factura auto-incremental: FAC-2026-00001
     public static function generarNumero(): string
     {
         $anio  = date('Y');
@@ -48,7 +47,6 @@ class Factura extends Model
         return sprintf('FAC-%s-%05d', $anio, $count + 1);
     }
 
-    // Crea una factura a partir de una reserva pagada
     public static function crearDesdeReserva(Reserva $reserva, User $cliente, string $metodoPago): self
     {
         $lineas     = [];

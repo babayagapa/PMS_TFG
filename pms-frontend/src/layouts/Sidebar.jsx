@@ -7,8 +7,8 @@ export default function Sidebar() {
   const esAdmin = usuario?.rol === 'admin'
   const esLimpieza = usuario?.rol === 'limpieza'
 
-  const base     = 'block px-3 py-2 rounded text-sm transition-colors'
-  const activo   = `${base} bg-primary text-white font-medium`
+  const base = 'block px-3 py-2 rounded text-sm transition-colors'
+  const activo = `${base} bg-primary text-white font-medium`
   const inactivo = `${base} text-gray-300 hover:text-white hover:bg-white hover:bg-opacity-10`
 
   return (
@@ -45,8 +45,8 @@ export default function Sidebar() {
           <NavLink to="/habitaciones" className={({ isActive }) => isActive ? activo : inactivo}>Habitaciones</NavLink>
           {!esLimpieza && (
             <>
-              <NavLink to="/reservas"  className={({ isActive }) => isActive ? activo : inactivo}>Reservas</NavLink>
-              <NavLink to="/facturas"  className={({ isActive }) => isActive ? activo : inactivo}>Facturas</NavLink>
+              <NavLink to="/reservas" className={({ isActive }) => isActive ? activo : inactivo}>Reservas</NavLink>
+              <NavLink to="/facturas" className={({ isActive }) => isActive ? activo : inactivo}>Facturas</NavLink>
             </>
           )}
           {esAdmin && (

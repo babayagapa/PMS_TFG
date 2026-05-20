@@ -44,8 +44,6 @@ class User extends Authenticatable implements JWTSubject
         $this->attributes['password'] = Hash::make($value);
     }
 
-    // --- Helpers de rol ---
-
     public function esAdmin(): bool
     {
         return $this->rol === 'admin';
@@ -65,8 +63,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->rol === 'limpieza';
     }
-
-    // --- Relaciones ---
 
     public function reservas()
     {

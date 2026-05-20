@@ -19,11 +19,8 @@ export default function PanelPage() {
 
         const totalHabs = habs.length
 
-        // Reservas activas (no canceladas)
         const activas = reservas.filter(r => r.estado !== 'Cancelada')
 
-        // Habitaciones ocupadas hoy: tienen reserva donde entrada <= hoy Y salida >= hoy
-        // Incluye llegadas (check-in hoy) y salidas (check-out hoy, siguen ocupadas)
         const idsOcupadas = new Set()
         activas.forEach(r => {
           if (r.fecha_entrada <= hoy && r.fecha_salida >= hoy) {

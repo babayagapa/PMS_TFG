@@ -1,18 +1,18 @@
 import { useState } from 'react'
 
-const TIPOS   = ['Individual', 'Doble', 'Suite', 'Familiar']
+const TIPOS = ['Individual', 'Doble', 'Suite', 'Familiar']
 const ESTADOS = ['Limpia', 'Sucia', 'En mantenimiento']
-const CHIPS   = ['WiFi', 'TV', 'Aire acondicionado', 'Minibar', 'Jacuzzi', 'Terraza', 'Nevera', 'Microondas']
+const CHIPS = ['WiFi', 'TV', 'Aire acondicionado', 'Minibar', 'Jacuzzi', 'Terraza', 'Nevera', 'Microondas']
 
 export default function HabitacionForm({ onSubmit, inicial = {}, cargando = false }) {
   const [form, setForm] = useState({
-    numero:          inicial.numero          || '',
-    tipo:            inicial.tipo            || 'Individual',
-    precio_noche:    inicial.precio_noche    || '',
-    capacidad:       inicial.capacidad       || 1,
+    numero: inicial.numero || '',
+    tipo: inicial.tipo || 'Individual',
+    precio_noche: inicial.precio_noche || '',
+    capacidad: inicial.capacidad || 1,
     estado_limpieza: inicial.estado_limpieza || 'Limpia',
-    descripcion:     inicial.descripcion     || '',
-    amenidades:      inicial.amenidades      || [],
+    descripcion: inicial.descripcion || '',
+    amenidades: inicial.amenidades || [],
   })
   const [errores, setErrores] = useState({})
 
@@ -28,11 +28,11 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
 
   const validar = () => {
     const e = {}
-    if (!form.numero)       e.numero       = 'El número es obligatorio'
+    if (!form.numero) e.numero = 'El número es obligatorio'
     if (!form.precio_noche || Number(form.precio_noche) <= 0)
-                            e.precio_noche = 'Introduce un precio válido'
+      e.precio_noche = 'Introduce un precio válido'
     if (Number(form.capacidad) < 1)
-                            e.capacidad    = 'Mínimo 1 persona'
+      e.capacidad = 'Mínimo 1 persona'
     return e
   }
 
@@ -122,11 +122,10 @@ export default function HabitacionForm({ onSubmit, inicial = {}, cargando = fals
             <button
               key={chip} type="button"
               onClick={() => toggleChip(chip)}
-              className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                form.amenidades.includes(chip)
+              className={`px-3 py-1 rounded-full text-xs border transition-colors ${form.amenidades.includes(chip)
                   ? 'bg-primary text-white border-primary'
                   : 'text-gray-600 border-gray-300 hover:border-primary'
-              }`}
+                }`}
             >
               {chip}
             </button>

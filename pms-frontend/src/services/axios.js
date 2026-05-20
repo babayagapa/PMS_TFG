@@ -1,8 +1,5 @@
 ﻿import axios from 'axios'
 
-// URL relativa: usa el proxy de Vite en desarrollo
-// Vite reenvía /api/* a http://backend:8000 (red interna Docker)
-// Esto elimina los errores de CORS completamente
 const api = axios.create({
   baseURL: '/api',
 })

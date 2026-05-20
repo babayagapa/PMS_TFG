@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ReservaController extends Controller
 {
-    // GET /api/reservas
     public function index(Request $request)
     {
         $user  = Auth::guard('api')->user();
@@ -31,7 +30,6 @@ class ReservaController extends Controller
         return response()->json($reservas);
     }
 
-    // GET /api/reservas/{id}
     public function show(string $id)
     {
         $user    = Auth::guard('api')->user();
@@ -44,7 +42,6 @@ class ReservaController extends Controller
         return response()->json($reserva);
     }
 
-    // POST /api/reservas
     public function store(Request $request)
     {
         $request->validate([
@@ -62,7 +59,6 @@ class ReservaController extends Controller
 
         $habitacion = Habitacion::findOrFail($request->id_habitacion);
 
-        // Validar que no haya solapamiento de fechas en la misma habitacion
         $overlap = Reserva::where('id_habitacion', $request->id_habitacion)
             ->where('estado', '!=', 'Cancelada')
             ->where('fecha_entrada', '<', $request->fecha_salida)
@@ -73,7 +69,6 @@ class ReservaController extends Controller
             return response()->json(['error' => 'La habitacion ya tiene una reserva en esas fechas'], 422);
         }
 
-        // Resolver servicios pedidos desde la BBDD
         $serviciosPedidos = [];
         if ($request->has('servicios_pedidos') && is_array($request->servicios_pedidos)) {
             foreach ($request->servicios_pedidos as $sp) {
@@ -128,7 +123,6 @@ class ReservaController extends Controller
         return response()->json($reserva, 201);
     }
 
-    // PUT /api/reservas/{id}
     public function update(Request $request, string $id)
     {
         $reserva = Reserva::findOrFail($id);
@@ -143,7 +137,6 @@ class ReservaController extends Controller
         return response()->json($reserva);
     }
 
-    // DELETE /api/reservas/{id} — cancela la reserva y libera la habitacion
     public function destroy(string $id)
     {
         $reserva = Reserva::findOrFail($id);
@@ -160,7 +153,6 @@ class ReservaController extends Controller
         return response()->json(['message' => 'Reserva cancelada']);
     }
 
-    // PATCH /api/reservas/{id}/confirmar
     public function confirmar(string $id)
     {
         $reserva = Reserva::findOrFail($id);
@@ -174,7 +166,6 @@ class ReservaController extends Controller
         return response()->json($reserva);
     }
 
-    // POST /api/reservas/{id}/pagar
     public function pagar(Request $request, string $id)
     {
         $request->validate([
@@ -213,7 +204,6 @@ class ReservaController extends Controller
         ]);
     }
 
-    // POST /api/reservas/{id}/servicios
     public function agregarServicios(Request $request, string $id)
     {
         $request->validate([

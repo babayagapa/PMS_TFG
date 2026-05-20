@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class FacturaController extends Controller
 {
-    // GET /api/facturas
-    // Admin/recepcionista: ve todas  |  Cliente: solo las suyas
     public function index(Request $request)
     {
         $user  = Auth::guard('api')->user();
@@ -31,7 +29,6 @@ class FacturaController extends Controller
         return response()->json($facturas);
     }
 
-    // GET /api/facturas/{id}
     public function show(string $id)
     {
         $user    = Auth::guard('api')->user();

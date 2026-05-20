@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // POST /api/register — solo registra clientes
     public function register(Request $request)
     {
         $request->validate([
@@ -47,7 +46,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // POST /api/login
     public function login(Request $request)
     {
         $request->validate([
@@ -79,7 +77,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // POST /api/logout
     public function logout()
     {
         Auth::guard('api')->logout();
@@ -87,7 +84,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Sesion cerrada']);
     }
 
-    // GET /api/me
     public function me()
     {
         $user = Auth::guard('api')->user();
@@ -103,7 +99,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // POST /api/personal/register — solo el admin puede registrar el personal
     public function registerPersonal(Request $request)
     {
         $request->validate([

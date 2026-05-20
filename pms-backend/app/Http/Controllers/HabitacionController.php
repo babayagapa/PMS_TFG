@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class HabitacionController extends Controller
 {
-    // GET /api/habitaciones
     public function index(Request $request)
     {
         $query = Habitacion::query();
@@ -29,7 +28,6 @@ class HabitacionController extends Controller
         return response()->json($habitaciones);
     }
 
-    // GET /api/habitaciones/{id}
     public function show(string $id)
     {
         $habitacion = Habitacion::findOrFail($id);
@@ -37,7 +35,6 @@ class HabitacionController extends Controller
         return response()->json($habitacion);
     }
 
-    // POST /api/habitaciones (solo admin)
     public function store(Request $request)
     {
         $request->validate([
@@ -55,7 +52,6 @@ class HabitacionController extends Controller
         return response()->json($habitacion, 201);
     }
 
-    // PUT /api/habitaciones/{id} (solo admin)
     public function update(Request $request, string $id)
     {
         $habitacion = Habitacion::findOrFail($id);
@@ -67,7 +63,6 @@ class HabitacionController extends Controller
         return response()->json($habitacion);
     }
 
-    // DELETE /api/habitaciones/{id} (solo admin)
     public function destroy(string $id)
     {
         Habitacion::findOrFail($id)->delete();
@@ -75,7 +70,6 @@ class HabitacionController extends Controller
         return response()->json(['message' => 'Habitacion eliminada']);
     }
 
-    // PATCH /api/habitaciones/{id}/limpieza (admin + limpieza)
     public function cambiarLimpieza(Request $request, string $id)
     {
         $request->validate([

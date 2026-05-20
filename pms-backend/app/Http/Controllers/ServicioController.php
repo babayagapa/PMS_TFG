@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
-    // GET /api/servicios — catalogo publico (solo servicios disponibles)
     public function index()
     {
         $servicios = Servicio::where('disponible', true)
@@ -18,7 +17,6 @@ class ServicioController extends Controller
         return response()->json($servicios);
     }
 
-    // GET /api/servicios/{id}
     public function show(string $id)
     {
         $servicio = Servicio::findOrFail($id);
@@ -26,7 +24,6 @@ class ServicioController extends Controller
         return response()->json($servicio);
     }
 
-    // POST /api/servicios (solo admin)
     public function store(Request $request)
     {
         $request->validate([
@@ -48,7 +45,6 @@ class ServicioController extends Controller
         return response()->json($servicio, 201);
     }
 
-    // PUT /api/servicios/{id} (solo admin)
     public function update(Request $request, string $id)
     {
         $servicio = Servicio::findOrFail($id);
@@ -64,7 +60,6 @@ class ServicioController extends Controller
         return response()->json($servicio);
     }
 
-    // DELETE /api/servicios/{id} (solo admin)
     public function destroy(string $id)
     {
         $servicio = Servicio::findOrFail($id);
