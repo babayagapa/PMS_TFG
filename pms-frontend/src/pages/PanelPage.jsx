@@ -17,23 +17,41 @@ export default function PanelPage() {
         const reservas = resRes.data
         const hoy = new Date().toISOString().slice(0, 10)
 
-        // Habitaciones
         const totalHabs = habs.length
-        const ocupadas = habs.filter(h => h.ocupada).length
-        const disponibles = totalHabs - ocupadas
-        const aLimpiar = habs.filter(h => h.estado_limpieza !== 'Limpia').length
 
-        // Reservas de hoy
-        const reservasHoy = reservas.filter(r =>
-          r.estado !== 'Cancelada' &&
-          r.fecha_entrada <= hoy &&
-          r.fecha_salida >= hoy
-        )
-        const llegadasHoy = reservas.filter(r =>
-          r.estado !== 'Cancelada' && r.fecha_entrada === hoy
-        ).length
-        const salidasHoy = reservas.filter(r =>
-          r.estado !== 'Cancelada' && r.fecha_salida === hoy
+        // Reservas activas (no canceladas)
+        const activas = reservas.filter(r => r.estado !== 'Cancelada')
+
+        // Habitaciones ocupadas hoy: tienen reserva donde entrada <= hoy Y salida >= hoy
+        // Incluye llegadas (check-in hoy) y salidas (check-out hoy, siguen ocupadas)
+        const idsOcupadas = new Set()
+        activas.forEach(r => {
+          if (r.fecha_entrada <= hoy && r.fecha_salida >= hoy) {
+            idsOcupadas.add(r.id_habitacion)
+          }
+        })
+        const ocupadas = idsOcupadas.size
+        const disponibles = totalHabs - ocupadas
+
+        // Llegadas hoy (check-in hoy)
+        const llegadasHoy = activas.filter(r => r.fecha_entrada === hoy).length
+
+        // Salidas hoy (check-out hoy) — siguen ocupadas pero se marcan para limpieza
+        const salidasHoy = activas.filter(r => r.fecha_salida === hoy).length
+
+        // Habitaciones a limpiar: las que tienen checkout HOY
+        // Al día siguiente ya están limpias automáticamente
+        const idsALimpiar = new Set()
+        activas.forEach(r => {
+          if (r.fecha_salida === hoy) {
+            idsALimpiar.add(r.id_habitacion)
+          }
+        })
+        const aLimpiar = idsALimpiar.size
+
+        // Reservas activas hoy
+        const reservasHoy = activas.filter(r =>
+          r.fecha_entrada <= hoy && r.fecha_salida >= hoy
         ).length
 
         setStats({
@@ -41,7 +59,7 @@ export default function PanelPage() {
           ocupadas,
           disponibles,
           aLimpiar,
-          reservasHoy: reservasHoy.length,
+          reservasHoy,
           llegadasHoy,
           salidasHoy,
           ocupacionPct: totalHabs > 0 ? Math.round((ocupadas / totalHabs) * 100) : 0,
