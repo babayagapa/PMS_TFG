@@ -4,12 +4,12 @@ import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
 
 export default function LoginPage() {
-  const [email,    setEmail]    = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error,    setError]    = useState('')
-  const [loading,  setLoading]  = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const { login } = useAuth()
-  const nav       = useNavigate()
+  const nav = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,7 +18,6 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const user = await login(email, password)
-      // Clientes van a inicio, limpieza a habitaciones, admin/recepcionista a panel
       if (user.rol === 'cliente') nav('/')
       else if (user.rol === 'limpieza') nav('/habitaciones')
       else nav('/panel')

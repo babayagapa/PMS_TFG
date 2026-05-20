@@ -42,7 +42,6 @@ export default function LandingPage() {
     nav(`/habitaciones?${params.toString()}`)
   }
 
-  // Agrupar por tipo, solo disponibles
   const tipos = useMemo(() => {
     const disponibles = habitaciones.filter(h => !h.ocupada && h.estado_limpieza === 'Limpia')
     const agrupado = {}
@@ -60,7 +59,6 @@ export default function LandingPage() {
     <div className="Page">
       <Navbar />
 
-      {/* HERO */}
       <header className="glass" style={{ display: 'flex', gap: '50px', padding: '60px 40px', marginBottom: '40px', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
           <h1 style={{ fontSize: '3.5rem', marginTop: 0, marginBottom: '20px', lineHeight: 1.1, letterSpacing: '-1px' }}>
@@ -79,7 +77,6 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* BUSCADOR */}
       <section className="glass" style={{ display: 'flex', gap: '20px', padding: '30px 40px', alignItems: 'flex-end', marginBottom: '40px' }}>
         <div className="input-group">
           <label className="input-label">Fecha de Entrada</label>
@@ -104,7 +101,6 @@ export default function LandingPage() {
         </button>
       </section>
 
-      {/* HABITACIONES EN RECTANGULOS */}
       <section>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '24px' }}>
           Habitaciones disponibles

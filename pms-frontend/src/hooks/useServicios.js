@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 
 export function useServicios() {
   const [servicios, setServicios] = useState([])
-  const [loading, setLoading]     = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)

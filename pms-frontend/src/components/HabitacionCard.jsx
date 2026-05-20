@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { formatEuros } from '../utils/formatDate'
 
 export default function HabitacionCard({ habitacion }) {
-  const nav        = useNavigate()
+  const nav = useNavigate()
   const disponible = !habitacion.ocupada && habitacion.estado_limpieza === 'Limpia'
 
   return (

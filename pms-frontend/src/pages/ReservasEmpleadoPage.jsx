@@ -23,7 +23,6 @@ export default function ReservasEmpleadoPage() {
   const [pagando, setPagando] = useState(false)
   const [tooltip, setTooltip] = useState(null)
 
-  // Gantt State
   const hoy = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d }, [])
   const [startDate, setStartDate] = useState(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d })
   const daysToShow = 14
@@ -39,9 +38,9 @@ export default function ReservasEmpleadoPage() {
 
   const getReservaColor = (estado, pago) => {
     if (estado === 'Cancelada') return { bg: '#bdc3c7', border: '#95a5a6' }
-    if (pago === 'pagado') return { bg: '#27ae60', border: '#1e8449' }           // Verde = pagada
-    if (estado === 'Confirmada') return { bg: '#f39c12', border: '#d68910' }     // Amarillo = confirmada sin pagar
-    return { bg: '#95a5a6', border: '#7f8c8d' }                                   // Gris = pendiente
+    if (pago === 'pagado') return { bg: '#27ae60', border: '#1e8449' }
+    if (estado === 'Confirmada') return { bg: '#f39c12', border: '#d68910' }
+    return { bg: '#95a5a6', border: '#7f8c8d' }
   }
   const getReservaLabel = (estado, pago) => {
     if (estado === 'Cancelada') return 'Cancelada'
@@ -50,7 +49,6 @@ export default function ReservasEmpleadoPage() {
     return 'Pendiente'
   }
 
-  // Mes y ano del rango visible
   const mesLabel = (() => {
     const m1 = startDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
     const m2 = endDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
@@ -79,7 +77,6 @@ export default function ReservasEmpleadoPage() {
   }
 
 
-
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
@@ -92,10 +89,9 @@ export default function ReservasEmpleadoPage() {
           </button>
         </div>
 
-        {/* ─── CALENDARIO GANTT ─── */}
+
         <div className="glass" style={{ padding: '0', marginBottom: '32px', overflow: 'hidden', borderRadius: '16px' }}>
 
-          {/* TOOLBAR */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: '1px solid rgba(0,0,0,0.08)', background: 'rgba(44,62,80,0.03)' }}>
             <div>
               <h3 style={{ margin: 0, fontWeight: 700, color: '#2C3E50', fontSize: '1.1rem' }}>📅 Calendario de Ocupación</h3>
@@ -107,17 +103,13 @@ export default function ReservasEmpleadoPage() {
             </div>
           </div>
 
-          {/* GANTT GRID */}
           <div style={{ overflowX: 'auto', position: 'relative' }}>
             <div style={{ display: 'flex', minWidth: '700px' }}>
 
-              {/* COLUMNA DE HABITACIONES */}
               <div style={{ width: `${ROOM_COL_W}px`, flexShrink: 0, borderRight: '2px solid rgba(0,0,0,0.1)', background: '#fafbfc', zIndex: 2 }}>
-                {/* Header vacio arriba */}
                 <div style={{ height: '52px', borderBottom: '2px solid rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   Habitación
                 </div>
-                {/* Filas de habitacion */}
                 {!loading && habitaciones.map((hab, idx) => (
                   <div key={hab._id} style={{
                     height: '44px', display: 'flex', alignItems: 'center', padding: '0 12px', gap: '8px',
@@ -130,9 +122,7 @@ export default function ReservasEmpleadoPage() {
                 ))}
               </div>
 
-              {/* AREA DEL CALENDARIO */}
               <div style={{ flex: 1 }}>
-                {/* Header de dias */}
                 <div style={{ display: 'flex', height: '52px', borderBottom: '2px solid rgba(0,0,0,0.1)' }}>
                   {dates.map(d => {
                     const esHoy = d.getTime() === hoy.getTime()
@@ -155,7 +145,6 @@ export default function ReservasEmpleadoPage() {
                   })}
                 </div>
 
-                {/* Filas de reservas */}
                 {loading ? (
                   <div style={{ padding: '60px', textAlign: 'center' }}><Spinner /></div>
                 ) : habitaciones.map((hab, idx) => {
@@ -166,7 +155,6 @@ export default function ReservasEmpleadoPage() {
                       borderBottom: '1px solid rgba(0,0,0,0.06)',
                       background: idx % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)'
                     }}>
-                      {/* Grid lines verticales */}
                       {dates.map((d, i) => {
                         const esHoy = d.getTime() === hoy.getTime()
                         const esFinde = d.getDay() === 0 || d.getDay() === 6
@@ -179,7 +167,6 @@ export default function ReservasEmpleadoPage() {
                         )
                       })}
 
-                      {/* Barras de reservas */}
                       {habRes.map(r => {
                         const rStart = new Date(r.fecha_entrada); rStart.setHours(0, 0, 0, 0)
                         const rEnd = new Date(r.fecha_salida); rEnd.setHours(0, 0, 0, 0)
@@ -226,7 +213,6 @@ export default function ReservasEmpleadoPage() {
             </div>
           </div>
 
-          {/* LEYENDA */}
           <div style={{ display: 'flex', gap: '20px', padding: '14px 24px', borderTop: '1px solid rgba(0,0,0,0.08)', background: 'rgba(44,62,80,0.02)', fontSize: '12px', fontWeight: 600, color: '#666' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={{ width: '14px', height: '14px', borderRadius: '3px', background: '#95a5a6', border: '1px solid #7f8c8d' }}></div>
@@ -243,7 +229,6 @@ export default function ReservasEmpleadoPage() {
           </div>
         </div>
 
-        {/* ─── TABLA DETALLADA ─── */}
         <h3 style={{ fontWeight: 700, color: '#2C3E50', marginBottom: '16px' }}>Listado de Reservas</h3>
         {loading ? <Spinner /> : (
           <div className="glass" style={{ padding: '8px', overflowX: 'auto' }}>
@@ -283,7 +268,6 @@ export default function ReservasEmpleadoPage() {
           </div>
         )}
 
-        {/* Modal de pago */}
         {modalPago && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
             <div className="glass" style={{ width: '100%', maxWidth: '420px', padding: '32px' }}>
@@ -311,7 +295,6 @@ export default function ReservasEmpleadoPage() {
           </div>
         )}
 
-        {/* Tooltip flotante */}
         {tooltip && (
           <div style={{
             position: 'fixed', left: tooltip.x + 12, top: tooltip.y - 10,

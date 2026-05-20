@@ -8,23 +8,23 @@ import { formatEuros, hoy } from '../utils/formatDate'
 
 const IMG_MAP = {
   Individual: '/img/individual.png',
-  Doble:      '/img/doble.png',
-  Suite:      '/img/suite.png',
-  Familiar:   '/img/familiar.png',
+  Doble: '/img/doble.png',
+  Suite: '/img/suite.png',
+  Familiar: '/img/familiar.png',
 }
 
 const DESCRIPCIONES = {
   Individual: 'Habitación acogedora con cama individual, ideal para viajeros de negocios. Equipada con escritorio de trabajo y todas las comodidades esenciales.',
-  Doble:      'Espaciosa habitación con cama de matrimonio o dos camas, perfecta para parejas o amigos. Disfruta de un ambiente luminoso y confortable.',
-  Suite:      'Una experiencia incomparable con salón privado, terraza panorámica y acabados de lujo diseñados para la máxima relajación.',
-  Familiar:   'Ideal para familias, con amplio espacio, zona infantil y todas las comodidades modernas para una estancia inolvidable.',
+  Doble: 'Espaciosa habitación con cama de matrimonio o dos camas, perfecta para parejas o amigos. Disfruta de un ambiente luminoso y confortable.',
+  Suite: 'Una experiencia incomparable con salón privado, terraza panorámica y acabados de lujo diseñados para la máxima relajación.',
+  Familiar: 'Ideal para familias, con amplio espacio, zona infantil y todas las comodidades modernas para una estancia inolvidable.',
 }
 
 const TAGS = {
   Individual: ['WiFi Alta Velocidad', 'Escritorio', 'Capacidad: 1 Persona'],
-  Doble:      ['WiFi Alta Velocidad', 'Cama Queen', 'Capacidad: 2 Personas'],
-  Suite:      ['WiFi Alta Velocidad', 'Jacuzzi Privado', 'Terraza', 'Capacidad: 2 Personas'],
-  Familiar:   ['WiFi Alta Velocidad', 'Smart TV', 'Nevera', 'Capacidad: 4 Personas'],
+  Doble: ['WiFi Alta Velocidad', 'Cama Queen', 'Capacidad: 2 Personas'],
+  Suite: ['WiFi Alta Velocidad', 'Jacuzzi Privado', 'Terraza', 'Capacidad: 2 Personas'],
+  Familiar: ['WiFi Alta Velocidad', 'Smart TV', 'Nevera', 'Capacidad: 4 Personas'],
 }
 
 export default function HabitacionesClientePage() {
@@ -33,15 +33,13 @@ export default function HabitacionesClientePage() {
   const { habitaciones, loading: loadHab } = useHabitaciones()
   const { reservas } = useReservas()
 
-  const [entrada, setEntrada]     = useState(searchParams.get('entrada') || '')
-  const [salida, setSalida]       = useState(searchParams.get('salida') || '')
+  const [entrada, setEntrada] = useState(searchParams.get('entrada') || '')
+  const [salida, setSalida] = useState(searchParams.get('salida') || '')
   const [huespedes, setHuespedes] = useState(searchParams.get('huespedes') || '1')
 
-  // Agrupar habitaciones por tipo y calcular la mas barata de cada tipo
   const tiposDisponibles = useMemo(() => {
     let habsFiltradas = habitaciones.filter(h => !h.ocupada && h.estado_limpieza === 'Limpia')
 
-    // Si hay fechas, filtrar por conflictos con reservas
     if (entrada && salida) {
       const reservasActivas = reservas.filter(r => r.estado !== 'Cancelada')
       habsFiltradas = habsFiltradas.filter(h => {
@@ -54,12 +52,10 @@ export default function HabitacionesClientePage() {
       })
     }
 
-    // Filtrar por capacidad
     if (huespedes) {
       habsFiltradas = habsFiltradas.filter(h => h.capacidad >= parseInt(huespedes))
     }
 
-    // Agrupar por tipo
     const agrupado = {}
     habsFiltradas.forEach(h => {
       if (!agrupado[h.tipo]) {
@@ -94,7 +90,6 @@ export default function HabitacionesClientePage() {
     <div className="Page">
       <Navbar />
 
-      {/* Buscador */}
       <section
         className="glass"
         style={{ display: 'flex', gap: '20px', padding: '30px 40px', alignItems: 'flex-end', marginBottom: '40px' }}
@@ -118,12 +113,11 @@ export default function HabitacionesClientePage() {
           </select>
         </div>
         <button className="btn-primary" style={{ height: '47px', padding: '0 40px', whiteSpace: 'nowrap' }}
-          onClick={() => {}}>
+          onClick={() => { }}>
           Buscar
         </button>
       </section>
 
-      {/* Listado de tipos de habitacion */}
       <section>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '24px' }}>
           {entrada && salida ? 'Habitaciones disponibles para tus fechas' : 'Nuestras habitaciones'}
@@ -144,7 +138,6 @@ export default function HabitacionesClientePage() {
                 onMouseEnter={e => e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.10)'}
                 onMouseLeave={e => e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.05)'}
               >
-                {/* Contenido izquierda */}
                 <div style={{ flex: 1, padding: '32px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
@@ -184,7 +177,6 @@ export default function HabitacionesClientePage() {
                   </div>
                 </div>
 
-                {/* Imagen derecha */}
                 <div style={{ width: '340px', minHeight: '240px', flexShrink: 0 }}>
                   <img
                     src={IMG_MAP[t.tipo] || '/img/individual.png'}

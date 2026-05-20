@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null)
-  const [token, setToken]     = useState(localStorage.getItem('pms_token'))
+  const [token, setToken] = useState(localStorage.getItem('pms_token'))
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
   }
 
   const logout = async () => {
-    try { await logoutApi() } catch (_) {}
+    try { await logoutApi() } catch (_) { }
     localStorage.removeItem('pms_token')
     setToken(null)
     setUsuario(null)

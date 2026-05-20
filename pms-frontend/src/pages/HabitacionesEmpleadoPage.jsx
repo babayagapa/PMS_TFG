@@ -10,17 +10,17 @@ import toast from 'react-hot-toast'
 
 export default function HabitacionesEmpleadoPage() {
   const { usuario } = useAuth() || {}
-  const esAdmin    = usuario?.rol === 'admin'
+  const esAdmin = usuario?.rol === 'admin'
   const esLimpieza = usuario?.rol === 'limpieza'
   const puedeEditarLimpieza = esAdmin || esLimpieza
 
-  const [tipo,    setTipo]    = useState('')
+  const [tipo, setTipo] = useState('')
   const [ocupada, setOcupada] = useState('')
-  const [modal,   setModal]   = useState(null)
-  const [saving,  setSaving]  = useState(false)
+  const [modal, setModal] = useState(null)
+  const [saving, setSaving] = useState(false)
 
   const filtros = {}
-  if (tipo)           filtros.tipo   = tipo
+  if (tipo) filtros.tipo = tipo
   if (ocupada !== '') filtros.ocupada = ocupada
 
   const { habitaciones, loading } = useHabitaciones(filtros)
@@ -29,7 +29,7 @@ export default function HabitacionesEmpleadoPage() {
     setSaving(true)
     try {
       if (modal === 'nueva') { await createHabitacion(datos); toast.success('Habitacion creada') }
-      else                   { await updateHabitacion(modal._id, datos); toast.success('Habitacion actualizada') }
+      else { await updateHabitacion(modal._id, datos); toast.success('Habitacion actualizada') }
       setModal(null)
       window.location.reload()
     } catch (_) {
@@ -70,7 +70,6 @@ export default function HabitacionesEmpleadoPage() {
           )}
         </div>
 
-        {/* Filtros */}
         <div className="glass" style={{ display: 'flex', gap: '16px', padding: '20px 24px', marginBottom: '32px' }}>
           <select className="input-field" style={{ maxWidth: '200px' }} value={tipo} onChange={e => setTipo(e.target.value)}>
             <option value="">Todos los tipos</option>
@@ -118,7 +117,6 @@ export default function HabitacionesEmpleadoPage() {
           </div>
         )}
 
-        {/* Modal */}
         {modal && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
             <div className="glass" style={{ width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto', padding: '32px' }}>

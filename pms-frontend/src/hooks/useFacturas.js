@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 
 export function useFacturas() {
   const [facturas, setFacturas] = useState([])
-  const [loading, setLoading]   = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)

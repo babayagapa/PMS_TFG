@@ -15,18 +15,18 @@ export default function ReservaForm() {
   const { usuario } = useAuth()
 
   const { habitaciones } = useHabitaciones()
-  const { reservas }     = useReservas()
-  const { servicios }    = useServicios()
+  const { reservas } = useReservas()
+  const { servicios } = useServicios()
 
   const [form, setForm] = useState({
-    id_habitacion:    params.get('id_habitacion') || '',
-    nombre_huesped:   usuario?.nombre   || '',
-    email_huesped:    usuario?.email    || '',
+    id_habitacion: params.get('id_habitacion') || '',
+    nombre_huesped: usuario?.nombre || '',
+    email_huesped: usuario?.email || '',
     telefono_huesped: usuario?.telefono || '',
-    fecha_entrada:    params.get('fecha_entrada') || '',
-    fecha_salida:     params.get('fecha_salida')  || '',
-    num_huespedes:    1,
-    notas:            '',
+    fecha_entrada: params.get('fecha_entrada') || '',
+    fecha_salida: params.get('fecha_salida') || '',
+    num_huespedes: 1,
+    notas: '',
   })
   const [serviciosSel, setServiciosSel] = useState([])
   const [loading, setLoading] = useState(false)
@@ -72,12 +72,12 @@ export default function ReservaForm() {
 
   const validar = () => {
     const e = {}
-    if (!form.id_habitacion)    e.id_habitacion    = 'Selecciona una habitacion'
-    if (!form.nombre_huesped)   e.nombre_huesped   = 'El nombre es obligatorio'
-    if (!form.email_huesped)    e.email_huesped    = 'El email es obligatorio'
+    if (!form.id_habitacion) e.id_habitacion = 'Selecciona una habitacion'
+    if (!form.nombre_huesped) e.nombre_huesped = 'El nombre es obligatorio'
+    if (!form.email_huesped) e.email_huesped = 'El email es obligatorio'
     if (!form.telefono_huesped) e.telefono_huesped = 'El telefono es obligatorio'
-    if (!form.fecha_entrada)    e.fecha_entrada    = 'La fecha de entrada es obligatoria'
-    if (!form.fecha_salida)     e.fecha_salida     = 'La fecha de salida es obligatoria'
+    if (!form.fecha_entrada) e.fecha_entrada = 'La fecha de entrada es obligatoria'
+    if (!form.fecha_salida) e.fecha_salida = 'La fecha de salida es obligatoria'
     if (form.fecha_entrada && form.fecha_salida && form.fecha_salida <= form.fecha_entrada) {
       e.fecha_salida = 'La salida debe ser posterior a la entrada'
     }
@@ -93,7 +93,7 @@ export default function ReservaForm() {
       ...form,
       servicios_pedidos: serviciosSel.map(s => ({
         id_servicio: s.id_servicio,
-        cantidad:    s.cantidad,
+        cantidad: s.cantidad,
       })),
     }
 
@@ -182,7 +182,6 @@ export default function ReservaForm() {
           value={form.notas} onChange={(e) => set('notas', e.target.value)} />
       </div>
 
-      {/* Servicios adicionales */}
       {servicios.length > 0 && (
         <div>
           <label className="block text-sm font-medium mb-2">Servicios adicionales</label>
@@ -197,11 +196,10 @@ export default function ReservaForm() {
                       <button
                         type="button"
                         onClick={() => toggleServicio(s)}
-                        className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
-                          seleccionado
-                            ? 'bg-primary text-white border-primary'
-                            : 'text-gray-600 border-gray-300 hover:border-primary'
-                        }`}
+                        className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${seleccionado
+                          ? 'bg-primary text-white border-primary'
+                          : 'text-gray-600 border-gray-300 hover:border-primary'
+                          }`}
                       >
                         {s.nombre} — {formatEuros(s.precio)}
                       </button>
@@ -223,7 +221,6 @@ export default function ReservaForm() {
         </div>
       )}
 
-      {/* Resumen del precio */}
       {precio && precio.noches > 0 && (
         <div className="bg-gray-50 border rounded p-4 text-sm">
           <p className="font-medium mb-2">Resumen del precio</p>

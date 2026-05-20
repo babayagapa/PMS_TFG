@@ -10,9 +10,9 @@ import toast from 'react-hot-toast'
 
 const IMG_MAP = {
   Individual: '/img/individual.png',
-  Doble:      '/img/doble.png',
-  Suite:      '/img/suite.png',
-  Familiar:   '/img/familiar.png',
+  Doble: '/img/doble.png',
+  Suite: '/img/suite.png',
+  Familiar: '/img/familiar.png',
 }
 
 export default function ReservasPage() {
@@ -44,9 +44,8 @@ export default function ReservasPage() {
   const reservasActivas = reservas.filter(r => {
     const fechaSalida = new Date(r.fecha_salida)
     const hoy = new Date()
-    hoy.setHours(0,0,0,0)
-    
-    // Ocultar si ya paso la fecha de salida y esta pagada
+    hoy.setHours(0, 0, 0, 0)
+
     if (fechaSalida < hoy && r.estado_pago === 'pagado') {
       return false
     }
@@ -58,7 +57,7 @@ export default function ReservasPage() {
       <Navbar />
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
         <h2 style={{ margin: '0 0 24px', fontSize: '1.8rem', fontWeight: 700 }}>Mis Reservas</h2>
-        
+
         {loading ? <Spinner /> : reservasActivas.length === 0 ? (
           <div className="glass" style={{ padding: '60px', textAlign: 'center' }}>
             <p style={{ color: '#999', fontSize: '15px' }}>No tienes reservas todavía.</p>
@@ -66,7 +65,6 @@ export default function ReservasPage() {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {reservasActivas.map(r => {
-              // Obtener info de la habitacion si viene poblada, o defaults
               const tipoHab = r.habitacion?.tipo || 'Habitación'
               const numHab = r.habitacion?.numero || 'N/A'
               const imgSrc = IMG_MAP[tipoHab] || '/img/individual.png'
@@ -88,7 +86,7 @@ export default function ReservasPage() {
                           <Badge estado={r.estado_pago || 'pendiente'} />
                         </div>
                       </div>
-                      
+
                       <div style={{ display: 'flex', gap: '40px', marginBottom: '20px' }}>
                         <div>
                           <p style={{ margin: '0 0 4px', fontSize: '11px', color: '#999', textTransform: 'uppercase', fontWeight: 600 }}>Entrada</p>
@@ -104,7 +102,7 @@ export default function ReservasPage() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '16px' }}>
                       <div>
                         <p style={{ margin: '0 0 2px', fontSize: '11px', color: '#999', textTransform: 'uppercase', fontWeight: 600 }}>Total</p>
@@ -124,8 +122,7 @@ export default function ReservasPage() {
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Imagen */}
+
                   <div style={{ width: '280px', flexShrink: 0 }}>
                     <img src={imgSrc} alt={tipoHab} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
@@ -135,7 +132,6 @@ export default function ReservasPage() {
           </div>
         )}
 
-        {/* Modal de pago */}
         {modalPago && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
             <div className="glass" style={{ width: '100%', maxWidth: '420px', padding: '32px' }}>

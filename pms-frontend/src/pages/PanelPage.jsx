@@ -33,16 +33,12 @@ export default function PanelPage() {
         const ocupadas = idsOcupadas.size
         const disponibles = totalHabs - ocupadas
 
-        // Llegadas hoy (check-in hoy)
         const llegadasHoy = activas.filter(r => r.fecha_entrada === hoy).length
 
-        // Salidas hoy (check-out hoy) — siguen ocupadas pero se marcan para limpieza
         const salidasHoy = activas.filter(r => r.fecha_salida === hoy).length
 
-        // Habitaciones a limpiar: directamente desde el estado real de la habitación
         const aLimpiar = habs.filter(h => h.estado_limpieza !== 'Limpia').length
 
-        // Reservas activas hoy
         const reservasHoy = activas.filter(r =>
           r.fecha_entrada <= hoy && r.fecha_salida >= hoy
         ).length
@@ -99,7 +95,6 @@ export default function PanelPage() {
 
         {loading ? <Spinner /> : stats && (
           <>
-            {/* Fila 1: Habitaciones */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '20px' }}>
               <StatCard icon="🏨" label="Total habitaciones" value={stats.totalHabs} color="#2C3E50" />
               <StatCard icon="🚫" label="Ocupadas" value={stats.ocupadas} sub={`/ ${stats.totalHabs}`} color="#e74c3c"
@@ -110,7 +105,6 @@ export default function PanelPage() {
                 progress={{ value: stats.aLimpiar, max: stats.totalHabs }} />
             </div>
 
-            {/* Fila 2: Actividad de hoy */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
               <StatCard icon="📋" label="Reservas hoy" value={stats.reservasHoy} color="#2C3E50" />
               <StatCard icon="🛬" label="Llegadas" value={stats.llegadasHoy} color="#3498db" />

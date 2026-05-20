@@ -62,10 +62,8 @@ export default function RegisterPersonalPage() {
         <p style={{ color: '#666', fontSize: '14px', marginBottom: '32px' }}>Registra nuevos empleados en el sistema</p>
 
         <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
-          {/* Formulario */}
           <div className="glass" style={{ padding: '40px', maxWidth: '460px', width: '100%' }}>
             <form onSubmit={handleSubmit}>
-              {/* Rol del empleado */}
               <div style={iStyle}>
                 <label className="input-label">Rol del empleado</label>
                 <select className="input-field" value={form.rol} onChange={e => set('rol', e.target.value)}>
@@ -123,7 +121,6 @@ export default function RegisterPersonalPage() {
             </form>
           </div>
 
-          {/* Confirmación */}
           {exito && (
             <div className="glass" style={{ padding: '32px', maxWidth: '320px', width: '100%' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>✅</div>

@@ -12,7 +12,7 @@ export default function FacturasEmpleadoPage() {
       <Sidebar />
       <main style={{ flex: 1, padding: '40px' }}>
         <h2 style={{ margin: '0 0 20px', fontSize: '1.8rem', fontWeight: 700 }}>Facturas</h2>
-        
+
         {loading ? <Spinner /> : facturas.length === 0 ? (
           <div className="glass" style={{ padding: '60px', textAlign: 'center' }}>
             <p style={{ color: '#999', fontSize: '15px' }}>No hay facturas todavia.</p>
