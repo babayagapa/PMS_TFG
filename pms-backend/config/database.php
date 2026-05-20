@@ -1,0 +1,25 @@
+<?php
+
+return [
+
+    'default' => env('DB_CONNECTION', 'mongodb'),
+
+    'connections' => [
+
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_HOST', '127.0.0.1'),
+            'port'     => (int) env('MONGO_PORT', 27017),
+            'database' => env('MONGO_DATABASE', 'pms_db'),
+            'username' => env('MONGO_USERNAME', ''),
+            'password' => env('MONGO_PASSWORD', ''),
+            'options'  => [
+                'authSource' => 'admin',
+            ],
+        ],
+
+    ],
+
+    'migrations' => 'migrations',
+
+];

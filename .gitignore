@@ -1,0 +1,16 @@
+node_modules/
+vendor/
+.env
+pms-frontend/.env
+pms-backend/.env
+dist/
+build/
+*.log
+.DS_Store
+
+# Laravel — carpetas de cache generadas automaticamente
+pms-backend/storage/framework/sessions/
+pms-backend/storage/framework/views/*.php
+pms-backend/storage/framework/cache/
+pms-backend/storage/logs/*.log
+pms-backend/bootstrap/cache/*.php
