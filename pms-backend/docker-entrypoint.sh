@@ -29,7 +29,7 @@ fi
 
 php artisan config:clear --no-interaction 2>/dev/null || true
 
-HAB_COUNT=$(php artisan tinker --execute="echo App\Models\Habitacion::count();" 2>/dev/null | tail -1 || echo "0")
+HAB_COUNT=$(php -r "require 'vendor/autoload.php'; (require 'bootstrap/app.php')->make('Illuminate\Contracts\Console\Kernel')->bootstrap(); echo App\Models\Habitacion::count();" 2>/dev/null || echo "0")
 if [ "$HAB_COUNT" = "0" ]; then
   echo "Base de datos vacia, cargando datos iniciales..."
   php artisan db:seed --force --no-interaction
