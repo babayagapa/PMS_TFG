@@ -20,13 +20,21 @@ class HabitacionController extends Controller
             $query->where('ocupada', $request->boolean('ocupada'));
         }
 
-        return response()->json($query->orderBy('numero')->get());
+        $habitaciones = $query->orderBy('numero')->get();
+
+        foreach ($habitaciones as $habitacion) {
+            $this->verificarLimpiezaAutomatica($habitacion);
+        }
+
+        return response()->json($habitaciones);
     }
 
     // GET /api/habitaciones/{id}
     public function show(string $id)
     {
-        return response()->json(Habitacion::findOrFail($id));
+        $habitacion = Habitacion::findOrFail($id);
+        $this->verificarLimpiezaAutomatica($habitacion);
+        return response()->json($habitacion);
     }
 
     // POST /api/habitaciones (solo admin)
@@ -41,7 +49,7 @@ class HabitacionController extends Controller
 
         $habitacion = Habitacion::create($request->only([
             'numero', 'tipo', 'precio_noche', 'capacidad',
-            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades',
+            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades', 'fecha_limpieza'
         ]));
 
         return response()->json($habitacion, 201);
@@ -53,7 +61,7 @@ class HabitacionController extends Controller
         $habitacion = Habitacion::findOrFail($id);
         $habitacion->update($request->only([
             'numero', 'tipo', 'precio_noche', 'capacidad',
-            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades',
+            'estado_limpieza', 'ocupada', 'descripcion', 'amenidades', 'fecha_limpieza'
         ]));
 
         return response()->json($habitacion);
@@ -75,8 +83,44 @@ class HabitacionController extends Controller
         ]);
 
         $habitacion = Habitacion::findOrFail($id);
-        $habitacion->update(['estado_limpieza' => $request->estado_limpieza]);
+        
+        $updateData = ['estado_limpieza' => $request->estado_limpieza];
+        if ($request->estado_limpieza === 'Limpia') {
+            $updateData['fecha_limpieza'] = date('Y-m-d');
+        }
+
+        $habitacion->update($updateData);
 
         return response()->json($habitacion);
+    }
+
+    private function verificarLimpiezaAutomatica(Habitacion $habitacion)
+    {
+        $hoy = date('Y-m-d');
+        
+        $ultimaReservaSalida = \App\Models\Reserva::where('id_habitacion', (string)$habitacion->_id)
+            ->where('estado', '!=', 'Cancelada')
+            ->where('fecha_salida', '<=', $hoy)
+            ->orderBy('fecha_salida', 'desc')
+            ->first();
+
+        if ($ultimaReservaSalida) {
+            $fechaSalida = $ultimaReservaSalida->fecha_salida;
+            $fechaLimpieza = $habitacion->fecha_limpieza;
+
+            if ($fechaSalida === $hoy) {
+                if ($habitacion->estado_limpieza !== 'Sucia' && $fechaLimpieza !== $hoy) {
+                    $habitacion->update([
+                        'estado_limpieza' => 'Sucia',
+                    ]);
+                }
+            } else {
+                if ($habitacion->estado_limpieza === 'Sucia') {
+                    $habitacion->update([
+                        'estado_limpieza' => 'Limpia',
+                    ]);
+                }
+            }
+        }
     }
 }

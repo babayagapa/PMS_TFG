@@ -18,6 +18,7 @@ class Habitacion extends Model
         'capacidad',
         'descripcion',
         'amenidades',
+        'fecha_limpieza',
     ];
 
     protected $casts = [

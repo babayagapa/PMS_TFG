@@ -39,15 +39,8 @@ export default function PanelPage() {
         // Salidas hoy (check-out hoy) — siguen ocupadas pero se marcan para limpieza
         const salidasHoy = activas.filter(r => r.fecha_salida === hoy).length
 
-        // Habitaciones a limpiar: las que tienen checkout HOY
-        // Al día siguiente ya están limpias automáticamente
-        const idsALimpiar = new Set()
-        activas.forEach(r => {
-          if (r.fecha_salida === hoy) {
-            idsALimpiar.add(r.id_habitacion)
-          }
-        })
-        const aLimpiar = idsALimpiar.size
+        // Habitaciones a limpiar: directamente desde el estado real de la habitación
+        const aLimpiar = habs.filter(h => h.estado_limpieza !== 'Limpia').length
 
         // Reservas activas hoy
         const reservasHoy = activas.filter(r =>
