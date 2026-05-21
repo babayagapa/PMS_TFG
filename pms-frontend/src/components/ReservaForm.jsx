@@ -32,10 +32,8 @@ export default function ReservaForm() {
   const [loading, setLoading] = useState(false)
   const [errores, setErrores] = useState({})
 
-  // Filtrar habitaciones disponibles para las fechas seleccionadas
   const habitacionesDisponibles = useMemo(() => {
     if (!form.fecha_entrada || !form.fecha_salida) return habitaciones
-
     const activas = reservas.filter(r => r.estado !== 'Cancelada')
     return habitaciones.filter(h => {
       const conflicto = activas.some(r =>
@@ -47,14 +45,12 @@ export default function ReservaForm() {
     })
   }, [habitaciones, reservas, form.fecha_entrada, form.fecha_salida])
 
-  const habitacionSel = habitacionesDisponibles.find((h) => h._id === form.id_habitacion)
-
-  // Calcular precio con servicios incluidos
-  const precio = habitacionSel && form.fecha_entrada && form.fecha_salida
-    ? calcularPrecio(habitacionSel.precio_noche, form.fecha_entrada, form.fecha_salida, serviciosSel)
+  const habSel = habitacionesDisponibles.find(h => h._id === form.id_habitacion)
+  const precio = habSel && form.fecha_entrada && form.fecha_salida
+    ? calcularPrecio(habSel.precio_noche, form.fecha_entrada, form.fecha_salida, serviciosSel)
     : null
 
-  const set = (campo, valor) => setForm((f) => ({ ...f, [campo]: valor }))
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const toggleServicio = (servicio) => {
     setServiciosSel(prev => {
@@ -78,28 +74,21 @@ export default function ReservaForm() {
     if (!form.telefono_huesped) e.telefono_huesped = 'El telefono es obligatorio'
     if (!form.fecha_entrada) e.fecha_entrada = 'La fecha de entrada es obligatoria'
     if (!form.fecha_salida) e.fecha_salida = 'La fecha de salida es obligatoria'
-    if (form.fecha_entrada && form.fecha_salida && form.fecha_salida <= form.fecha_entrada) {
+    if (form.fecha_entrada && form.fecha_salida && form.fecha_salida <= form.fecha_entrada)
       e.fecha_salida = 'La salida debe ser posterior a la entrada'
-    }
     return e
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const e2 = validar()
-    if (Object.keys(e2).length > 0) { setErrores(e2); return }
-
-    const payload = {
-      ...form,
-      servicios_pedidos: serviciosSel.map(s => ({
-        id_servicio: s.id_servicio,
-        cantidad: s.cantidad,
-      })),
-    }
-
+    if (Object.keys(e2).length) { setErrores(e2); return }
     setLoading(true)
     try {
-      await createReserva(payload)
+      await createReserva({
+        ...form,
+        servicios_pedidos: serviciosSel.map(s => ({ id_servicio: s.id_servicio, cantidad: s.cantidad })),
+      })
       toast.success('Reserva creada correctamente')
       nav('/reservas')
     } catch (err) {
@@ -109,106 +98,103 @@ export default function ReservaForm() {
     }
   }
 
-  // Agrupar servicios por categoria
+  const err = (campo) => errores[campo]
+    ? <p style={{ color: '#e74c3c', fontSize: '12px', margin: '4px 0 0' }}>{errores[campo]}</p>
+    : null
+
   const categorias = [...new Set(servicios.map(s => s.categoria))].sort()
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Habitacion</label>
-        <select
-          className="w-full border rounded p-2 text-sm"
-          value={form.id_habitacion}
-          onChange={(e) => set('id_habitacion', e.target.value)}
-        >
+        <label className="input-label">Habitacion</label>
+        <select className="input-field" value={form.id_habitacion} onChange={e => set('id_habitacion', e.target.value)}>
           <option value="">Selecciona una habitacion</option>
-          {habitacionesDisponibles.map((h) => (
+          {habitacionesDisponibles.map(h => (
             <option key={h._id} value={h._id}>
               {h.numero} — {h.tipo} — {formatEuros(h.precio_noche)}/noche
             </option>
           ))}
         </select>
-        {errores.id_habitacion && <p className="text-red-500 text-xs mt-1">{errores.id_habitacion}</p>}
+        {err('id_habitacion')}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Nombre del huesped</label>
-        <input className="w-full border rounded p-2 text-sm" type="text"
-          value={form.nombre_huesped} onChange={(e) => set('nombre_huesped', e.target.value)} />
-        {errores.nombre_huesped && <p className="text-red-500 text-xs mt-1">{errores.nombre_huesped}</p>}
+        <label className="input-label">Nombre del huesped</label>
+        <input type="text" className="input-field"
+          value={form.nombre_huesped} onChange={e => set('nombre_huesped', e.target.value)} />
+        {err('nombre_huesped')}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Email</label>
-        <input className="w-full border rounded p-2 text-sm" type="email"
-          value={form.email_huesped} onChange={(e) => set('email_huesped', e.target.value)} />
-        {errores.email_huesped && <p className="text-red-500 text-xs mt-1">{errores.email_huesped}</p>}
+        <label className="input-label">Email</label>
+        <input type="email" className="input-field"
+          value={form.email_huesped} onChange={e => set('email_huesped', e.target.value)} />
+        {err('email_huesped')}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Teléfono</label>
-        <input className="w-full border rounded p-2 text-sm" type="tel"
-          value={form.telefono_huesped} onChange={(e) => set('telefono_huesped', e.target.value)} />
-        {errores.telefono_huesped && <p className="text-red-500 text-xs mt-1">{errores.telefono_huesped}</p>}
+        <label className="input-label">Telefono</label>
+        <input type="tel" className="input-field"
+          value={form.telefono_huesped} onChange={e => set('telefono_huesped', e.target.value)} />
+        {err('telefono_huesped')}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div>
-          <label className="block text-sm font-medium mb-1">Fecha entrada</label>
-          <input className="w-full border rounded p-2 text-sm" type="date"
-            min={hoy()} value={form.fecha_entrada}
-            onChange={(e) => set('fecha_entrada', e.target.value)} />
-          {errores.fecha_entrada && <p className="text-red-500 text-xs mt-1">{errores.fecha_entrada}</p>}
+          <label className="input-label">Fecha entrada</label>
+          <input type="date" className="input-field" min={hoy()}
+            value={form.fecha_entrada} onChange={e => set('fecha_entrada', e.target.value)} />
+          {err('fecha_entrada')}
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Fecha salida</label>
-          <input className="w-full border rounded p-2 text-sm" type="date"
-            min={form.fecha_entrada || hoy()} value={form.fecha_salida}
-            onChange={(e) => set('fecha_salida', e.target.value)} />
-          {errores.fecha_salida && <p className="text-red-500 text-xs mt-1">{errores.fecha_salida}</p>}
+          <label className="input-label">Fecha salida</label>
+          <input type="date" className="input-field" min={form.fecha_entrada || hoy()}
+            value={form.fecha_salida} onChange={e => set('fecha_salida', e.target.value)} />
+          {err('fecha_salida')}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Número de huéspedes</label>
-        <input className="w-full border rounded p-2 text-sm" type="number" min="1" max="10"
-          value={form.num_huespedes} onChange={(e) => set('num_huespedes', parseInt(e.target.value))} />
+        <label className="input-label">Numero de huespedes</label>
+        <input type="number" min="1" max="10" className="input-field"
+          value={form.num_huespedes} onChange={e => set('num_huespedes', parseInt(e.target.value))} />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Notas (opcional)</label>
-        <textarea className="w-full border rounded p-2 text-sm" rows="2"
-          value={form.notas} onChange={(e) => set('notas', e.target.value)} />
+        <label className="input-label">Notas (opcional)</label>
+        <textarea rows="2" className="input-field"
+          value={form.notas} onChange={e => set('notas', e.target.value)} />
       </div>
 
       {servicios.length > 0 && (
         <div>
-          <label className="block text-sm font-medium mb-2">Servicios adicionales</label>
+          <label className="input-label">Servicios adicionales</label>
           {categorias.map(cat => (
             <div key={cat} style={{ marginBottom: '12px' }}>
-              <p style={{ fontSize: '12px', color: '#999', fontWeight: 600, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{cat}</p>
+              <p style={{ fontSize: '11px', color: '#999', fontWeight: 600, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{cat}</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {servicios.filter(s => s.categoria === cat).map(s => {
-                  const seleccionado = serviciosSel.find(sel => sel.id_servicio === s._id)
+                  const sel = serviciosSel.find(x => x.id_servicio === s._id)
                   return (
                     <div key={s._id} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <button
                         type="button"
                         onClick={() => toggleServicio(s)}
-                        className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${seleccionado
-                          ? 'bg-primary text-white border-primary'
-                          : 'text-gray-600 border-gray-300 hover:border-primary'
-                          }`}
+                        style={{
+                          padding: '6px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer',
+                          border: sel ? '2px solid #2ECC71' : '2px solid #ddd',
+                          background: sel ? '#2ECC71' : 'transparent',
+                          color: sel ? 'white' : '#666',
+                          transition: 'all 0.2s',
+                        }}
                       >
                         {s.nombre} — {formatEuros(s.precio)}
                       </button>
-                      {seleccionado && (
-                        <input
-                          type="number"
-                          min="1"
-                          value={seleccionado.cantidad}
-                          onChange={(e) => setCantidad(s._id, parseInt(e.target.value) || 1)}
+                      {sel && (
+                        <input type="number" min="1" value={sel.cantidad}
+                          onChange={e => setCantidad(s._id, parseInt(e.target.value) || 1)}
                           style={{ width: '48px', padding: '4px', fontSize: '12px', border: '1px solid #ddd', borderRadius: '6px', textAlign: 'center' }}
                         />
                       )}
@@ -222,34 +208,30 @@ export default function ReservaForm() {
       )}
 
       {precio && precio.noches > 0 && (
-        <div className="bg-gray-50 border rounded p-4 text-sm">
-          <p className="font-medium mb-2">Resumen del precio</p>
-          <div className="flex justify-between text-gray-600">
-            <span>{precio.noches} noches x {formatEuros(habitacionSel.precio_noche)}</span>
+        <div className="glass" style={{ padding: '16px', fontSize: '14px' }}>
+          <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Resumen del precio</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666' }}>
+            <span>{precio.noches} noches x {formatEuros(habSel.precio_noche)}</span>
             <span>{formatEuros(precio.base)}</span>
           </div>
           {precio.servicios > 0 && (
-            <div className="flex justify-between text-gray-600">
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666' }}>
               <span>Servicios adicionales</span>
               <span>{formatEuros(precio.servicios)}</span>
             </div>
           )}
-          <div className="flex justify-between text-gray-600">
+          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#666' }}>
             <span>IVA (10%)</span>
             <span>{formatEuros(precio.iva)}</span>
           </div>
-          <div className="flex justify-between font-bold text-primary mt-2 pt-2 border-t">
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: '#2ECC71', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
             <span>Total</span>
             <span>{formatEuros(precio.total)}</span>
           </div>
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-primary text-white py-2 rounded font-medium disabled:opacity-50"
-      >
+      <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%' }}>
         {loading ? 'Creando reserva...' : 'Crear reserva'}
       </button>
 

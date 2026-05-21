@@ -87,7 +87,7 @@ export default function HabitacionesClientePage() {
   )
 
   return (
-    <div className="Page">
+    <div className="page">
       <Navbar />
 
       <section

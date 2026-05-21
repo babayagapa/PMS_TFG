@@ -38,7 +38,7 @@ export default function FacturaDetalleEmpleadoPage() {
                 <div>
                   <p style={{ margin: '0 0 4px', fontWeight: 700, color: '#2C3E50' }}>{factura.datos_hotel?.nombre}</p>
                   <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>CIF: {factura.datos_hotel?.cif}</p>
-                  <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.dirección}</p>
+                  <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.direccion}</p>
                   <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.telefono}</p>
                   <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.email}</p>
                 </div>

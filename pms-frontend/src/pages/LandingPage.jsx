@@ -56,7 +56,7 @@ export default function LandingPage() {
   const tiposOrdenados = [...tipos].sort((a, b) => orden.indexOf(a.tipo) - orden.indexOf(b.tipo))
 
   return (
-    <div className="Page">
+    <div className="page">
       <Navbar />
 
       <header className="glass" style={{ display: 'flex', gap: '50px', padding: '60px 40px', marginBottom: '40px', alignItems: 'center' }}>

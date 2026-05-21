@@ -18,11 +18,11 @@ export default function FacturaDetalleClientePage() {
       .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <div className="Page"><Navbar /><Spinner /></div>
-  if (!factura) return <div className="Page"><Navbar /><p style={{ textAlign: 'center', color: '#999', padding: '60px' }}>Factura no encontrada.</p></div>
+  if (loading) return <div className="page"><Navbar /><Spinner /></div>
+  if (!factura) return <div className="page"><Navbar /><p style={{ textAlign: 'center', color: '#999', padding: '60px' }}>Factura no encontrada.</p></div>
 
   return (
-    <div className="Page">
+    <div className="page">
       <Navbar />
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -37,7 +37,7 @@ export default function FacturaDetalleClientePage() {
             <div>
               <p style={{ margin: '0 0 4px', fontWeight: 700, color: '#2C3E50' }}>{factura.datos_hotel?.nombre}</p>
               <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>CIF: {factura.datos_hotel?.cif}</p>
-              <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.dirección}</p>
+              <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.direccion}</p>
               <p style={{ margin: '0 0 2px', fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.telefono}</p>
               <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>{factura.datos_hotel?.email}</p>
             </div>
