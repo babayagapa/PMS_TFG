@@ -4,7 +4,7 @@ import { formatEuros } from '../utils/formatDate'
 
 export default function HabitacionCard({ habitacion }) {
   const nav = useNavigate()
-  const disponible = !habitacion.ocupada && habitacion.estado_limpieza === 'Limpia'
+  const disponible = !habitacion.ocupada
 
   return (
     <div className="glass" style={{ overflow: 'hidden', transition: 'box-shadow 0.2s' }}
