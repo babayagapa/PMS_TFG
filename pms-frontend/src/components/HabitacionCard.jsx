@@ -47,15 +47,11 @@ export default function HabitacionCard({ habitacion }) {
         )}
 
         <button
-          disabled={!disponible}
           onClick={() => nav(`/reservas/nueva?id_habitacion=${habitacion._id}`)}
-          className={disponible ? 'btn-primary' : ''}
-          style={disponible
-            ? { width: '100%', padding: '12px', fontSize: '14px' }
-            : { width: '100%', padding: '12px', fontSize: '14px', background: '#f0f0f0', color: '#aaa', border: 'none', borderRadius: '10px', cursor: 'not-allowed', fontWeight: 600 }
-          }
+          className="btn-primary"
+          style={{ width: '100%', padding: '12px', fontSize: '14px' }}
         >
-          {disponible ? 'Reservar' : 'No disponible'}
+          Reservar
         </button>
       </div>
     </div>
