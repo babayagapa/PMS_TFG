@@ -74,7 +74,7 @@ El proyecto está preparado para ser expuesto mediante túneles Zero Trust.
 Para crear un túnel público temporal manualmente:
 
 ```bash
-# Ejecutar el demonio de Cloudflare desde el contenedor frontend
+# Ejecutar el dominio de Cloudflare desde el contenedor frontend
 docker exec -it pms_frontend npx cloudflared tunnel --url http://localhost:5173
 ```
 Genera un enlace público que apunta a tu equipo local.
