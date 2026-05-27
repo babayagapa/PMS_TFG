@@ -194,7 +194,7 @@ class ReservaController extends Controller
             'estado'      => 'Confirmada',
         ]);
 
-        $cliente = User::find($reserva->id_cliente) ?? $user;
+        $cliente = User::find($reserva->id_cliente);
         $factura = Factura::crearDesdeReserva($reserva, $cliente, $request->metodo_pago);
 
         return response()->json([

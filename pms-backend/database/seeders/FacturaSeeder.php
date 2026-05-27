@@ -48,7 +48,7 @@ class FacturaSeeder extends Seeder
             $esDelCliente = $cliente && $reserva->id_cliente === (string) $cliente->_id;
 
             $datosCliente = [
-                'nombre'   => $esDelCliente ? $cliente->nombre . ' ' . $cliente->apellidos : $reserva->nombre_huesped,
+                'nombre'   => $esDelCliente ? trim($cliente->nombre . ' ' . $cliente->apellidos) : $reserva->nombre_huesped,
                 'email'    => $esDelCliente ? $cliente->email : $reserva->email_huesped,
                 'nif'      => $esDelCliente ? ($cliente->nif ?? '') : '',
                 'telefono' => $esDelCliente ? ($cliente->telefono ?? '') : ($reserva->telefono_huesped ?? ''),

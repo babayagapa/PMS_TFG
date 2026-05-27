@@ -20,7 +20,7 @@ export default function ReservaForm() {
 
   const [form, setForm] = useState({
     id_habitacion: params.get('id_habitacion') || '',
-    nombre_huesped: usuario?.nombre || '',
+    nombre_huesped: usuario ? `${usuario.nombre} ${usuario.apellidos || ''}`.trim() : '',
     email_huesped: usuario?.email || '',
     telefono_huesped: usuario?.telefono || '',
     fecha_entrada: params.get('fecha_entrada') || '',

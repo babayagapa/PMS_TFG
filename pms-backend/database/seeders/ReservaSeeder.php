@@ -64,6 +64,17 @@ class ReservaSeeder extends Seeder
 
                 $huesped = $huespedes[array_rand($huespedes)];
                 $esCliente = rand(1, 100) <= 20; 
+
+                if ($esCliente && $cliente) {
+                    $nombreHuesped = trim($cliente->nombre . ' ' . $cliente->apellidos);
+                    $emailHuesped = $cliente->email;
+                    $telefonoHuesped = $cliente->telefono;
+                } else {
+                    $nombreHuesped = $huesped['nombre'];
+                    $emailHuesped = $huesped['email'];
+                    $telefonoHuesped = $huesped['telefono'];
+                }
+
                 if ($entrada->lte($hoy)) {
                     $estado     = 'Confirmada';
                     $estadoPago = 'pagado';
@@ -86,9 +97,9 @@ class ReservaSeeder extends Seeder
                 Reserva::create([
                     'id_cliente'        => ($esCliente && $cliente) ? $cliente->_id : null,
                     'id_habitacion'     => $hab->_id,
-                    'nombre_huesped'    => $huesped['nombre'],
-                    'email_huesped'     => $huesped['email'],
-                    'telefono_huesped'  => $huesped['telefono'],
+                    'nombre_huesped'    => $nombreHuesped,
+                    'email_huesped'     => $emailHuesped,
+                    'telefono_huesped'  => $telefonoHuesped,
                     'fecha_entrada'     => $entrada->toDateString(),
                     'fecha_salida'      => $salida->toDateString(),
                     'num_huespedes'     => rand(1, $hab->capacidad),

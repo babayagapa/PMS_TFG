@@ -47,7 +47,7 @@ class Factura extends Model
         return sprintf('FAC-%s-%05d', $anio, $count + 1);
     }
 
-    public static function crearDesdeReserva(Reserva $reserva, User $cliente, string $metodoPago): self
+    public static function crearDesdeReserva(Reserva $reserva, ?User $cliente, string $metodoPago): self
     {
         $lineas     = [];
         $habitacion = Habitacion::find($reserva->id_habitacion);
@@ -85,13 +85,13 @@ class Factura extends Model
         return self::create([
             'numero_factura' => self::generarNumero(),
             'id_reserva'     => (string) $reserva->_id,
-            'id_cliente'     => (string) $cliente->_id,
+            'id_cliente'     => $cliente ? (string) $cliente->_id : null,
             'fecha'          => now()->toDateTimeString(),
             'datos_cliente'  => [
-                'nombre'   => $cliente->nombre,
-                'email'    => $cliente->email,
+                'nombre'   => $cliente ? trim($cliente->nombre . ' ' . $cliente->apellidos) : $reserva->nombre_huesped,
+                'email'    => $cliente ? $cliente->email : $reserva->email_huesped,
                 'nif'      => $cliente->nif ?? '',
-                'telefono' => $cliente->telefono ?? '',
+                'telefono' => $cliente ? ($cliente->telefono ?? '') : ($reserva->telefono_huesped ?? ''),
             ],
             'datos_hotel' => [
                 'nombre'    => self::HOTEL_NOMBRE,
